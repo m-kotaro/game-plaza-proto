@@ -1,0 +1,1 @@
+export { AvatarManager } from './AvatarManager';

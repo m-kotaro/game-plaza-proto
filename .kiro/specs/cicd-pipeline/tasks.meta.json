@@ -1,0 +1,152 @@
+{
+  "pbtResults": {},
+  "executionHistory": {
+    "1.1 `packages/cdk/src/bin/app.ts`を修正し、contextパラメータ`env`でスタック名を切り替える": [
+      {
+        "executionId": "e0962cd5-50a8-434f-9b1c-4787355099ac",
+        "chatSessionId": "sess_a0de89ee-0c62-442a-a93c-21e96244feb3",
+        "timestamp": 1787198238039
+      },
+      {
+        "executionId": "e0962cd5-50a8-434f-9b1c-4787355099ac",
+        "chatSessionId": "sess_a0de89ee-0c62-442a-a93c-21e96244feb3",
+        "timestamp": 1787198276638
+      },
+      {
+        "executionId": "e0962cd5-50a8-434f-9b1c-4787355099ac",
+        "chatSessionId": "sess_a0de89ee-0c62-442a-a93c-21e96244feb3",
+        "timestamp": 1787198383989
+      }
+    ],
+    "2.1 `.github/workflows/ci.yml`を作成し、PRテスト・ビルド検証を設定": [
+      {
+        "executionId": "e0962cd5-50a8-434f-9b1c-4787355099ac",
+        "chatSessionId": "sess_a0de89ee-0c62-442a-a93c-21e96244feb3",
+        "timestamp": 1787198238060
+      },
+      {
+        "executionId": "e0962cd5-50a8-434f-9b1c-4787355099ac",
+        "chatSessionId": "sess_a0de89ee-0c62-442a-a93c-21e96244feb3",
+        "timestamp": 1787198390206
+      },
+      {
+        "executionId": "e0962cd5-50a8-434f-9b1c-4787355099ac",
+        "chatSessionId": "sess_a0de89ee-0c62-442a-a93c-21e96244feb3",
+        "timestamp": 1787198589898
+      }
+    ],
+    "3.1 `.github/workflows/cd.yml`を作成し、dev環境への自動デプロイジョブを設定": [
+      {
+        "executionId": "e0962cd5-50a8-434f-9b1c-4787355099ac",
+        "chatSessionId": "sess_a0de89ee-0c62-442a-a93c-21e96244feb3",
+        "timestamp": 1787198238104
+      },
+      {
+        "executionId": "e0962cd5-50a8-434f-9b1c-4787355099ac",
+        "chatSessionId": "sess_a0de89ee-0c62-442a-a93c-21e96244feb3",
+        "timestamp": 1787198390515
+      },
+      {
+        "executionId": "e0962cd5-50a8-434f-9b1c-4787355099ac",
+        "chatSessionId": "sess_a0de89ee-0c62-442a-a93c-21e96244feb3",
+        "timestamp": 1787198588980
+      }
+    ],
+    "3.2 同ファイルにprod環境デプロイジョブを追加": [
+      {
+        "executionId": "e0962cd5-50a8-434f-9b1c-4787355099ac",
+        "chatSessionId": "sess_a0de89ee-0c62-442a-a93c-21e96244feb3",
+        "timestamp": 1787198238117
+      },
+      {
+        "executionId": "e0962cd5-50a8-434f-9b1c-4787355099ac",
+        "chatSessionId": "sess_a0de89ee-0c62-442a-a93c-21e96244feb3",
+        "timestamp": 1787198600100
+      },
+      {
+        "executionId": "e0962cd5-50a8-434f-9b1c-4787355099ac",
+        "chatSessionId": "sess_a0de89ee-0c62-442a-a93c-21e96244feb3",
+        "timestamp": 1787198732701
+      }
+    ],
+    "4. チェックポイント - ワークフロー構文検証": [
+      {
+        "executionId": "e0962cd5-50a8-434f-9b1c-4787355099ac",
+        "chatSessionId": "sess_a0de89ee-0c62-442a-a93c-21e96244feb3",
+        "timestamp": 1787198238130
+      },
+      {
+        "executionId": "e0962cd5-50a8-434f-9b1c-4787355099ac",
+        "chatSessionId": "sess_a0de89ee-0c62-442a-a93c-21e96244feb3",
+        "timestamp": 1787198739712
+      },
+      {
+        "executionId": "e0962cd5-50a8-434f-9b1c-4787355099ac",
+        "chatSessionId": "sess_a0de89ee-0c62-442a-a93c-21e96244feb3",
+        "timestamp": 1787198917757
+      }
+    ],
+    "5.1 `.kiro/specs/cicd-pipeline/oidc-setup-guide.md`を作成し、OIDC認証の手動セットアップ手順を記述": [
+      {
+        "executionId": "e0962cd5-50a8-434f-9b1c-4787355099ac",
+        "chatSessionId": "sess_a0de89ee-0c62-442a-a93c-21e96244feb3",
+        "timestamp": 1787198238146
+      },
+      {
+        "executionId": "e0962cd5-50a8-434f-9b1c-4787355099ac",
+        "chatSessionId": "sess_a0de89ee-0c62-442a-a93c-21e96244feb3",
+        "timestamp": 1787198601763
+      },
+      {
+        "executionId": "e0962cd5-50a8-434f-9b1c-4787355099ac",
+        "chatSessionId": "sess_a0de89ee-0c62-442a-a93c-21e96244feb3",
+        "timestamp": 1787198733754
+      }
+    ],
+    "6. 最終チェックポイント - 全体の整合性確認": [
+      {
+        "executionId": "e0962cd5-50a8-434f-9b1c-4787355099ac",
+        "chatSessionId": "sess_a0de89ee-0c62-442a-a93c-21e96244feb3",
+        "timestamp": 1787198238185
+      },
+      {
+        "executionId": "e0962cd5-50a8-434f-9b1c-4787355099ac",
+        "chatSessionId": "sess_a0de89ee-0c62-442a-a93c-21e96244feb3",
+        "timestamp": 1787198923315
+      },
+      {
+        "executionId": "e0962cd5-50a8-434f-9b1c-4787355099ac",
+        "chatSessionId": "sess_a0de89ee-0c62-442a-a93c-21e96244feb3",
+        "timestamp": 1787198928595
+      }
+    ],
+    "1. CDK app.tsの環境分離対応": [
+      {
+        "executionId": "e0962cd5-50a8-434f-9b1c-4787355099ac",
+        "chatSessionId": "sess_a0de89ee-0c62-442a-a93c-21e96244feb3",
+        "timestamp": 1787198384010
+      }
+    ],
+    "2. CIワークフローの作成": [
+      {
+        "executionId": "e0962cd5-50a8-434f-9b1c-4787355099ac",
+        "chatSessionId": "sess_a0de89ee-0c62-442a-a93c-21e96244feb3",
+        "timestamp": 1787198589917
+      }
+    ],
+    "3. CDワークフローの作成": [
+      {
+        "executionId": "e0962cd5-50a8-434f-9b1c-4787355099ac",
+        "chatSessionId": "sess_a0de89ee-0c62-442a-a93c-21e96244feb3",
+        "timestamp": 1787198732723
+      }
+    ],
+    "5. OIDC認証セットアップ手順ドキュメントの作成": [
+      {
+        "executionId": "e0962cd5-50a8-434f-9b1c-4787355099ac",
+        "chatSessionId": "sess_a0de89ee-0c62-442a-a93c-21e96244feb3",
+        "timestamp": 1787198733791
+      }
+    ]
+  }
+}

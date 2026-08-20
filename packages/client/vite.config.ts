@@ -1,4 +1,5 @@
 import { defineConfig } from 'vite';
+import path from 'path';
 
 export default defineConfig({
   root: '.',
@@ -13,6 +14,7 @@ export default defineConfig({
   resolve: {
     alias: {
       '@': '/src',
+      '@game-plaza/shared': path.resolve(__dirname, '../shared/src/index.ts'),
     },
   },
   // WebSocket URL is injected via VITE_WEBSOCKET_URL env var at build time.

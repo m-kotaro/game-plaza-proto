@@ -1,0 +1,67 @@
+name: CD
+
+on:
+  push:
+    branches: [main]
+
+permissions:
+  id-token: write
+  contents: read
+
+jobs:
+  deploy-dev:
+    runs-on: ubuntu-latest
+    environment: dev
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+
+      - run: npm ci
+
+      - run: npm run build
+        env:
+          VITE_WEBSOCKET_URL: ${{ vars.VITE_WEBSOCKET_URL }}
+
+      - uses: aws-actions/configure-aws-credentials@v4
+        with:
+          role-to-assume: ${{ secrets.AWS_ROLE_ARN }}
+          aws-region: ap-northeast-1
+
+      - run: npx cdk deploy --require-approval never -c env=dev --outputs-file cdk-outputs.json
+        working-directory: packages/cdk
+
+      - name: Show deployment outputs
+        run: cat packages/cdk/cdk-outputs.json
+
+  deploy-prod:
+    needs: deploy-dev
+    runs-on: ubuntu-latest
+    environment: prod
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+
+      - run: npm ci
+
+      - run: npm run build
+        env:
+          VITE_WEBSOCKET_URL: ${{ vars.VITE_WEBSOCKET_URL }}
+
+      - uses: aws-actions/configure-aws-credentials@v4
+        with:
+          role-to-assume: ${{ secrets.AWS_ROLE_ARN }}
+          aws-region: ap-northeast-1
+
+      - run: npx cdk deploy --require-approval never -c env=prod --outputs-file cdk-outputs.json
+        working-directory: packages/cdk
+
+      - name: Show deployment outputs
+        run: cat packages/cdk/cdk-outputs.json

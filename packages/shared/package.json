@@ -4,11 +4,14 @@
   "private": true,
   "description": "Shared type definitions and utilities",
   "main": "./dist/index.js",
-  "types": "./dist/index.d.ts",
+  "module": "./dist/index.js",
+  "types": "./src/index.ts",
   "exports": {
     ".": {
-      "types": "./dist/index.d.ts",
-      "import": "./dist/index.js"
+      "types": "./src/index.ts",
+      "import": "./dist/index.js",
+      "require": "./dist/index.js",
+      "default": "./dist/index.js"
     }
   },
   "scripts": {

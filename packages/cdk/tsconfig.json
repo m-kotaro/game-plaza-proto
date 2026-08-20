@@ -5,12 +5,7 @@
     "rootDir": "./src",
     "module": "CommonJS",
     "moduleResolution": "node",
-    "target": "ES2022",
-    "baseUrl": ".",
-    "paths": {
-      "@game-plaza/shared": ["../shared/dist/index.d.ts"],
-      "@game-plaza/shared/*": ["../shared/dist/*"]
-    }
+    "target": "ES2022"
   },
   "include": ["src/**/*"]
 }

@@ -7,6 +7,7 @@ const app = new cdk.App();
 const envName = app.node.tryGetContext("env") || "dev";
 
 new GamePlatformStack(app, `GamePlatform-${envName}`, {
+  envName,
   description: `AWS Game Platform - ${envName} environment`,
   env: {
     account: process.env.CDK_DEFAULT_ACCOUNT,

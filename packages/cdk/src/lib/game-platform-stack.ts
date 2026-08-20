@@ -1,4 +1,5 @@
 import * as cdk from "aws-cdk-lib";
+import * as acm from "aws-cdk-lib/aws-certificatemanager";
 import * as apigwv2 from "aws-cdk-lib/aws-apigatewayv2";
 import * as cloudfront from "aws-cdk-lib/aws-cloudfront";
 import * as origins from "aws-cdk-lib/aws-cloudfront-origins";
@@ -8,10 +9,16 @@ import * as targets from "aws-cdk-lib/aws-events-targets";
 import * as iam from "aws-cdk-lib/aws-iam";
 import * as lambda from "aws-cdk-lib/aws-lambda";
 import { NodejsFunction } from "aws-cdk-lib/aws-lambda-nodejs";
+import * as route53 from "aws-cdk-lib/aws-route53";
+import * as route53Targets from "aws-cdk-lib/aws-route53-targets";
 import * as s3 from "aws-cdk-lib/aws-s3";
 import * as s3deploy from "aws-cdk-lib/aws-s3-deployment";
 import { Construct } from "constructs";
 import * as path from "path";
+
+export interface GamePlatformStackProps extends cdk.StackProps {
+  envName: string;
+}
 
 export class GamePlatformStack extends cdk.Stack {
   /** Connections table storing player session state */
@@ -36,8 +43,44 @@ export class GamePlatformStack extends cdk.Stack {
   /** EventBridge rule triggering tick Lambda every minute */
   public readonly heartbeatRule: events.Rule;
 
-  constructor(scope: Construct, id: string, props?: cdk.StackProps) {
+  /** Whether this stack is deployed to prod environment */
+  public readonly isProd: boolean;
+
+  /** Route 53 subdomain hosted zone (prod only) */
+  public readonly hostedZone: route53.HostedZone | undefined;
+
+  /** ACM certificate for custom domain (prod only) */
+  public readonly certificate: acm.ICertificate | undefined;
+
+  constructor(scope: Construct, id: string, props: GamePlatformStackProps) {
     super(scope, id, props);
+
+    const isProd = props.envName === "prod";
+    this.isProd = isProd;
+
+    // Custom domain resources (prod only)
+    if (isProd) {
+      // Route 53 subdomain hosted zone
+      this.hostedZone = new route53.HostedZone(this, "SubdomainHostedZone", {
+        zoneName: "game-plaza-proto.m-kotaro.net",
+      });
+
+      // ACM certificate (us-east-1 for CloudFront compatibility)
+      // DnsValidatedCertificate is deprecated but required for cross-region cert creation
+      this.certificate = new acm.DnsValidatedCertificate(this, "Certificate", {
+        domainName: "game-plaza-proto.m-kotaro.net",
+        subjectAlternativeNames: ["*.game-plaza-proto.m-kotaro.net"],
+        hostedZone: this.hostedZone,
+        region: "us-east-1",
+      });
+
+      // Output NS records for manual parent zone delegation
+      new cdk.CfnOutput(this, "HostedZoneNameServers", {
+        value: cdk.Fn.join(",", this.hostedZone.hostedZoneNameServers!),
+        description:
+          "NSレコード値。親ホストゾーン(m-kotaro.net)に手動追加が必要",
+      });
+    }
 
     // DynamoDB Connections table (task 2.2)
     this.connectionsTable = new dynamodb.Table(this, "ConnectionsTable", {
@@ -222,11 +265,53 @@ export class GamePlatformStack extends cdk.Stack {
     this.onMessageFn.addToRolePolicy(apiGatewayManagePolicy);
     this.tickFn.addToRolePolicy(apiGatewayManagePolicy);
 
-    // Output the WebSocket URL
+    // Output the WebSocket URL (use custom domain in prod)
+    const webSocketClientUrl = isProd
+      ? "wss://ws.game-plaza-proto.m-kotaro.net"
+      : webSocketUrl;
+
     new cdk.CfnOutput(this, "WebSocketApiUrl", {
-      value: webSocketUrl,
+      value: webSocketClientUrl,
       description: "WebSocket API URL for client connections",
     });
+
+    // WebSocket custom domain (prod only)
+    if (isProd && this.hostedZone && this.certificate) {
+      // API Gateway needs a regional certificate (same region as the API)
+      // The us-east-1 certificate is for CloudFront only
+      const apiGwCertificate = new acm.Certificate(this, "ApiGwCertificate", {
+        domainName: "ws.game-plaza-proto.m-kotaro.net",
+        validation: acm.CertificateValidation.fromDns(this.hostedZone),
+      });
+
+      const wsDomainName = new apigwv2.CfnDomainName(this, "WsDomainName", {
+        domainName: "ws.game-plaza-proto.m-kotaro.net",
+        domainNameConfigurations: [
+          {
+            certificateArn: apiGwCertificate.certificateArn,
+            endpointType: "REGIONAL",
+          },
+        ],
+      });
+
+      new apigwv2.CfnApiMapping(this, "WsApiMapping", {
+        apiId: this.webSocketApi.ref,
+        domainName: wsDomainName.ref,
+        stage: this.webSocketStage.ref,
+      });
+
+      // WebSocket A record
+      new route53.ARecord(this, "WebSocketARecord", {
+        zone: this.hostedZone,
+        recordName: "ws.game-plaza-proto.m-kotaro.net",
+        target: route53.RecordTarget.fromAlias(
+          new route53Targets.ApiGatewayv2DomainProperties(
+            wsDomainName.attrRegionalDomainName,
+            wsDomainName.attrRegionalHostedZoneId
+          )
+        ),
+      });
+    }
 
     // EventBridge rule: invoke tick Lambda every 1 minute (task 2.6)
     this.heartbeatRule = new events.Rule(this, "HeartbeatRule", {
@@ -253,7 +338,37 @@ export class GamePlatformStack extends cdk.Stack {
           cloudfront.ViewerProtocolPolicy.REDIRECT_TO_HTTPS,
       },
       defaultRootObject: "index.html",
+      // Custom domain (prod only)
+      ...(isProd &&
+        this.certificate && {
+          domainNames: ["game-plaza-proto.m-kotaro.net"],
+          certificate: this.certificate,
+        }),
     });
+
+    // CloudFront A record (prod only)
+    if (isProd && this.hostedZone) {
+      new route53.ARecord(this, "CloudFrontARecord", {
+        zone: this.hostedZone,
+        recordName: "game-plaza-proto.m-kotaro.net",
+        target: route53.RecordTarget.fromAlias(
+          new route53Targets.CloudFrontTarget(this.distribution)
+        ),
+      });
+    }
+
+    // Prod custom domain outputs
+    if (isProd && this.hostedZone) {
+      new cdk.CfnOutput(this, "CustomDomainFrontend", {
+        value: "https://game-plaza-proto.m-kotaro.net",
+        description: "フロントエンドカスタムドメインURL",
+      });
+
+      new cdk.CfnOutput(this, "CustomDomainWebSocket", {
+        value: "wss://ws.game-plaza-proto.m-kotaro.net",
+        description: "WebSocketカスタムドメインURL",
+      });
+    }
 
     // Output the CloudFront domain name
     new cdk.CfnOutput(this, "DistributionDomainName", {

@@ -1,0 +1,183 @@
+{
+  "pbtResults": {},
+  "executionHistory": {
+    "1.1 GamePlatformStackPropsインターフェースを定義し、envNameを追加する": [
+      {
+        "executionId": "802bdd4e-6b8c-49b4-812e-ff9f26a3f51f",
+        "chatSessionId": "sess_a0de89ee-0c62-442a-a93c-21e96244feb3",
+        "timestamp": 1787209328134
+      },
+      {
+        "executionId": "802bdd4e-6b8c-49b4-812e-ff9f26a3f51f",
+        "chatSessionId": "sess_a0de89ee-0c62-442a-a93c-21e96244feb3",
+        "timestamp": 1787209339023
+      },
+      {
+        "executionId": "802bdd4e-6b8c-49b4-812e-ff9f26a3f51f",
+        "chatSessionId": "sess_a0de89ee-0c62-442a-a93c-21e96244feb3",
+        "timestamp": 1787209451819
+      }
+    ],
+    "2.1 サブドメインホストゾーンとACM証明書リソースを追加する": [
+      {
+        "executionId": "802bdd4e-6b8c-49b4-812e-ff9f26a3f51f",
+        "chatSessionId": "sess_a0de89ee-0c62-442a-a93c-21e96244feb3",
+        "timestamp": 1787209328151
+      },
+      {
+        "executionId": "802bdd4e-6b8c-49b4-812e-ff9f26a3f51f",
+        "chatSessionId": "sess_a0de89ee-0c62-442a-a93c-21e96244feb3",
+        "timestamp": 1787209457651
+      },
+      {
+        "executionId": "802bdd4e-6b8c-49b4-812e-ff9f26a3f51f",
+        "chatSessionId": "sess_a0de89ee-0c62-442a-a93c-21e96244feb3",
+        "timestamp": 1787209559987
+      }
+    ],
+    "3.1 既存のCloudFront Distributionにカスタムドメインと証明書を設定する": [
+      {
+        "executionId": "802bdd4e-6b8c-49b4-812e-ff9f26a3f51f",
+        "chatSessionId": "sess_a0de89ee-0c62-442a-a93c-21e96244feb3",
+        "timestamp": 1787209328168
+      },
+      {
+        "executionId": "802bdd4e-6b8c-49b4-812e-ff9f26a3f51f",
+        "chatSessionId": "sess_a0de89ee-0c62-442a-a93c-21e96244feb3",
+        "timestamp": 1787209566016
+      },
+      {
+        "executionId": "802bdd4e-6b8c-49b4-812e-ff9f26a3f51f",
+        "chatSessionId": "sess_a0de89ee-0c62-442a-a93c-21e96244feb3",
+        "timestamp": 1787209694344
+      }
+    ],
+    "4.1 WebSocket APIにカスタムドメインとAPIマッピングを設定する": [
+      {
+        "executionId": "802bdd4e-6b8c-49b4-812e-ff9f26a3f51f",
+        "chatSessionId": "sess_a0de89ee-0c62-442a-a93c-21e96244feb3",
+        "timestamp": 1787209328223
+      },
+      {
+        "executionId": "802bdd4e-6b8c-49b4-812e-ff9f26a3f51f",
+        "chatSessionId": "sess_a0de89ee-0c62-442a-a93c-21e96244feb3",
+        "timestamp": 1787209566977
+      },
+      {
+        "executionId": "802bdd4e-6b8c-49b4-812e-ff9f26a3f51f",
+        "chatSessionId": "sess_a0de89ee-0c62-442a-a93c-21e96244feb3",
+        "timestamp": 1787209695576
+      }
+    ],
+    "5.1 カスタムドメインURLの出力とクライアント向けWebSocket URLの条件分岐を追加する": [
+      {
+        "executionId": "802bdd4e-6b8c-49b4-812e-ff9f26a3f51f",
+        "chatSessionId": "sess_a0de89ee-0c62-442a-a93c-21e96244feb3",
+        "timestamp": 1787209328245
+      },
+      {
+        "executionId": "802bdd4e-6b8c-49b4-812e-ff9f26a3f51f",
+        "chatSessionId": "sess_a0de89ee-0c62-442a-a93c-21e96244feb3",
+        "timestamp": 1787209701420
+      },
+      {
+        "executionId": "802bdd4e-6b8c-49b4-812e-ff9f26a3f51f",
+        "chatSessionId": "sess_a0de89ee-0c62-442a-a93c-21e96244feb3",
+        "timestamp": 1787209783518
+      }
+    ],
+    "6. Checkpoint - ビルド確認": [
+      {
+        "executionId": "802bdd4e-6b8c-49b4-812e-ff9f26a3f51f",
+        "chatSessionId": "sess_a0de89ee-0c62-442a-a93c-21e96244feb3",
+        "timestamp": 1787209328265
+      },
+      {
+        "executionId": "802bdd4e-6b8c-49b4-812e-ff9f26a3f51f",
+        "chatSessionId": "sess_a0de89ee-0c62-442a-a93c-21e96244feb3",
+        "timestamp": 1787209789690
+      },
+      {
+        "executionId": "802bdd4e-6b8c-49b4-812e-ff9f26a3f51f",
+        "chatSessionId": "sess_a0de89ee-0c62-442a-a93c-21e96244feb3",
+        "timestamp": 1787209876131
+      }
+    ],
+    "8.1 READMEにカスタムドメイン設定手順を追記する": [
+      {
+        "executionId": "802bdd4e-6b8c-49b4-812e-ff9f26a3f51f",
+        "chatSessionId": "sess_a0de89ee-0c62-442a-a93c-21e96244feb3",
+        "timestamp": 1787209328281
+      },
+      {
+        "executionId": "802bdd4e-6b8c-49b4-812e-ff9f26a3f51f",
+        "chatSessionId": "sess_a0de89ee-0c62-442a-a93c-21e96244feb3",
+        "timestamp": 1787209790483
+      },
+      {
+        "executionId": "802bdd4e-6b8c-49b4-812e-ff9f26a3f51f",
+        "chatSessionId": "sess_a0de89ee-0c62-442a-a93c-21e96244feb3",
+        "timestamp": 1787209876857
+      }
+    ],
+    "9. Final checkpoint - 全テスト通過確認": [
+      {
+        "executionId": "802bdd4e-6b8c-49b4-812e-ff9f26a3f51f",
+        "chatSessionId": "sess_a0de89ee-0c62-442a-a93c-21e96244feb3",
+        "timestamp": 1787209328298
+      },
+      {
+        "executionId": "802bdd4e-6b8c-49b4-812e-ff9f26a3f51f",
+        "chatSessionId": "sess_a0de89ee-0c62-442a-a93c-21e96244feb3",
+        "timestamp": 1787209882567
+      },
+      {
+        "executionId": "802bdd4e-6b8c-49b4-812e-ff9f26a3f51f",
+        "chatSessionId": "sess_a0de89ee-0c62-442a-a93c-21e96244feb3",
+        "timestamp": 1787210106890
+      }
+    ],
+    "1. スタックProps拡張と環境分岐の導入": [
+      {
+        "executionId": "802bdd4e-6b8c-49b4-812e-ff9f26a3f51f",
+        "chatSessionId": "sess_a0de89ee-0c62-442a-a93c-21e96244feb3",
+        "timestamp": 1787209451870
+      }
+    ],
+    "2. Route 53ホストゾーンとACM証明書の作成": [
+      {
+        "executionId": "802bdd4e-6b8c-49b4-812e-ff9f26a3f51f",
+        "chatSessionId": "sess_a0de89ee-0c62-442a-a93c-21e96244feb3",
+        "timestamp": 1787209560042
+      }
+    ],
+    "3. CloudFrontカスタムドメイン設定": [
+      {
+        "executionId": "802bdd4e-6b8c-49b4-812e-ff9f26a3f51f",
+        "chatSessionId": "sess_a0de89ee-0c62-442a-a93c-21e96244feb3",
+        "timestamp": 1787209694367
+      }
+    ],
+    "4. API Gateway WebSocketカスタムドメイン設定": [
+      {
+        "executionId": "802bdd4e-6b8c-49b4-812e-ff9f26a3f51f",
+        "chatSessionId": "sess_a0de89ee-0c62-442a-a93c-21e96244feb3",
+        "timestamp": 1787209695616
+      }
+    ],
+    "5. CfnOutput追加とWebSocket URLの条件分岐": [
+      {
+        "executionId": "802bdd4e-6b8c-49b4-812e-ff9f26a3f51f",
+        "chatSessionId": "sess_a0de89ee-0c62-442a-a93c-21e96244feb3",
+        "timestamp": 1787209783547
+      }
+    ],
+    "8. ドキュメント作成": [
+      {
+        "executionId": "802bdd4e-6b8c-49b4-812e-ff9f26a3f51f",
+        "chatSessionId": "sess_a0de89ee-0c62-442a-a93c-21e96244feb3",
+        "timestamp": 1787209876879
+      }
+    ]
+  }
+}

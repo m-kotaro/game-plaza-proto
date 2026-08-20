@@ -1,0 +1,754 @@
+{
+  "pbtResults": {},
+  "executionHistory": {
+    "1.1 モノレポプロジェクト構造の作成": [
+      {
+        "executionId": "c47287e5-c968-49d7-9d7a-49ab55476540",
+        "chatSessionId": "sess_a0de89ee-0c62-442a-a93c-21e96244feb3",
+        "timestamp": 1787057526722
+      },
+      {
+        "executionId": "c47287e5-c968-49d7-9d7a-49ab55476540",
+        "chatSessionId": "sess_a0de89ee-0c62-442a-a93c-21e96244feb3",
+        "timestamp": 1787057536457
+      },
+      {
+        "executionId": "c47287e5-c968-49d7-9d7a-49ab55476540",
+        "chatSessionId": "sess_a0de89ee-0c62-442a-a93c-21e96244feb3",
+        "timestamp": 1787058364919
+      }
+    ],
+    "1.2 共有型定義の実装 (`packages/shared/`)": [
+      {
+        "executionId": "c47287e5-c968-49d7-9d7a-49ab55476540",
+        "chatSessionId": "sess_a0de89ee-0c62-442a-a93c-21e96244feb3",
+        "timestamp": 1787057526808
+      },
+      {
+        "executionId": "c47287e5-c968-49d7-9d7a-49ab55476540",
+        "chatSessionId": "sess_a0de89ee-0c62-442a-a93c-21e96244feb3",
+        "timestamp": 1787058369792
+      },
+      {
+        "executionId": "c47287e5-c968-49d7-9d7a-49ab55476540",
+        "chatSessionId": "sess_a0de89ee-0c62-442a-a93c-21e96244feb3",
+        "timestamp": 1787058888135
+      }
+    ],
+    "2.1 CDKプロジェクトのセットアップ (`packages/cdk/`)": [
+      {
+        "executionId": "c47287e5-c968-49d7-9d7a-49ab55476540",
+        "chatSessionId": "sess_a0de89ee-0c62-442a-a93c-21e96244feb3",
+        "timestamp": 1787057526834
+      },
+      {
+        "executionId": "c47287e5-c968-49d7-9d7a-49ab55476540",
+        "chatSessionId": "sess_a0de89ee-0c62-442a-a93c-21e96244feb3",
+        "timestamp": 1787058370468
+      },
+      {
+        "executionId": "c47287e5-c968-49d7-9d7a-49ab55476540",
+        "chatSessionId": "sess_a0de89ee-0c62-442a-a93c-21e96244feb3",
+        "timestamp": 1787058889083
+      }
+    ],
+    "2.2 DynamoDB テーブル定義": [
+      {
+        "executionId": "c47287e5-c968-49d7-9d7a-49ab55476540",
+        "chatSessionId": "sess_a0de89ee-0c62-442a-a93c-21e96244feb3",
+        "timestamp": 1787057526877
+      },
+      {
+        "executionId": "c47287e5-c968-49d7-9d7a-49ab55476540",
+        "chatSessionId": "sess_a0de89ee-0c62-442a-a93c-21e96244feb3",
+        "timestamp": 1787058899063
+      },
+      {
+        "executionId": "c47287e5-c968-49d7-9d7a-49ab55476540",
+        "chatSessionId": "sess_a0de89ee-0c62-442a-a93c-21e96244feb3",
+        "timestamp": 1787059226592
+      }
+    ],
+    "2.3 Lambda 関数定義": [
+      {
+        "executionId": "c47287e5-c968-49d7-9d7a-49ab55476540",
+        "chatSessionId": "sess_a0de89ee-0c62-442a-a93c-21e96244feb3",
+        "timestamp": 1787057526910
+      },
+      {
+        "executionId": "c47287e5-c968-49d7-9d7a-49ab55476540",
+        "chatSessionId": "sess_a0de89ee-0c62-442a-a93c-21e96244feb3",
+        "timestamp": 1787058899835
+      },
+      {
+        "executionId": "c47287e5-c968-49d7-9d7a-49ab55476540",
+        "chatSessionId": "sess_a0de89ee-0c62-442a-a93c-21e96244feb3",
+        "timestamp": 1787059227291
+      }
+    ],
+    "2.4 API Gateway WebSocket API 定義": [
+      {
+        "executionId": "c47287e5-c968-49d7-9d7a-49ab55476540",
+        "chatSessionId": "sess_a0de89ee-0c62-442a-a93c-21e96244feb3",
+        "timestamp": 1787057526928
+      },
+      {
+        "executionId": "c47287e5-c968-49d7-9d7a-49ab55476540",
+        "chatSessionId": "sess_a0de89ee-0c62-442a-a93c-21e96244feb3",
+        "timestamp": 1787059244162
+      },
+      {
+        "executionId": "d4f7ae35-35dd-4e99-bad3-1a4d074a039d",
+        "chatSessionId": "sess_a0de89ee-0c62-442a-a93c-21e96244feb3",
+        "timestamp": 1787059801450
+      }
+    ],
+    "2.5 S3 + CloudFront 静的アセット配信定義": [
+      {
+        "executionId": "c47287e5-c968-49d7-9d7a-49ab55476540",
+        "chatSessionId": "sess_a0de89ee-0c62-442a-a93c-21e96244feb3",
+        "timestamp": 1787057526947
+      },
+      {
+        "executionId": "c47287e5-c968-49d7-9d7a-49ab55476540",
+        "chatSessionId": "sess_a0de89ee-0c62-442a-a93c-21e96244feb3",
+        "timestamp": 1787058900771
+      },
+      {
+        "executionId": "c47287e5-c968-49d7-9d7a-49ab55476540",
+        "chatSessionId": "sess_a0de89ee-0c62-442a-a93c-21e96244feb3",
+        "timestamp": 1787059228510
+      }
+    ],
+    "2.6 EventBridge ハートビートルール定義": [
+      {
+        "executionId": "c47287e5-c968-49d7-9d7a-49ab55476540",
+        "chatSessionId": "sess_a0de89ee-0c62-442a-a93c-21e96244feb3",
+        "timestamp": 1787057526965
+      },
+      {
+        "executionId": "c47287e5-c968-49d7-9d7a-49ab55476540",
+        "chatSessionId": "sess_a0de89ee-0c62-442a-a93c-21e96244feb3",
+        "timestamp": 1787058901477
+      },
+      {
+        "executionId": "c47287e5-c968-49d7-9d7a-49ab55476540",
+        "chatSessionId": "sess_a0de89ee-0c62-442a-a93c-21e96244feb3",
+        "timestamp": 1787059229514
+      }
+    ],
+    "3. チェックポイント - CDKインフラ定義の確認": [
+      {
+        "executionId": "c47287e5-c968-49d7-9d7a-49ab55476540",
+        "chatSessionId": "sess_a0de89ee-0c62-442a-a93c-21e96244feb3",
+        "timestamp": 1787057526985
+      },
+      {
+        "executionId": "de08f4d2-d165-413e-bb5f-ffb149d5f2bc",
+        "chatSessionId": "sess_a0de89ee-0c62-442a-a93c-21e96244feb3",
+        "timestamp": 1787145170779
+      },
+      {
+        "executionId": "de08f4d2-d165-413e-bb5f-ffb149d5f2bc",
+        "chatSessionId": "sess_a0de89ee-0c62-442a-a93c-21e96244feb3",
+        "timestamp": 1787145185936
+      },
+      {
+        "executionId": "de08f4d2-d165-413e-bb5f-ffb149d5f2bc",
+        "chatSessionId": "sess_a0de89ee-0c62-442a-a93c-21e96244feb3",
+        "timestamp": 1787145645427
+      }
+    ],
+    "4.1 DynamoDB操作ユーティリティの実装 (`packages/server/src/db.ts`)": [
+      {
+        "executionId": "c47287e5-c968-49d7-9d7a-49ab55476540",
+        "chatSessionId": "sess_a0de89ee-0c62-442a-a93c-21e96244feb3",
+        "timestamp": 1787057527019
+      },
+      {
+        "executionId": "de08f4d2-d165-413e-bb5f-ffb149d5f2bc",
+        "chatSessionId": "sess_a0de89ee-0c62-442a-a93c-21e96244feb3",
+        "timestamp": 1787145170807
+      },
+      {
+        "executionId": "de08f4d2-d165-413e-bb5f-ffb149d5f2bc",
+        "chatSessionId": "sess_a0de89ee-0c62-442a-a93c-21e96244feb3",
+        "timestamp": 1787145651360
+      },
+      {
+        "executionId": "de08f4d2-d165-413e-bb5f-ffb149d5f2bc",
+        "chatSessionId": "sess_a0de89ee-0c62-442a-a93c-21e96244feb3",
+        "timestamp": 1787145938077
+      }
+    ],
+    "4.2 ブロードキャスト・通信ユーティリティの実装 (`packages/server/src/broadcast.ts`)": [
+      {
+        "executionId": "c47287e5-c968-49d7-9d7a-49ab55476540",
+        "chatSessionId": "sess_a0de89ee-0c62-442a-a93c-21e96244feb3",
+        "timestamp": 1787057527053
+      },
+      {
+        "executionId": "de08f4d2-d165-413e-bb5f-ffb149d5f2bc",
+        "chatSessionId": "sess_a0de89ee-0c62-442a-a93c-21e96244feb3",
+        "timestamp": 1787145170836
+      },
+      {
+        "executionId": "de08f4d2-d165-413e-bb5f-ffb149d5f2bc",
+        "chatSessionId": "sess_a0de89ee-0c62-442a-a93c-21e96244feb3",
+        "timestamp": 1787145944315
+      },
+      {
+        "executionId": "de08f4d2-d165-413e-bb5f-ffb149d5f2bc",
+        "chatSessionId": "sess_a0de89ee-0c62-442a-a93c-21e96244feb3",
+        "timestamp": 1787146243525
+      }
+    ],
+    "4.3 セッション・アバター生成ロジックの実装 (`packages/server/src/utils.ts`)": [
+      {
+        "executionId": "c47287e5-c968-49d7-9d7a-49ab55476540",
+        "chatSessionId": "sess_a0de89ee-0c62-442a-a93c-21e96244feb3",
+        "timestamp": 1787057527072
+      },
+      {
+        "executionId": "de08f4d2-d165-413e-bb5f-ffb149d5f2bc",
+        "chatSessionId": "sess_a0de89ee-0c62-442a-a93c-21e96244feb3",
+        "timestamp": 1787145170874
+      },
+      {
+        "executionId": "de08f4d2-d165-413e-bb5f-ffb149d5f2bc",
+        "chatSessionId": "sess_a0de89ee-0c62-442a-a93c-21e96244feb3",
+        "timestamp": 1787145652392
+      },
+      {
+        "executionId": "de08f4d2-d165-413e-bb5f-ffb149d5f2bc",
+        "chatSessionId": "sess_a0de89ee-0c62-442a-a93c-21e96244feb3",
+        "timestamp": 1787145939212
+      }
+    ],
+    "4.5 onConnect Lambda ハンドラ実装": [
+      {
+        "executionId": "c47287e5-c968-49d7-9d7a-49ab55476540",
+        "chatSessionId": "sess_a0de89ee-0c62-442a-a93c-21e96244feb3",
+        "timestamp": 1787057527090
+      },
+      {
+        "executionId": "de08f4d2-d165-413e-bb5f-ffb149d5f2bc",
+        "chatSessionId": "sess_a0de89ee-0c62-442a-a93c-21e96244feb3",
+        "timestamp": 1787145170921
+      },
+      {
+        "executionId": "de08f4d2-d165-413e-bb5f-ffb149d5f2bc",
+        "chatSessionId": "sess_a0de89ee-0c62-442a-a93c-21e96244feb3",
+        "timestamp": 1787146249226
+      },
+      {
+        "executionId": "e077d034-f7fa-42a2-9a40-ce7594dcdd8c",
+        "chatSessionId": "sess_0fefb479-2f1b-47ff-8537-c1efba580adb",
+        "timestamp": 1787146495017
+      },
+      {
+        "executionId": "e077d034-f7fa-42a2-9a40-ce7594dcdd8c",
+        "chatSessionId": "sess_0fefb479-2f1b-47ff-8537-c1efba580adb",
+        "timestamp": 1787146531885
+      },
+      {
+        "executionId": "82f993eb-0464-4f54-8fd3-78b400fa7246",
+        "chatSessionId": "sess_a0de89ee-0c62-442a-a93c-21e96244feb3",
+        "timestamp": 1787195903143
+      },
+      {
+        "executionId": "82f993eb-0464-4f54-8fd3-78b400fa7246",
+        "chatSessionId": "sess_a0de89ee-0c62-442a-a93c-21e96244feb3",
+        "timestamp": 1787195913799
+      },
+      {
+        "executionId": "82f993eb-0464-4f54-8fd3-78b400fa7246",
+        "chatSessionId": "sess_a0de89ee-0c62-442a-a93c-21e96244feb3",
+        "timestamp": 1787195976297
+      }
+    ],
+    "4.7 onDisconnect Lambda ハンドラ実装": [
+      {
+        "executionId": "c47287e5-c968-49d7-9d7a-49ab55476540",
+        "chatSessionId": "sess_a0de89ee-0c62-442a-a93c-21e96244feb3",
+        "timestamp": 1787057527124
+      },
+      {
+        "executionId": "de08f4d2-d165-413e-bb5f-ffb149d5f2bc",
+        "chatSessionId": "sess_a0de89ee-0c62-442a-a93c-21e96244feb3",
+        "timestamp": 1787145170950
+      },
+      {
+        "executionId": "de08f4d2-d165-413e-bb5f-ffb149d5f2bc",
+        "chatSessionId": "sess_a0de89ee-0c62-442a-a93c-21e96244feb3",
+        "timestamp": 1787146249897
+      },
+      {
+        "executionId": "e077d034-f7fa-42a2-9a40-ce7594dcdd8c",
+        "chatSessionId": "sess_0fefb479-2f1b-47ff-8537-c1efba580adb",
+        "timestamp": 1787146495049
+      },
+      {
+        "executionId": "82f993eb-0464-4f54-8fd3-78b400fa7246",
+        "chatSessionId": "sess_a0de89ee-0c62-442a-a93c-21e96244feb3",
+        "timestamp": 1787195903192
+      },
+      {
+        "executionId": "82f993eb-0464-4f54-8fd3-78b400fa7246",
+        "chatSessionId": "sess_a0de89ee-0c62-442a-a93c-21e96244feb3",
+        "timestamp": 1787195914393
+      },
+      {
+        "executionId": "82f993eb-0464-4f54-8fd3-78b400fa7246",
+        "chatSessionId": "sess_a0de89ee-0c62-442a-a93c-21e96244feb3",
+        "timestamp": 1787195976431
+      }
+    ],
+    "4.8 onMessage Lambda ハンドラ実装": [
+      {
+        "executionId": "c47287e5-c968-49d7-9d7a-49ab55476540",
+        "chatSessionId": "sess_a0de89ee-0c62-442a-a93c-21e96244feb3",
+        "timestamp": 1787057527147
+      },
+      {
+        "executionId": "de08f4d2-d165-413e-bb5f-ffb149d5f2bc",
+        "chatSessionId": "sess_a0de89ee-0c62-442a-a93c-21e96244feb3",
+        "timestamp": 1787145170976
+      },
+      {
+        "executionId": "de08f4d2-d165-413e-bb5f-ffb149d5f2bc",
+        "chatSessionId": "sess_a0de89ee-0c62-442a-a93c-21e96244feb3",
+        "timestamp": 1787146250765
+      },
+      {
+        "executionId": "e077d034-f7fa-42a2-9a40-ce7594dcdd8c",
+        "chatSessionId": "sess_0fefb479-2f1b-47ff-8537-c1efba580adb",
+        "timestamp": 1787146495082
+      },
+      {
+        "executionId": "82f993eb-0464-4f54-8fd3-78b400fa7246",
+        "chatSessionId": "sess_a0de89ee-0c62-442a-a93c-21e96244feb3",
+        "timestamp": 1787195903230
+      },
+      {
+        "executionId": "82f993eb-0464-4f54-8fd3-78b400fa7246",
+        "chatSessionId": "sess_a0de89ee-0c62-442a-a93c-21e96244feb3",
+        "timestamp": 1787195915375
+      },
+      {
+        "executionId": "82f993eb-0464-4f54-8fd3-78b400fa7246",
+        "chatSessionId": "sess_a0de89ee-0c62-442a-a93c-21e96244feb3",
+        "timestamp": 1787195977076
+      }
+    ],
+    "4.10 tick Lambda ハンドラ実装": [
+      {
+        "executionId": "c47287e5-c968-49d7-9d7a-49ab55476540",
+        "chatSessionId": "sess_a0de89ee-0c62-442a-a93c-21e96244feb3",
+        "timestamp": 1787057527164
+      },
+      {
+        "executionId": "de08f4d2-d165-413e-bb5f-ffb149d5f2bc",
+        "chatSessionId": "sess_a0de89ee-0c62-442a-a93c-21e96244feb3",
+        "timestamp": 1787145170999
+      },
+      {
+        "executionId": "de08f4d2-d165-413e-bb5f-ffb149d5f2bc",
+        "chatSessionId": "sess_a0de89ee-0c62-442a-a93c-21e96244feb3",
+        "timestamp": 1787146251655
+      },
+      {
+        "executionId": "e077d034-f7fa-42a2-9a40-ce7594dcdd8c",
+        "chatSessionId": "sess_0fefb479-2f1b-47ff-8537-c1efba580adb",
+        "timestamp": 1787146495143
+      },
+      {
+        "executionId": "82f993eb-0464-4f54-8fd3-78b400fa7246",
+        "chatSessionId": "sess_a0de89ee-0c62-442a-a93c-21e96244feb3",
+        "timestamp": 1787195903260
+      },
+      {
+        "executionId": "82f993eb-0464-4f54-8fd3-78b400fa7246",
+        "chatSessionId": "sess_a0de89ee-0c62-442a-a93c-21e96244feb3",
+        "timestamp": 1787195916043
+      },
+      {
+        "executionId": "82f993eb-0464-4f54-8fd3-78b400fa7246",
+        "chatSessionId": "sess_a0de89ee-0c62-442a-a93c-21e96244feb3",
+        "timestamp": 1787195977968
+      }
+    ],
+    "5. チェックポイント - サーバーロジック確認": [
+      {
+        "executionId": "c47287e5-c968-49d7-9d7a-49ab55476540",
+        "chatSessionId": "sess_a0de89ee-0c62-442a-a93c-21e96244feb3",
+        "timestamp": 1787057527196
+      },
+      {
+        "executionId": "de08f4d2-d165-413e-bb5f-ffb149d5f2bc",
+        "chatSessionId": "sess_a0de89ee-0c62-442a-a93c-21e96244feb3",
+        "timestamp": 1787145171055
+      },
+      {
+        "executionId": "e077d034-f7fa-42a2-9a40-ce7594dcdd8c",
+        "chatSessionId": "sess_0fefb479-2f1b-47ff-8537-c1efba580adb",
+        "timestamp": 1787146495167
+      },
+      {
+        "executionId": "82f993eb-0464-4f54-8fd3-78b400fa7246",
+        "chatSessionId": "sess_a0de89ee-0c62-442a-a93c-21e96244feb3",
+        "timestamp": 1787195903287
+      },
+      {
+        "executionId": "82f993eb-0464-4f54-8fd3-78b400fa7246",
+        "chatSessionId": "sess_a0de89ee-0c62-442a-a93c-21e96244feb3",
+        "timestamp": 1787195983207
+      },
+      {
+        "executionId": "82f993eb-0464-4f54-8fd3-78b400fa7246",
+        "chatSessionId": "sess_a0de89ee-0c62-442a-a93c-21e96244feb3",
+        "timestamp": 1787196077028
+      }
+    ],
+    "6.1 Vite + Phaser.js プロジェクトセットアップ (`packages/client/`)": [
+      {
+        "executionId": "c47287e5-c968-49d7-9d7a-49ab55476540",
+        "chatSessionId": "sess_a0de89ee-0c62-442a-a93c-21e96244feb3",
+        "timestamp": 1787057527228
+      },
+      {
+        "executionId": "c47287e5-c968-49d7-9d7a-49ab55476540",
+        "chatSessionId": "sess_a0de89ee-0c62-442a-a93c-21e96244feb3",
+        "timestamp": 1787058371481
+      },
+      {
+        "executionId": "c47287e5-c968-49d7-9d7a-49ab55476540",
+        "chatSessionId": "sess_a0de89ee-0c62-442a-a93c-21e96244feb3",
+        "timestamp": 1787058887108
+      }
+    ],
+    "6.2 NetworkManager の実装": [
+      {
+        "executionId": "c47287e5-c968-49d7-9d7a-49ab55476540",
+        "chatSessionId": "sess_a0de89ee-0c62-442a-a93c-21e96244feb3",
+        "timestamp": 1787057527243
+      },
+      {
+        "executionId": "de08f4d2-d165-413e-bb5f-ffb149d5f2bc",
+        "chatSessionId": "sess_a0de89ee-0c62-442a-a93c-21e96244feb3",
+        "timestamp": 1787145171083
+      },
+      {
+        "executionId": "e077d034-f7fa-42a2-9a40-ce7594dcdd8c",
+        "chatSessionId": "sess_0fefb479-2f1b-47ff-8537-c1efba580adb",
+        "timestamp": 1787146495192
+      },
+      {
+        "executionId": "82f993eb-0464-4f54-8fd3-78b400fa7246",
+        "chatSessionId": "sess_a0de89ee-0c62-442a-a93c-21e96244feb3",
+        "timestamp": 1787195903313
+      },
+      {
+        "executionId": "82f993eb-0464-4f54-8fd3-78b400fa7246",
+        "chatSessionId": "sess_a0de89ee-0c62-442a-a93c-21e96244feb3",
+        "timestamp": 1787196082434
+      },
+      {
+        "executionId": "82f993eb-0464-4f54-8fd3-78b400fa7246",
+        "chatSessionId": "sess_a0de89ee-0c62-442a-a93c-21e96244feb3",
+        "timestamp": 1787196261126
+      }
+    ],
+    "6.3 GameScene（メインシーン）の実装": [
+      {
+        "executionId": "c47287e5-c968-49d7-9d7a-49ab55476540",
+        "chatSessionId": "sess_a0de89ee-0c62-442a-a93c-21e96244feb3",
+        "timestamp": 1787057527258
+      },
+      {
+        "executionId": "de08f4d2-d165-413e-bb5f-ffb149d5f2bc",
+        "chatSessionId": "sess_a0de89ee-0c62-442a-a93c-21e96244feb3",
+        "timestamp": 1787145171113
+      },
+      {
+        "executionId": "e077d034-f7fa-42a2-9a40-ce7594dcdd8c",
+        "chatSessionId": "sess_0fefb479-2f1b-47ff-8537-c1efba580adb",
+        "timestamp": 1787146495214
+      },
+      {
+        "executionId": "82f993eb-0464-4f54-8fd3-78b400fa7246",
+        "chatSessionId": "sess_a0de89ee-0c62-442a-a93c-21e96244feb3",
+        "timestamp": 1787195903340
+      },
+      {
+        "executionId": "82f993eb-0464-4f54-8fd3-78b400fa7246",
+        "chatSessionId": "sess_a0de89ee-0c62-442a-a93c-21e96244feb3",
+        "timestamp": 1787196083444
+      },
+      {
+        "executionId": "82f993eb-0464-4f54-8fd3-78b400fa7246",
+        "chatSessionId": "sess_a0de89ee-0c62-442a-a93c-21e96244feb3",
+        "timestamp": 1787196261753
+      }
+    ],
+    "6.4 AvatarManager の実装": [
+      {
+        "executionId": "c47287e5-c968-49d7-9d7a-49ab55476540",
+        "chatSessionId": "sess_a0de89ee-0c62-442a-a93c-21e96244feb3",
+        "timestamp": 1787057527273
+      },
+      {
+        "executionId": "de08f4d2-d165-413e-bb5f-ffb149d5f2bc",
+        "chatSessionId": "sess_a0de89ee-0c62-442a-a93c-21e96244feb3",
+        "timestamp": 1787145171138
+      },
+      {
+        "executionId": "e077d034-f7fa-42a2-9a40-ce7594dcdd8c",
+        "chatSessionId": "sess_0fefb479-2f1b-47ff-8537-c1efba580adb",
+        "timestamp": 1787146495264
+      },
+      {
+        "executionId": "82f993eb-0464-4f54-8fd3-78b400fa7246",
+        "chatSessionId": "sess_a0de89ee-0c62-442a-a93c-21e96244feb3",
+        "timestamp": 1787195903364
+      },
+      {
+        "executionId": "82f993eb-0464-4f54-8fd3-78b400fa7246",
+        "chatSessionId": "sess_a0de89ee-0c62-442a-a93c-21e96244feb3",
+        "timestamp": 1787196267048
+      },
+      {
+        "executionId": "82f993eb-0464-4f54-8fd3-78b400fa7246",
+        "chatSessionId": "sess_a0de89ee-0c62-442a-a93c-21e96244feb3",
+        "timestamp": 1787196487716
+      }
+    ],
+    "6.5 InputHandler の実装": [
+      {
+        "executionId": "c47287e5-c968-49d7-9d7a-49ab55476540",
+        "chatSessionId": "sess_a0de89ee-0c62-442a-a93c-21e96244feb3",
+        "timestamp": 1787057527290
+      },
+      {
+        "executionId": "de08f4d2-d165-413e-bb5f-ffb149d5f2bc",
+        "chatSessionId": "sess_a0de89ee-0c62-442a-a93c-21e96244feb3",
+        "timestamp": 1787145171169
+      },
+      {
+        "executionId": "e077d034-f7fa-42a2-9a40-ce7594dcdd8c",
+        "chatSessionId": "sess_0fefb479-2f1b-47ff-8537-c1efba580adb",
+        "timestamp": 1787146495285
+      },
+      {
+        "executionId": "82f993eb-0464-4f54-8fd3-78b400fa7246",
+        "chatSessionId": "sess_a0de89ee-0c62-442a-a93c-21e96244feb3",
+        "timestamp": 1787195903410
+      },
+      {
+        "executionId": "82f993eb-0464-4f54-8fd3-78b400fa7246",
+        "chatSessionId": "sess_a0de89ee-0c62-442a-a93c-21e96244feb3",
+        "timestamp": 1787196267979
+      },
+      {
+        "executionId": "82f993eb-0464-4f54-8fd3-78b400fa7246",
+        "chatSessionId": "sess_a0de89ee-0c62-442a-a93c-21e96244feb3",
+        "timestamp": 1787196488268
+      }
+    ],
+    "6.6 クライアントのサーバーメッセージ受信処理": [
+      {
+        "executionId": "c47287e5-c968-49d7-9d7a-49ab55476540",
+        "chatSessionId": "sess_a0de89ee-0c62-442a-a93c-21e96244feb3",
+        "timestamp": 1787057527306
+      },
+      {
+        "executionId": "de08f4d2-d165-413e-bb5f-ffb149d5f2bc",
+        "chatSessionId": "sess_a0de89ee-0c62-442a-a93c-21e96244feb3",
+        "timestamp": 1787145171223
+      },
+      {
+        "executionId": "e077d034-f7fa-42a2-9a40-ce7594dcdd8c",
+        "chatSessionId": "sess_0fefb479-2f1b-47ff-8537-c1efba580adb",
+        "timestamp": 1787146495309
+      },
+      {
+        "executionId": "82f993eb-0464-4f54-8fd3-78b400fa7246",
+        "chatSessionId": "sess_a0de89ee-0c62-442a-a93c-21e96244feb3",
+        "timestamp": 1787195903439
+      },
+      {
+        "executionId": "82f993eb-0464-4f54-8fd3-78b400fa7246",
+        "chatSessionId": "sess_a0de89ee-0c62-442a-a93c-21e96244feb3",
+        "timestamp": 1787196269037
+      },
+      {
+        "executionId": "82f993eb-0464-4f54-8fd3-78b400fa7246",
+        "chatSessionId": "sess_a0de89ee-0c62-442a-a93c-21e96244feb3",
+        "timestamp": 1787196489350
+      }
+    ],
+    "7. チェックポイント - クライアント基盤確認": [
+      {
+        "executionId": "c47287e5-c968-49d7-9d7a-49ab55476540",
+        "chatSessionId": "sess_a0de89ee-0c62-442a-a93c-21e96244feb3",
+        "timestamp": 1787057527324
+      },
+      {
+        "executionId": "de08f4d2-d165-413e-bb5f-ffb149d5f2bc",
+        "chatSessionId": "sess_a0de89ee-0c62-442a-a93c-21e96244feb3",
+        "timestamp": 1787145171247
+      },
+      {
+        "executionId": "e077d034-f7fa-42a2-9a40-ce7594dcdd8c",
+        "chatSessionId": "sess_0fefb479-2f1b-47ff-8537-c1efba580adb",
+        "timestamp": 1787146495331
+      },
+      {
+        "executionId": "82f993eb-0464-4f54-8fd3-78b400fa7246",
+        "chatSessionId": "sess_a0de89ee-0c62-442a-a93c-21e96244feb3",
+        "timestamp": 1787195903463
+      },
+      {
+        "executionId": "82f993eb-0464-4f54-8fd3-78b400fa7246",
+        "chatSessionId": "sess_a0de89ee-0c62-442a-a93c-21e96244feb3",
+        "timestamp": 1787196495473
+      },
+      {
+        "executionId": "82f993eb-0464-4f54-8fd3-78b400fa7246",
+        "chatSessionId": "sess_a0de89ee-0c62-442a-a93c-21e96244feb3",
+        "timestamp": 1787196603983
+      }
+    ],
+    "8.1 CDK スタックと Lambda 関数の接続": [
+      {
+        "executionId": "c47287e5-c968-49d7-9d7a-49ab55476540",
+        "chatSessionId": "sess_a0de89ee-0c62-442a-a93c-21e96244feb3",
+        "timestamp": 1787057527338
+      },
+      {
+        "executionId": "de08f4d2-d165-413e-bb5f-ffb149d5f2bc",
+        "chatSessionId": "sess_a0de89ee-0c62-442a-a93c-21e96244feb3",
+        "timestamp": 1787145171278
+      },
+      {
+        "executionId": "e077d034-f7fa-42a2-9a40-ce7594dcdd8c",
+        "chatSessionId": "sess_0fefb479-2f1b-47ff-8537-c1efba580adb",
+        "timestamp": 1787146495352
+      },
+      {
+        "executionId": "82f993eb-0464-4f54-8fd3-78b400fa7246",
+        "chatSessionId": "sess_a0de89ee-0c62-442a-a93c-21e96244feb3",
+        "timestamp": 1787195903489
+      },
+      {
+        "executionId": "82f993eb-0464-4f54-8fd3-78b400fa7246",
+        "chatSessionId": "sess_a0de89ee-0c62-442a-a93c-21e96244feb3",
+        "timestamp": 1787196609852
+      },
+      {
+        "executionId": "82f993eb-0464-4f54-8fd3-78b400fa7246",
+        "chatSessionId": "sess_a0de89ee-0c62-442a-a93c-21e96244feb3",
+        "timestamp": 1787196825901
+      }
+    ],
+    "8.2 クライアントビルドと S3 デプロイ設定": [
+      {
+        "executionId": "c47287e5-c968-49d7-9d7a-49ab55476540",
+        "chatSessionId": "sess_a0de89ee-0c62-442a-a93c-21e96244feb3",
+        "timestamp": 1787057527377
+      },
+      {
+        "executionId": "de08f4d2-d165-413e-bb5f-ffb149d5f2bc",
+        "chatSessionId": "sess_a0de89ee-0c62-442a-a93c-21e96244feb3",
+        "timestamp": 1787145171304
+      },
+      {
+        "executionId": "e077d034-f7fa-42a2-9a40-ce7594dcdd8c",
+        "chatSessionId": "sess_0fefb479-2f1b-47ff-8537-c1efba580adb",
+        "timestamp": 1787146495379
+      },
+      {
+        "executionId": "82f993eb-0464-4f54-8fd3-78b400fa7246",
+        "chatSessionId": "sess_a0de89ee-0c62-442a-a93c-21e96244feb3",
+        "timestamp": 1787195903515
+      },
+      {
+        "executionId": "82f993eb-0464-4f54-8fd3-78b400fa7246",
+        "chatSessionId": "sess_a0de89ee-0c62-442a-a93c-21e96244feb3",
+        "timestamp": 1787196610928
+      },
+      {
+        "executionId": "82f993eb-0464-4f54-8fd3-78b400fa7246",
+        "chatSessionId": "sess_a0de89ee-0c62-442a-a93c-21e96244feb3",
+        "timestamp": 1787196826805
+      }
+    ],
+    "9. 最終チェックポイント - 全テスト実行確認": [
+      {
+        "executionId": "c47287e5-c968-49d7-9d7a-49ab55476540",
+        "chatSessionId": "sess_a0de89ee-0c62-442a-a93c-21e96244feb3",
+        "timestamp": 1787057527395
+      },
+      {
+        "executionId": "de08f4d2-d165-413e-bb5f-ffb149d5f2bc",
+        "chatSessionId": "sess_a0de89ee-0c62-442a-a93c-21e96244feb3",
+        "timestamp": 1787145171330
+      },
+      {
+        "executionId": "e077d034-f7fa-42a2-9a40-ce7594dcdd8c",
+        "chatSessionId": "sess_0fefb479-2f1b-47ff-8537-c1efba580adb",
+        "timestamp": 1787146495424
+      },
+      {
+        "executionId": "82f993eb-0464-4f54-8fd3-78b400fa7246",
+        "chatSessionId": "sess_a0de89ee-0c62-442a-a93c-21e96244feb3",
+        "timestamp": 1787195903543
+      },
+      {
+        "executionId": "82f993eb-0464-4f54-8fd3-78b400fa7246",
+        "chatSessionId": "sess_a0de89ee-0c62-442a-a93c-21e96244feb3",
+        "timestamp": 1787196833051
+      },
+      {
+        "executionId": "82f993eb-0464-4f54-8fd3-78b400fa7246",
+        "chatSessionId": "sess_a0de89ee-0c62-442a-a93c-21e96244feb3",
+        "timestamp": 1787196938691
+      }
+    ],
+    "1. プロジェクト構造とコアインターフェース定義": [
+      {
+        "executionId": "c47287e5-c968-49d7-9d7a-49ab55476540",
+        "chatSessionId": "sess_a0de89ee-0c62-442a-a93c-21e96244feb3",
+        "timestamp": 1787058888161
+      }
+    ],
+    "2. AWS CDK インフラ定義": [
+      {
+        "executionId": "d4f7ae35-35dd-4e99-bad3-1a4d074a039d",
+        "chatSessionId": "sess_a0de89ee-0c62-442a-a93c-21e96244feb3",
+        "timestamp": 1787059801483
+      }
+    ],
+    "4. Lambda関数 コアロジック実装": [
+      {
+        "executionId": "82f993eb-0464-4f54-8fd3-78b400fa7246",
+        "chatSessionId": "sess_a0de89ee-0c62-442a-a93c-21e96244feb3",
+        "timestamp": 1787195978000
+      }
+    ],
+    "6. Web クライアント基盤実装": [
+      {
+        "executionId": "82f993eb-0464-4f54-8fd3-78b400fa7246",
+        "chatSessionId": "sess_a0de89ee-0c62-442a-a93c-21e96244feb3",
+        "timestamp": 1787196489407
+      }
+    ],
+    "8. 統合とワイヤリング": [
+      {
+        "executionId": "82f993eb-0464-4f54-8fd3-78b400fa7246",
+        "chatSessionId": "sess_a0de89ee-0c62-442a-a93c-21e96244feb3",
+        "timestamp": 1787196826835
+      }
+    ]
+  }
+}

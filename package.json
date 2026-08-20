@@ -10,7 +10,7 @@
     "packages/client"
   ],
   "scripts": {
-    "build": "npm run build --workspaces",
+    "build": "npm run build -w packages/shared && npm run build -w packages/server -w packages/cdk -w packages/client",
     "test": "npm run test --workspaces --if-present",
     "lint": "npm run lint --workspaces --if-present"
   },

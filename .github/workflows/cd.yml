@@ -1,8 +1,16 @@
+# NOTE: The IAM OIDC trust policy must allow both branches.
+# Update the "sub" condition to cover both:
+#   "token.actions.githubusercontent.com:sub": [
+#     "repo:m-kotaro/game-plaza-proto:ref:refs/heads/main",
+#     "repo:m-kotaro/game-plaza-proto:ref:refs/heads/develop"
+#   ]
+# Or use StringLike with a wildcard pattern.
+
 name: CD
 
 on:
   push:
-    branches: [main]
+    branches: [develop, main]
 
 permissions:
   id-token: write
@@ -10,6 +18,7 @@ permissions:
 
 jobs:
   deploy-dev:
+    if: github.ref == 'refs/heads/develop'
     runs-on: ubuntu-latest
     environment: dev
     steps:
@@ -38,7 +47,7 @@ jobs:
         run: cat packages/cdk/cdk-outputs.json
 
   deploy-prod:
-    needs: deploy-dev
+    if: github.ref == 'refs/heads/main'
     runs-on: ubuntu-latest
     environment: prod
     steps:

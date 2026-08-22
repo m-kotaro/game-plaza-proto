@@ -1,8 +1,16 @@
+# NOTE: The IAM OIDC trust policy must allow both branches.
+# Update the "sub" condition to cover both:
+#   "token.actions.githubusercontent.com:sub": [
+#     "repo:m-kotaro/game-plaza-proto:ref:refs/heads/main",
+#     "repo:m-kotaro/game-plaza-proto:ref:refs/heads/develop"
+#   ]
+# Or use StringLike with a wildcard pattern.
+
 name: CD
 
 on:
   push:
-    branches: [main]
+    branches: [develop, main]
 
 permissions:
   id-token: write
@@ -10,6 +18,7 @@ permissions:
 
 jobs:
   deploy-dev:
+    if: github.ref == 'refs/heads/develop'
     runs-on: ubuntu-latest
     environment: dev
     steps:
@@ -26,6 +35,13 @@ jobs:
         env:
           VITE_WEBSOCKET_URL: ${{ vars.VITE_WEBSOCKET_URL }}
 
+      - name: Debug OIDC token
+        run: |
+          TOKEN=$(curl -s -H "Authorization: bearer $ACTIONS_ID_TOKEN_REQUEST_TOKEN" "$ACTIONS_ID_TOKEN_REQUEST_URL&audience=sts.amazonaws.com" | jq -r '.value')
+          echo "Subject: $(echo $TOKEN | cut -d. -f2 | base64 -d 2>/dev/null | jq -r '.sub')"
+          echo "Audience: $(echo $TOKEN | cut -d. -f2 | base64 -d 2>/dev/null | jq -r '.aud')"
+          echo "Issuer: $(echo $TOKEN | cut -d. -f2 | base64 -d 2>/dev/null | jq -r '.iss')"
+
       - uses: aws-actions/configure-aws-credentials@v4
         with:
           role-to-assume: ${{ secrets.AWS_ROLE_ARN }}
@@ -38,7 +54,7 @@ jobs:
         run: cat packages/cdk/cdk-outputs.json
 
   deploy-prod:
-    needs: deploy-dev
+    if: github.ref == 'refs/heads/main'
     runs-on: ubuntu-latest
     environment: prod
     steps:

@@ -1,5 +1,5 @@
 import Phaser from 'phaser';
-import { WORLD_WIDTH, WORLD_HEIGHT, ServerMessage, GameStartMessage } from '@game-plaza/shared';
+import { WORLD_WIDTH, WORLD_HEIGHT, ServerMessage, GameStartMessage, RankingEntry } from '@game-plaza/shared';
 import { NetworkManager } from '../network';
 import { AvatarManager } from '../managers';
 import { InputHandler, AvatarManagerLike } from '../input';
@@ -15,6 +15,7 @@ import {
   fetchAllGameMeta,
 } from '../iframe';
 import { Signboard } from './Signboard';
+import { BulletinBoard, BulletinBoardData } from './BulletinBoard';
 
 /**
  * AvatarManager と InputHandler の AvatarManagerLike インターフェースを橋渡しするアダプター
@@ -74,6 +75,9 @@ export class GameScene extends Phaser.Scene {
   private resultNotification!: ResultNotification;
   private inputEnabled = true;
   private eKey!: Phaser.Input.Keyboard.Key;
+  private bulletinBoard!: BulletinBoard;
+  private bulletinZones: InteractionZone[] = [];
+  private allRankings: Map<string, RankingEntry[]> = new Map();
 
   constructor() {
     super({ key: 'GameScene' });
@@ -202,6 +206,26 @@ export class GameScene extends Phaser.Scene {
     // RankingsHandler
     this.rankingsHandler = new RankingsHandler(this.networkManager, this.signboards);
 
+    // === Bulletin Board setup (one per game, positioned to the left of each game zone) ===
+    this.bulletinZones = this.gameZoneData.map(zone =>
+      new InteractionZone(this, {
+        x: zone.x - 100,
+        y: zone.y,
+        width: 60,
+        height: 60,
+        gameType: `bulletin_${zone.gameType}`,
+        label: '📋',
+      })
+    );
+    this.bulletinBoard = new BulletinBoard('game-container');
+
+    // Store rankings data for bulletin board
+    this.networkManager.onMessage((message: ServerMessage) => {
+      if (message.type === 'rankings_update') {
+        this.allRankings.set(message.gameType, message.rankings);
+      }
+    });
+
     // Fetch metadata from external games asynchronously
     fetchAllGameMeta(DEFAULT_GAME_CONFIG.games).then((metaMap) => {
       for (let i = 0; i < this.gameZoneData.length; i++) {
@@ -271,8 +295,26 @@ export class GameScene extends Phaser.Scene {
 
           zone.setPlayerInZone(inZone);
 
-          if (inZone && Phaser.Input.Keyboard.JustDown(this.eKey)) {
+          if (inZone && Phaser.Input.Keyboard.JustDown(this.eKey) && !this.bulletinBoard.isOpen()) {
             this.startGame(zone.getGameType());
+            break;
+          }
+        }
+
+        // Bulletin board zone checks
+        for (let i = 0; i < this.bulletinZones.length; i++) {
+          const bZone = this.bulletinZones[i];
+          const bCfg = { x: this.gameZoneData[i].x - 100, y: this.gameZoneData[i].y, width: 60, height: 60 };
+          const inBZone =
+            pos.x >= bCfg.x - bCfg.width / 2 &&
+            pos.x <= bCfg.x + bCfg.width / 2 &&
+            pos.y >= bCfg.y - bCfg.height / 2 &&
+            pos.y <= bCfg.y + bCfg.height / 2;
+
+          bZone.setPlayerInZone(inBZone);
+
+          if (inBZone && Phaser.Input.Keyboard.JustDown(this.eKey) && !this.bulletinBoard.isOpen()) {
+            this.openBulletinBoard(this.gameZoneData[i].gameType);
             break;
           }
         }
@@ -321,6 +363,30 @@ export class GameScene extends Phaser.Scene {
       };
       this.postMessageBridge.sendGameStart(message);
     }, 500);
+  }
+
+  /**
+   * 掲示板を開く: 指定ゲームのランキングをDOMオーバーレイで表示する
+   */
+  private openBulletinBoard(gameType: string): void {
+    const signboard = this.signboards.get(gameType);
+    const data: BulletinBoardData[] = [{
+      gameType,
+      title: signboard ? signboard.getGameType() : gameType,
+      rankings: this.allRankings.get(gameType) || [],
+    }];
+
+    // Use the zone's label for the title (which comes from meta.json)
+    const zoneData = this.gameZoneData.find(z => z.gameType === gameType);
+    if (zoneData) {
+      data[0].title = zoneData.label;
+    }
+
+    this.bulletinBoard.setData(data);
+    this.bulletinBoard.open(() => {
+      this.inputEnabled = true;
+    });
+    this.inputEnabled = false;
   }
 
   /**

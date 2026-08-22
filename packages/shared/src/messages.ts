@@ -84,6 +84,10 @@ function isValidClientMessage(obj: unknown): boolean {
       return isValidAvatarData(msg.avatarData);
     case "heartbeat":
       return true;
+    case "submit_score":
+      return typeof msg.gameType === "string" && msg.gameType.length > 0 && typeof msg.score === "number" && msg.score >= 0;
+    case "get_rankings":
+      return typeof msg.gameType === "string" && msg.gameType.length > 0;
     default:
       return false;
   }
@@ -111,6 +115,16 @@ function isValidServerMessage(obj: unknown): boolean {
       return typeof msg.sessionId === "string" && isValidPosition(msg.position);
     case "avatar_updated":
       return typeof msg.sessionId === "string" && isValidAvatarData(msg.avatarData);
+    case "rankings_update":
+      return (
+        typeof msg.gameType === "string" &&
+        Array.isArray(msg.rankings) &&
+        msg.rankings.every((r: unknown) => {
+          if (typeof r !== "object" || r === null) return false;
+          const entry = r as Record<string, unknown>;
+          return typeof entry.playerName === "string" && typeof entry.score === "number";
+        })
+      );
     default:
       return false;
   }

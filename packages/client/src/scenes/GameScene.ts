@@ -3,7 +3,7 @@ import { WORLD_WIDTH, WORLD_HEIGHT, ServerMessage, GameStartMessage } from '@gam
 import { NetworkManager } from '../network';
 import { AvatarManager } from '../managers';
 import { InputHandler, AvatarManagerLike } from '../input';
-import { MessageHandler } from '../handlers';
+import { MessageHandler, RankingsHandler } from '../handlers';
 import { WEBSOCKET_URL } from '../config';
 import {
   InteractionZone,
@@ -12,7 +12,9 @@ import {
   ResultNotification,
   DEFAULT_GAME_CONFIG,
   getGameEntry,
+  fetchAllGameMeta,
 } from '../iframe';
+import { Signboard } from './Signboard';
 
 /**
  * AvatarManager と InputHandler の AvatarManagerLike インターフェースを橋渡しするアダプター
@@ -39,6 +41,9 @@ export class GameScene extends Phaser.Scene {
   private inputHandler!: InputHandler;
   private messageHandler!: MessageHandler;
   private localSessionId: string | null = null;
+  private signboards: Map<string, Signboard> = new Map();
+  private rankingsHandler!: RankingsHandler;
+  private lastGameType: string | null = null;
 
   // iframe integration
   private interactionZones: InteractionZone[] = [];
@@ -61,7 +66,7 @@ export class GameScene extends Phaser.Scene {
       width: 120,
       height: 120,
       gameType,
-      label: DEFAULT_GAME_CONFIG.games[gameType]?.label ?? gameType,
+      label: gameType,
     }));
   })();
   private iframeOverlay!: IframeOverlayManager;
@@ -102,6 +107,10 @@ export class GameScene extends Phaser.Scene {
         this.localSessionId = message.sessionId;
         this.messageHandler.setLocalSessionId(message.sessionId);
         this.avatarManager.createLocalAvatar(message.sessionId, message.avatar, message.position);
+
+        // Request rankings for all game types on initial connection
+        const gameTypes = this.gameZoneData.map(z => z.gameType);
+        this.rankingsHandler.requestAllRankings(gameTypes);
       }
     });
 
@@ -178,10 +187,57 @@ export class GameScene extends Phaser.Scene {
     // Result notification
     this.resultNotification = new ResultNotification('game-container');
 
+    // === Signboard setup ===
+    for (const zoneData of this.gameZoneData) {
+      const signboard = new Signboard(this, {
+        x: zoneData.x + 100,
+        y: zoneData.y - 30,
+        gameType: zoneData.gameType,
+        gameName: zoneData.label,
+        description: 'ゲームの説明',
+      });
+      this.signboards.set(zoneData.gameType, signboard);
+    }
+
+    // RankingsHandler
+    this.rankingsHandler = new RankingsHandler(this.networkManager, this.signboards);
+
+    // Fetch metadata from external games asynchronously
+    fetchAllGameMeta(DEFAULT_GAME_CONFIG.games).then((metaMap) => {
+      for (let i = 0; i < this.gameZoneData.length; i++) {
+        const gameType = this.gameZoneData[i].gameType;
+        const meta = metaMap[gameType];
+        if (!meta) continue;
+
+        const signboard = this.signboards.get(gameType);
+        if (signboard) {
+          signboard.updateMeta(meta.title, meta.description);
+        }
+
+        const zone = this.interactionZones[i];
+        if (zone) {
+          zone.updateLabel(meta.title);
+        }
+      }
+    });
+
     // PostMessage callbacks
     this.postMessageBridge.onGameResult((result) => {
       this.iframeOverlay.close();
       this.resultNotification.show(result);
+
+      // Submit score if available
+      if (result.scores && this.localSessionId) {
+        const scoreValues = Object.values(result.scores);
+        const score = scoreValues.length > 0 ? scoreValues[0] : 0;
+        if (this.lastGameType && score > 0) {
+          this.networkManager.send({
+            action: 'submit_score',
+            gameType: this.lastGameType,
+            score,
+          });
+        }
+      }
     });
 
     this.postMessageBridge.onGameClose(() => {
@@ -221,6 +277,20 @@ export class GameScene extends Phaser.Scene {
             break;
           }
         }
+
+        // Signboard proximity detection (show/hide popup)
+        const SIGNBOARD_PROXIMITY = 80;
+        for (const signboard of this.signboards.values()) {
+          const sPos = signboard.getPosition();
+          const dx = pos.x - sPos.x;
+          const dy = pos.y - sPos.y;
+          const dist = Math.sqrt(dx * dx + dy * dy);
+          if (dist < SIGNBOARD_PROXIMITY) {
+            signboard.showPopup();
+          } else {
+            signboard.hidePopup();
+          }
+        }
       }
     }
   }
@@ -229,6 +299,7 @@ export class GameScene extends Phaser.Scene {
    * ゲーム開始フロー: iframe を開き GameStartMessage を送信する
    */
   private startGame(gameType: string): void {
+    this.lastGameType = gameType;
     const entry = getGameEntry(DEFAULT_GAME_CONFIG, gameType);
     if (!entry) {
       console.warn(`[GameScene] Unknown game type: ${gameType}`);

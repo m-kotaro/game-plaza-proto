@@ -2,33 +2,34 @@
   "games": {
     "mock": {
       "url": "/mock-game.html",
-      "label": "🧪 モック"
+      "metaUrl": "/mock-game-meta.json"
     },
     "janken": {
-      "url": "/games/janken.html",
-      "label": "✊ じゃんけん"
+      "url": "https://m-kotaro.github.io/otameshi-game/",
+      "origin": "https://m-kotaro.github.io",
+      "metaUrl": "https://m-kotaro.github.io/otameshi-game/meta.json"
     },
     "quiz": {
       "url": "/games/quiz.html",
-      "label": "❓ クイズ"
+      "metaUrl": "/games/quiz-meta.json"
     },
     "memory": {
       "url": "/games/memory.html",
-      "label": "🃏 神経衰弱"
+      "metaUrl": "/games/memory-meta.json"
     },
     "slot": {
       "url": "/games/slot.html",
-      "label": "🎰 スロット"
+      "metaUrl": "/games/slot-meta.json"
     },
     "dice": {
       "url": "/games/dice.html",
-      "label": "🎲 サイコロ"
+      "metaUrl": "/games/dice-meta.json"
     },
     "shiritori": {
       "url": "/games/shiritori.html",
-      "label": "💬 しりとり"
+      "metaUrl": "/games/shiritori-meta.json"
     }
   },
-  "allowedOrigins": [],
+  "allowedOrigins": ["https://m-kotaro.github.io"],
   "loadTimeoutMs": 10000
 }

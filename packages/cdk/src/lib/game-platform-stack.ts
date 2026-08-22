@@ -24,6 +24,9 @@ export class GamePlatformStack extends cdk.Stack {
   /** Connections table storing player session state */
   public readonly connectionsTable: dynamodb.Table;
 
+  /** DynamoDB score table for game rankings */
+  public readonly scoreTable: dynamodb.Table;
+
   /** S3 bucket for static client assets */
   public readonly assetsBucket: s3.Bucket;
 
@@ -92,6 +95,20 @@ export class GamePlatformStack extends cdk.Stack {
       removalPolicy: cdk.RemovalPolicy.DESTROY,
     });
 
+    // Score table for game rankings
+    this.scoreTable = new dynamodb.Table(this, "ScoreTable", {
+      partitionKey: {
+        name: "gameType",
+        type: dynamodb.AttributeType.STRING,
+      },
+      sortKey: {
+        name: "sortKey",
+        type: dynamodb.AttributeType.STRING,
+      },
+      billingMode: dynamodb.BillingMode.PAY_PER_REQUEST,
+      removalPolicy: cdk.RemovalPolicy.DESTROY,
+    });
+
     // Shared environment variables for all Lambda functions
     const lambdaEnvironment = {
       TABLE_NAME: this.connectionsTable.tableName,
@@ -147,6 +164,12 @@ export class GamePlatformStack extends cdk.Stack {
     this.connectionsTable.grantReadWriteData(this.onDisconnectFn);
     this.connectionsTable.grantReadWriteData(this.onMessageFn);
     this.connectionsTable.grantReadWriteData(this.tickFn);
+
+    // Grant ScoreTable read/write permissions to onMessage Lambda
+    this.scoreTable.grantReadWriteData(this.onMessageFn);
+
+    // Add SCORE_TABLE_NAME environment variable to onMessage Lambda
+    this.onMessageFn.addEnvironment("SCORE_TABLE_NAME", this.scoreTable.tableName);
 
     // API Gateway WebSocket API (task 2.4)
     this.webSocketApi = new apigwv2.CfnApi(this, "WebSocketApi", {

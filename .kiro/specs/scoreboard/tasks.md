@@ -2,7 +2,9 @@
 
 ## Overview
 
-スコアボード機能を段階的に実装する。Shared層の型定義から始め、Server層のDB操作・ハンドラ、CDKインフラ、最後にClient層の看板UIという順序で実装し、各段階でテストを追加する。
+スコアボード機能を段階的に実装する。Shared層の型定義から始め、Server層のDB操作・ハンドラ、CDKインフラ、最後にClient層のUI表示という順序で実装し、各段階でテストを追加する。
+
+> **NOTE: 実装時にSignboard方式からBulletinBoard方式に変更。看板の常時表示は削除し、掲示板エリア（📋）のEキーでDOMオーバーレイ表示する方式を採用。タスク6.x / 7.1の内容は実装と異なる（BulletinBoardクラスとonMessageリスナーで実装済み）。**
 
 ## Tasks
 
@@ -67,37 +69,33 @@
     - onMessageFn の環境変数に SCORE_TABLE_NAME を追加
     - _Requirements: 6.1, 6.2, 6.3_
 
-- [ ] 6. Client - 看板表示の実装
-  - [ ] 6.1 Signboard クラスの実装
-    - `packages/client/src/scenes/Signboard.ts` を新規作成
-    - コンストラクタ: Phaser.Scene, SignboardConfig を受け取り、看板テキストオブジェクトを生成
-    - updateRankings: ランキングデータを受け取り、看板テキストを "N位: PlayerName Xpts" 形式で更新（上位3件）
-    - showPopup / hidePopup: ゲーム説明テキストのポップアップ表示/非表示
-    - 看板の表示位置はゲームゾーンの右横（+80px程度オフセット）
-    - _Requirements: 4.1, 4.2, 4.3, 5.1, 5.2, 5.3_
-  - [ ]* 6.2 看板フォーマットのプロパティテスト
-    - **Property 4: 看板フォーマット文字列**
-    - フォーマット関数を独立したユーティリティとして抽出し、テスト可能にする
-    - `packages/client/src/scenes/Signboard.test.ts` を新規作成
-    - **Validates: Requirements 4.2**
-  - [ ] 6.3 GameScene に Signboard を統合
+- [x] 6. Client - 掲示板（BulletinBoard）表示の実装
+  - [x] 6.1 BulletinBoard クラスの実装
+    - `packages/client/src/scenes/BulletinBoard.ts` を作成
+    - DOMオーバーレイとしてランキング一覧を表示
+    - setData: BulletinBoardData[] を受け取りデータ設定
+    - open / close: オーバーレイの開閉
+    - ゲームタイトルごとにカード形式でランキングを表示
+    - _Requirements: 4.2, 4.4_
+  - [x] 6.2 BulletinBoardのランキング表示フォーマット
+    - "N位: PlayerName Xpts" 形式で表示
+    - 1位: 金色、2位: 銀色、3位: 銅色のハイライト
+    - _Requirements: 4.4_
+  - [x] 6.3 GameScene に BulletinBoard を統合
     - `packages/client/src/scenes/GameScene.ts` を修正
-    - 各ゲームゾーンの横に Signboard インスタンスを生成
-    - updateループ内で近接検出を実装（プレイヤーとSignboardの距離計算）
-    - 近接時にshowPopup、離れたらhidePopup を呼び出す
-    - _Requirements: 4.1, 5.1, 5.2_
-  - [ ]* 6.4 近接検出のプロパティテスト
-    - **Property 5: 近接検出の正確性**
-    - 近接検出ロジックを独立ユーティリティ関数として抽出
-    - `packages/client/src/scenes/Signboard.test.ts` にテスト追加
-    - **Validates: Requirements 5.1, 5.2**
+    - 📋ゾーンへの進入検出 + Eキーで BulletinBoard.open() を呼び出す
+    - rankings_update 受信時に Map に保存、open 時に setData で渡す
+    - _Requirements: 4.1, 4.2, 4.3_
+  - [x] 6.4 ゲーム説明の表示
+    - meta.json からゲーム説明を取得し BulletinBoardData の title に含める
+    - _Requirements: 5.1, 5.2_
 
-- [ ] 7. Client - ランキング受信とスコア送信の統合
-  - [ ] 7.1 RankingsHandler の実装
-    - `packages/client/src/handlers/RankingsHandler.ts` を新規作成
-    - NetworkManager の onMessage で rankings_update を検知し、対応する Signboard を更新
-    - requestAllRankings: 全ゲームタイプに対して get_rankings を送信
-    - _Requirements: 4.3, 4.4, 2.2_
+- [x] 7. Client - ランキング受信とスコア送信の統合
+  - [x] 7.1 ランキング受信処理の実装
+    - GameScene 内の onMessage リスナーで rankings_update を検知
+    - `Map<string, RankingEntry[]>` にランキングデータを保存
+    - BulletinBoard.open() 時に Map からデータを取得して setData に渡す
+    - _Requirements: 4.3, 4.5, 2.2_
   - [ ] 7.2 スコア送信の統合
     - `packages/client/src/scenes/GameScene.ts` を修正
     - PostMessageBridge の onGameResult コールバック内で submit_score メッセージを送信

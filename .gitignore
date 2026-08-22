@@ -1,3 +1,6 @@
+<<<<<<< HEAD
+node_modules
+=======
 # Dependencies
 node_modules/
 
@@ -28,3 +31,4 @@ Thumbs.db
 # Environment
 .env
 .env.local
+>>>>>>> 7cf0bfa00774ebabe95fb6ea1ec7fc418bb2fc72

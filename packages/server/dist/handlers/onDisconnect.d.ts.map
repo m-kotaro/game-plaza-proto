@@ -1,0 +1,1 @@
+{"version":3,"file":"onDisconnect.d.ts","sourceRoot":"","sources":["../../src/handlers/onDisconnect.ts"],"names":[],"mappings":"AAAA,OAAO,KAAK,EACV,uBAAuB,EACvB,+BAA+B,EAChC,MAAM,YAAY,CAAC;AAQpB,eAAO,MAAM,OAAO,GAClB,OAAO,+BAA+B,KACrC,OAAO,CAAC,uBAAuB,CAsBjC,CAAC"}

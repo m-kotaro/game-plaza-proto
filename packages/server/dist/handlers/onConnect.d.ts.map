@@ -1,0 +1,1 @@
+{"version":3,"file":"onConnect.d.ts","sourceRoot":"","sources":["../../src/handlers/onConnect.ts"],"names":[],"mappings":"AAAA,OAAO,KAAK,EAAE,uBAAuB,EAAE,+BAA+B,EAAE,MAAM,YAAY,CAAC;AAK3F,eAAO,MAAM,OAAO,GAClB,OAAO,+BAA+B,KACrC,OAAO,CAAC,uBAAuB,CAsCjC,CAAC"}

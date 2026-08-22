@@ -1,0 +1,871 @@
+{
+  "/GamePlatform-prod": [
+    {
+      "type": "aws:cdk:creationStack",
+      "data": [
+        "<anonymous> (/Users/kotaro-muto/workspace/github/m-kotaro/game-plaza-proto/packages/cdk/src/bin/app.ts:9:1)",
+        "...node internals, ts-node, ts-node, ts-node..."
+      ]
+    }
+  ],
+  "/GamePlatform-prod/HostedZoneNameServers": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "HostedZoneNameServers"
+    },
+    {
+      "type": "aws:cdk:creationStack",
+      "data": [
+        "new GamePlatformStack (/Users/kotaro-muto/workspace/github/m-kotaro/game-plaza-proto/packages/cdk/src/lib/game-platform-stack.ts:78:7)",
+        "<anonymous> (/Users/kotaro-muto/workspace/github/m-kotaro/game-plaza-proto/packages/cdk/src/bin/app.ts:9:1)",
+        "...node internals, ts-node, ts-node..."
+      ]
+    }
+  ],
+  "/GamePlatform-prod/WebSocketApi": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "WebSocketApi"
+    },
+    {
+      "type": "aws:cdk:creationStack",
+      "data": [
+        "new GamePlatformStack (/Users/kotaro-muto/workspace/github/m-kotaro/game-plaza-proto/packages/cdk/src/lib/game-platform-stack.ts:152:25)",
+        "<anonymous> (/Users/kotaro-muto/workspace/github/m-kotaro/game-plaza-proto/packages/cdk/src/bin/app.ts:9:1)",
+        "...node internals, ts-node, ts-node..."
+      ]
+    }
+  ],
+  "/GamePlatform-prod/ConnectIntegration": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "ConnectIntegration"
+    },
+    {
+      "type": "aws:cdk:creationStack",
+      "data": [
+        "new GamePlatformStack (/Users/kotaro-muto/workspace/github/m-kotaro/game-plaza-proto/packages/cdk/src/lib/game-platform-stack.ts:159:32)",
+        "<anonymous> (/Users/kotaro-muto/workspace/github/m-kotaro/game-plaza-proto/packages/cdk/src/bin/app.ts:9:1)",
+        "...node internals, ts-node, ts-node..."
+      ]
+    }
+  ],
+  "/GamePlatform-prod/DisconnectIntegration": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "DisconnectIntegration"
+    },
+    {
+      "type": "aws:cdk:creationStack",
+      "data": [
+        "new GamePlatformStack (/Users/kotaro-muto/workspace/github/m-kotaro/game-plaza-proto/packages/cdk/src/lib/game-platform-stack.ts:169:35)",
+        "<anonymous> (/Users/kotaro-muto/workspace/github/m-kotaro/game-plaza-proto/packages/cdk/src/bin/app.ts:9:1)",
+        "...node internals, ts-node, ts-node..."
+      ]
+    }
+  ],
+  "/GamePlatform-prod/DefaultIntegration": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "DefaultIntegration"
+    },
+    {
+      "type": "aws:cdk:creationStack",
+      "data": [
+        "new GamePlatformStack (/Users/kotaro-muto/workspace/github/m-kotaro/game-plaza-proto/packages/cdk/src/lib/game-platform-stack.ts:179:32)",
+        "<anonymous> (/Users/kotaro-muto/workspace/github/m-kotaro/game-plaza-proto/packages/cdk/src/bin/app.ts:9:1)",
+        "...node internals, ts-node, ts-node..."
+      ]
+    }
+  ],
+  "/GamePlatform-prod/ConnectRoute": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "ConnectRoute"
+    },
+    {
+      "type": "aws:cdk:creationStack",
+      "data": [
+        "new GamePlatformStack (/Users/kotaro-muto/workspace/github/m-kotaro/game-plaza-proto/packages/cdk/src/lib/game-platform-stack.ts:190:26)",
+        "<anonymous> (/Users/kotaro-muto/workspace/github/m-kotaro/game-plaza-proto/packages/cdk/src/bin/app.ts:9:1)",
+        "...node internals, ts-node, ts-node..."
+      ]
+    }
+  ],
+  "/GamePlatform-prod/DisconnectRoute": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "DisconnectRoute"
+    },
+    {
+      "type": "aws:cdk:creationStack",
+      "data": [
+        "new GamePlatformStack (/Users/kotaro-muto/workspace/github/m-kotaro/game-plaza-proto/packages/cdk/src/lib/game-platform-stack.ts:197:29)",
+        "<anonymous> (/Users/kotaro-muto/workspace/github/m-kotaro/game-plaza-proto/packages/cdk/src/bin/app.ts:9:1)",
+        "...node internals, ts-node, ts-node..."
+      ]
+    }
+  ],
+  "/GamePlatform-prod/DefaultRoute": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "DefaultRoute"
+    },
+    {
+      "type": "aws:cdk:creationStack",
+      "data": [
+        "new GamePlatformStack (/Users/kotaro-muto/workspace/github/m-kotaro/game-plaza-proto/packages/cdk/src/lib/game-platform-stack.ts:204:26)",
+        "<anonymous> (/Users/kotaro-muto/workspace/github/m-kotaro/game-plaza-proto/packages/cdk/src/bin/app.ts:9:1)",
+        "...node internals, ts-node, ts-node..."
+      ]
+    }
+  ],
+  "/GamePlatform-prod/WebSocketDeployment": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "WebSocketDeployment"
+    },
+    {
+      "type": "aws:cdk:creationStack",
+      "data": [
+        "new GamePlatformStack (/Users/kotaro-muto/workspace/github/m-kotaro/game-plaza-proto/packages/cdk/src/lib/game-platform-stack.ts:212:24)",
+        "<anonymous> (/Users/kotaro-muto/workspace/github/m-kotaro/game-plaza-proto/packages/cdk/src/bin/app.ts:9:1)",
+        "...node internals, ts-node, ts-node..."
+      ]
+    }
+  ],
+  "/GamePlatform-prod/WebSocketStage": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "WebSocketStage"
+    },
+    {
+      "type": "aws:cdk:creationStack",
+      "data": [
+        "new GamePlatformStack (/Users/kotaro-muto/workspace/github/m-kotaro/game-plaza-proto/packages/cdk/src/lib/game-platform-stack.ts:220:27)",
+        "<anonymous> (/Users/kotaro-muto/workspace/github/m-kotaro/game-plaza-proto/packages/cdk/src/bin/app.ts:9:1)",
+        "...node internals, ts-node, ts-node..."
+      ]
+    }
+  ],
+  "/GamePlatform-prod/WebSocketApiUrl": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "WebSocketApiUrl"
+    },
+    {
+      "type": "aws:cdk:creationStack",
+      "data": [
+        "new GamePlatformStack (/Users/kotaro-muto/workspace/github/m-kotaro/game-plaza-proto/packages/cdk/src/lib/game-platform-stack.ts:273:5)",
+        "<anonymous> (/Users/kotaro-muto/workspace/github/m-kotaro/game-plaza-proto/packages/cdk/src/bin/app.ts:9:1)",
+        "...node internals, ts-node, ts-node..."
+      ]
+    }
+  ],
+  "/GamePlatform-prod/WsDomainName": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "WsDomainName"
+    },
+    {
+      "type": "aws:cdk:creationStack",
+      "data": [
+        "new GamePlatformStack (/Users/kotaro-muto/workspace/github/m-kotaro/game-plaza-proto/packages/cdk/src/lib/game-platform-stack.ts:287:28)",
+        "<anonymous> (/Users/kotaro-muto/workspace/github/m-kotaro/game-plaza-proto/packages/cdk/src/bin/app.ts:9:1)",
+        "...node internals, ts-node, ts-node..."
+      ]
+    }
+  ],
+  "/GamePlatform-prod/WsApiMapping": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "WsApiMapping"
+    },
+    {
+      "type": "aws:cdk:creationStack",
+      "data": [
+        "new GamePlatformStack (/Users/kotaro-muto/workspace/github/m-kotaro/game-plaza-proto/packages/cdk/src/lib/game-platform-stack.ts:297:7)",
+        "<anonymous> (/Users/kotaro-muto/workspace/github/m-kotaro/game-plaza-proto/packages/cdk/src/bin/app.ts:9:1)",
+        "...node internals, ts-node, ts-node..."
+      ]
+    }
+  ],
+  "/GamePlatform-prod/Custom::S3AutoDeleteObjectsCustomResourceProvider": [
+    {
+      "type": "aws:cdk:is-custom-resource-handler-customResourceProvider",
+      "data": true
+    }
+  ],
+  "/GamePlatform-prod/AWSCloudFrontPartitionHostedZoneIdMap": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "AWSCloudFrontPartitionHostedZoneIdMap"
+    },
+    {
+      "type": "aws:cdk:creationStack",
+      "data": [
+        "...new ARecord2 in aws-cdk-lib...",
+        "new GamePlatformStack (/Users/kotaro-muto/workspace/github/m-kotaro/game-plaza-proto/packages/cdk/src/lib/game-platform-stack.ts:351:7)",
+        "<anonymous> (/Users/kotaro-muto/workspace/github/m-kotaro/game-plaza-proto/packages/cdk/src/bin/app.ts:9:1)",
+        "...node internals, ts-node..."
+      ]
+    }
+  ],
+  "/GamePlatform-prod/CustomDomainFrontend": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "CustomDomainFrontend"
+    },
+    {
+      "type": "aws:cdk:creationStack",
+      "data": [
+        "new GamePlatformStack (/Users/kotaro-muto/workspace/github/m-kotaro/game-plaza-proto/packages/cdk/src/lib/game-platform-stack.ts:362:7)",
+        "<anonymous> (/Users/kotaro-muto/workspace/github/m-kotaro/game-plaza-proto/packages/cdk/src/bin/app.ts:9:1)",
+        "...node internals, ts-node, ts-node..."
+      ]
+    }
+  ],
+  "/GamePlatform-prod/CustomDomainWebSocket": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "CustomDomainWebSocket"
+    },
+    {
+      "type": "aws:cdk:creationStack",
+      "data": [
+        "new GamePlatformStack (/Users/kotaro-muto/workspace/github/m-kotaro/game-plaza-proto/packages/cdk/src/lib/game-platform-stack.ts:367:7)",
+        "<anonymous> (/Users/kotaro-muto/workspace/github/m-kotaro/game-plaza-proto/packages/cdk/src/bin/app.ts:9:1)",
+        "...node internals, ts-node, ts-node..."
+      ]
+    }
+  ],
+  "/GamePlatform-prod/DistributionDomainName": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "DistributionDomainName"
+    },
+    {
+      "type": "aws:cdk:creationStack",
+      "data": [
+        "new GamePlatformStack (/Users/kotaro-muto/workspace/github/m-kotaro/game-plaza-proto/packages/cdk/src/lib/game-platform-stack.ts:374:5)",
+        "<anonymous> (/Users/kotaro-muto/workspace/github/m-kotaro/game-plaza-proto/packages/cdk/src/bin/app.ts:9:1)",
+        "...node internals, ts-node, ts-node..."
+      ]
+    }
+  ],
+  "/GamePlatform-prod/Custom::CDKBucketDeployment8693BB64968944B69AAFB0CC9EB8756C": [
+    {
+      "type": "aws:cdk:is-custom-resource-handler-singleton",
+      "data": true
+    },
+    {
+      "type": "aws:cdk:is-custom-resource-handler-runtime-family",
+      "data": 2
+    }
+  ],
+  "/GamePlatform-prod/BootstrapVersion": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "BootstrapVersion"
+    },
+    {
+      "type": "aws:cdk:creationStack",
+      "data": [
+        "...aws-cdk-lib...",
+        "(no user code in 10 frames, use --stack-trace-limit to capture more)"
+      ]
+    }
+  ],
+  "/GamePlatform-prod/CheckBootstrapVersion": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "CheckBootstrapVersion"
+    },
+    {
+      "type": "aws:cdk:creationStack",
+      "data": [
+        "...aws-cdk-lib...",
+        "(no user code in 10 frames, use --stack-trace-limit to capture more)"
+      ]
+    }
+  ],
+  "/GamePlatform-prod/SubdomainHostedZone/Resource": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "SubdomainHostedZone58AE2894"
+    },
+    {
+      "type": "aws:cdk:creationStack",
+      "data": [
+        "...new HostedZone2 in aws-cdk-lib...",
+        "new GamePlatformStack (/Users/kotaro-muto/workspace/github/m-kotaro/game-plaza-proto/packages/cdk/src/lib/game-platform-stack.ts:64:25)",
+        "<anonymous> (/Users/kotaro-muto/workspace/github/m-kotaro/game-plaza-proto/packages/cdk/src/bin/app.ts:9:1)",
+        "...node internals, ts-node, ts-node..."
+      ]
+    }
+  ],
+  "/GamePlatform-prod/Certificate/CertificateRequestorFunction": [
+    {
+      "type": "aws:cdk:is-custom-resource-handler-runtime-family",
+      "data": 0
+    }
+  ],
+  "/GamePlatform-prod/ConnectionsTable/Resource": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "ConnectionsTable8000B8A1"
+    },
+    {
+      "type": "aws:cdk:creationStack",
+      "data": [
+        "...new Table2 in aws-cdk-lib...",
+        "new GamePlatformStack (/Users/kotaro-muto/workspace/github/m-kotaro/game-plaza-proto/packages/cdk/src/lib/game-platform-stack.ts:86:29)",
+        "<anonymous> (/Users/kotaro-muto/workspace/github/m-kotaro/game-plaza-proto/packages/cdk/src/bin/app.ts:9:1)",
+        "...node internals, ts-node, ts-node..."
+      ]
+    }
+  ],
+  "/GamePlatform-prod/OnConnectFunction/Resource": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "OnConnectFunctionEF88F5A4"
+    },
+    {
+      "type": "aws:cdk:creationStack",
+      "data": [
+        "...new NodejsFunction in aws-cdk-lib...",
+        "new GamePlatformStack (/Users/kotaro-muto/workspace/github/m-kotaro/game-plaza-proto/packages/cdk/src/lib/game-platform-stack.ts:106:24)",
+        "<anonymous> (/Users/kotaro-muto/workspace/github/m-kotaro/game-plaza-proto/packages/cdk/src/bin/app.ts:9:1)",
+        "...node internals, ts-node, ts-node..."
+      ]
+    }
+  ],
+  "/GamePlatform-prod/OnConnectFunction/ApiGwInvokeConnect": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "OnConnectFunctionApiGwInvokeConnect801EADA6"
+    },
+    {
+      "type": "aws:cdk:creationStack",
+      "data": [
+        "...NodejsFunction.addPermission in aws-cdk-lib...",
+        "new GamePlatformStack (/Users/kotaro-muto/workspace/github/m-kotaro/game-plaza-proto/packages/cdk/src/lib/game-platform-stack.ts:227:22)",
+        "<anonymous> (/Users/kotaro-muto/workspace/github/m-kotaro/game-plaza-proto/packages/cdk/src/bin/app.ts:9:1)",
+        "...node internals, ts-node, ts-node..."
+      ]
+    }
+  ],
+  "/GamePlatform-prod/OnDisconnectFunction/Resource": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "OnDisconnectFunctionFC2DEFE6"
+    },
+    {
+      "type": "aws:cdk:creationStack",
+      "data": [
+        "...new NodejsFunction in aws-cdk-lib...",
+        "new GamePlatformStack (/Users/kotaro-muto/workspace/github/m-kotaro/game-plaza-proto/packages/cdk/src/lib/game-platform-stack.ts:116:27)",
+        "<anonymous> (/Users/kotaro-muto/workspace/github/m-kotaro/game-plaza-proto/packages/cdk/src/bin/app.ts:9:1)",
+        "...node internals, ts-node, ts-node..."
+      ]
+    }
+  ],
+  "/GamePlatform-prod/OnDisconnectFunction/ApiGwInvokeDisconnect": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "OnDisconnectFunctionApiGwInvokeDisconnect5B99BCDE"
+    },
+    {
+      "type": "aws:cdk:creationStack",
+      "data": [
+        "...NodejsFunction.addPermission in aws-cdk-lib...",
+        "new GamePlatformStack (/Users/kotaro-muto/workspace/github/m-kotaro/game-plaza-proto/packages/cdk/src/lib/game-platform-stack.ts:232:25)",
+        "<anonymous> (/Users/kotaro-muto/workspace/github/m-kotaro/game-plaza-proto/packages/cdk/src/bin/app.ts:9:1)",
+        "...node internals, ts-node, ts-node..."
+      ]
+    }
+  ],
+  "/GamePlatform-prod/OnMessageFunction/Resource": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "OnMessageFunction23161023"
+    },
+    {
+      "type": "aws:cdk:creationStack",
+      "data": [
+        "...new NodejsFunction in aws-cdk-lib...",
+        "new GamePlatformStack (/Users/kotaro-muto/workspace/github/m-kotaro/game-plaza-proto/packages/cdk/src/lib/game-platform-stack.ts:126:24)",
+        "<anonymous> (/Users/kotaro-muto/workspace/github/m-kotaro/game-plaza-proto/packages/cdk/src/bin/app.ts:9:1)",
+        "...node internals, ts-node, ts-node..."
+      ]
+    }
+  ],
+  "/GamePlatform-prod/OnMessageFunction/ApiGwInvokeDefault": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "OnMessageFunctionApiGwInvokeDefault5FAF0B80"
+    },
+    {
+      "type": "aws:cdk:creationStack",
+      "data": [
+        "...NodejsFunction.addPermission in aws-cdk-lib...",
+        "new GamePlatformStack (/Users/kotaro-muto/workspace/github/m-kotaro/game-plaza-proto/packages/cdk/src/lib/game-platform-stack.ts:237:22)",
+        "<anonymous> (/Users/kotaro-muto/workspace/github/m-kotaro/game-plaza-proto/packages/cdk/src/bin/app.ts:9:1)",
+        "...node internals, ts-node, ts-node..."
+      ]
+    }
+  ],
+  "/GamePlatform-prod/TickFunction/Resource": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "TickFunction09FBBC56"
+    },
+    {
+      "type": "aws:cdk:creationStack",
+      "data": [
+        "...new NodejsFunction in aws-cdk-lib...",
+        "new GamePlatformStack (/Users/kotaro-muto/workspace/github/m-kotaro/game-plaza-proto/packages/cdk/src/lib/game-platform-stack.ts:136:19)",
+        "<anonymous> (/Users/kotaro-muto/workspace/github/m-kotaro/game-plaza-proto/packages/cdk/src/bin/app.ts:9:1)",
+        "...node internals, ts-node, ts-node..."
+      ]
+    }
+  ],
+  "/GamePlatform-prod/ApiGwCertificate/Resource": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "ApiGwCertificateDFBC51CC"
+    },
+    {
+      "type": "aws:cdk:creationStack",
+      "data": [
+        "...new Certificate2 in aws-cdk-lib...",
+        "new GamePlatformStack (/Users/kotaro-muto/workspace/github/m-kotaro/game-plaza-proto/packages/cdk/src/lib/game-platform-stack.ts:282:32)",
+        "<anonymous> (/Users/kotaro-muto/workspace/github/m-kotaro/game-plaza-proto/packages/cdk/src/bin/app.ts:9:1)",
+        "...node internals, ts-node, ts-node..."
+      ]
+    }
+  ],
+  "/GamePlatform-prod/WebSocketARecord/Resource": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "WebSocketARecord6B275339"
+    },
+    {
+      "type": "aws:cdk:creationStack",
+      "data": [
+        "...new ARecord2 in aws-cdk-lib...",
+        "new GamePlatformStack (/Users/kotaro-muto/workspace/github/m-kotaro/game-plaza-proto/packages/cdk/src/lib/game-platform-stack.ts:304:7)",
+        "<anonymous> (/Users/kotaro-muto/workspace/github/m-kotaro/game-plaza-proto/packages/cdk/src/bin/app.ts:9:1)",
+        "...node internals, ts-node, ts-node..."
+      ]
+    }
+  ],
+  "/GamePlatform-prod/HeartbeatRule/Resource": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "HeartbeatRuleDCC8D7FB"
+    },
+    {
+      "type": "aws:cdk:creationStack",
+      "data": [
+        "...new Rule2 in aws-cdk-lib...",
+        "new GamePlatformStack (/Users/kotaro-muto/workspace/github/m-kotaro/game-plaza-proto/packages/cdk/src/lib/game-platform-stack.ts:317:26)",
+        "<anonymous> (/Users/kotaro-muto/workspace/github/m-kotaro/game-plaza-proto/packages/cdk/src/bin/app.ts:9:1)",
+        "...node internals, ts-node, ts-node..."
+      ]
+    }
+  ],
+  "/GamePlatform-prod/HeartbeatRule/AllowEventRuleGamePlatformprodTickFunction6C87FB1C": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "HeartbeatRuleAllowEventRuleGamePlatformprodTickFunction6C87FB1C194710DD"
+    },
+    {
+      "type": "aws:cdk:creationStack",
+      "data": [
+        "...WrappedClass.<anonymous> in aws-cdk-lib...",
+        "new GamePlatformStack (/Users/kotaro-muto/workspace/github/m-kotaro/game-plaza-proto/packages/cdk/src/lib/game-platform-stack.ts:323:24)",
+        "<anonymous> (/Users/kotaro-muto/workspace/github/m-kotaro/game-plaza-proto/packages/cdk/src/bin/app.ts:9:1)",
+        "...node internals, ts-node..."
+      ]
+    }
+  ],
+  "/GamePlatform-prod/AssetsBucket/Resource": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "AssetsBucket5CB76180"
+    },
+    {
+      "type": "aws:cdk:creationStack",
+      "data": [
+        "...new Bucket2 in aws-cdk-lib...",
+        "new GamePlatformStack (/Users/kotaro-muto/workspace/github/m-kotaro/game-plaza-proto/packages/cdk/src/lib/game-platform-stack.ts:326:25)",
+        "<anonymous> (/Users/kotaro-muto/workspace/github/m-kotaro/game-plaza-proto/packages/cdk/src/bin/app.ts:9:1)",
+        "...node internals, ts-node, ts-node..."
+      ]
+    },
+    {
+      "type": "aws:cdk:analytics:mixin",
+      "data": {
+        "mixin": "aws-cdk-lib.aws_s3.mixins.BucketAutoDeleteObjects"
+      }
+    }
+  ],
+  "/GamePlatform-prod/Custom::S3AutoDeleteObjectsCustomResourceProvider/Role": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "CustomS3AutoDeleteObjectsCustomResourceProviderRole3B1BD092"
+    },
+    {
+      "type": "aws:cdk:creationStack",
+      "data": [
+        "...aws-cdk-lib...",
+        "(no user code in 10 frames, use --stack-trace-limit to capture more)"
+      ]
+    }
+  ],
+  "/GamePlatform-prod/Custom::S3AutoDeleteObjectsCustomResourceProvider/Handler": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "CustomS3AutoDeleteObjectsCustomResourceProviderHandler9D90184F"
+    },
+    {
+      "type": "aws:cdk:creationStack",
+      "data": [
+        "...aws-cdk-lib...",
+        "(no user code in 10 frames, use --stack-trace-limit to capture more)"
+      ]
+    }
+  ],
+  "/GamePlatform-prod/Distribution/Resource": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "Distribution830FAC52"
+    },
+    {
+      "type": "aws:cdk:creationStack",
+      "data": [
+        "...new Distribution2 in aws-cdk-lib...",
+        "new GamePlatformStack (/Users/kotaro-muto/workspace/github/m-kotaro/game-plaza-proto/packages/cdk/src/lib/game-platform-stack.ts:333:25)",
+        "<anonymous> (/Users/kotaro-muto/workspace/github/m-kotaro/game-plaza-proto/packages/cdk/src/bin/app.ts:9:1)",
+        "...node internals, ts-node, ts-node..."
+      ]
+    }
+  ],
+  "/GamePlatform-prod/CloudFrontARecord/Resource": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "CloudFrontARecord1A728491"
+    },
+    {
+      "type": "aws:cdk:creationStack",
+      "data": [
+        "...new ARecord2 in aws-cdk-lib...",
+        "new GamePlatformStack (/Users/kotaro-muto/workspace/github/m-kotaro/game-plaza-proto/packages/cdk/src/lib/game-platform-stack.ts:351:7)",
+        "<anonymous> (/Users/kotaro-muto/workspace/github/m-kotaro/game-plaza-proto/packages/cdk/src/bin/app.ts:9:1)",
+        "...node internals, ts-node, ts-node..."
+      ]
+    }
+  ],
+  "/GamePlatform-prod/Custom::CDKBucketDeployment8693BB64968944B69AAFB0CC9EB8756C/Resource": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "CustomCDKBucketDeployment8693BB64968944B69AAFB0CC9EB8756C81C01536"
+    },
+    {
+      "type": "aws:cdk:creationStack",
+      "data": [
+        "...new BucketDeployment2 in aws-cdk-lib...",
+        "new GamePlatformStack (/Users/kotaro-muto/workspace/github/m-kotaro/game-plaza-proto/packages/cdk/src/lib/game-platform-stack.ts:382:5)",
+        "<anonymous> (/Users/kotaro-muto/workspace/github/m-kotaro/game-plaza-proto/packages/cdk/src/bin/app.ts:9:1)"
+      ]
+    }
+  ],
+  "/GamePlatform-prod/CDKMetadata/Default": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "CDKMetadata"
+    },
+    {
+      "type": "aws:cdk:creationStack",
+      "data": [
+        "...aws-cdk-lib, node internals...",
+        "(no user code in 10 frames, use --stack-trace-limit to capture more)"
+      ]
+    }
+  ],
+  "/GamePlatform-prod/Certificate/CertificateRequestorFunction/Resource": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "CertificateCertificateRequestorFunction5E845413"
+    },
+    {
+      "type": "aws:cdk:creationStack",
+      "data": [
+        "...new DnsValidatedCertificate2 in aws-cdk-lib...",
+        "new GamePlatformStack (/Users/kotaro-muto/workspace/github/m-kotaro/game-plaza-proto/packages/cdk/src/lib/game-platform-stack.ts:70:26)",
+        "<anonymous> (/Users/kotaro-muto/workspace/github/m-kotaro/game-plaza-proto/packages/cdk/src/bin/app.ts:9:1)",
+        "...node internals, ts-node..."
+      ]
+    }
+  ],
+  "/GamePlatform-prod/Certificate/CertificateRequestorResource/Default": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "CertificateCertificateRequestorResource2890C6B7"
+    },
+    {
+      "type": "aws:cdk:creationStack",
+      "data": [
+        "...new DnsValidatedCertificate2 in aws-cdk-lib...",
+        "new GamePlatformStack (/Users/kotaro-muto/workspace/github/m-kotaro/game-plaza-proto/packages/cdk/src/lib/game-platform-stack.ts:70:26)",
+        "<anonymous> (/Users/kotaro-muto/workspace/github/m-kotaro/game-plaza-proto/packages/cdk/src/bin/app.ts:9:1)",
+        "...node internals, ts-node..."
+      ]
+    }
+  ],
+  "/GamePlatform-prod/OnConnectFunction/ServiceRole/Resource": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "OnConnectFunctionServiceRole9DE3742C"
+    },
+    {
+      "type": "aws:cdk:creationStack",
+      "data": [
+        "...new NodejsFunction in aws-cdk-lib...",
+        "new GamePlatformStack (/Users/kotaro-muto/workspace/github/m-kotaro/game-plaza-proto/packages/cdk/src/lib/game-platform-stack.ts:106:24)",
+        "<anonymous> (/Users/kotaro-muto/workspace/github/m-kotaro/game-plaza-proto/packages/cdk/src/bin/app.ts:9:1)",
+        "...node internals, ts-node..."
+      ]
+    }
+  ],
+  "/GamePlatform-prod/OnDisconnectFunction/ServiceRole/Resource": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "OnDisconnectFunctionServiceRole5650AA83"
+    },
+    {
+      "type": "aws:cdk:creationStack",
+      "data": [
+        "...new NodejsFunction in aws-cdk-lib...",
+        "new GamePlatformStack (/Users/kotaro-muto/workspace/github/m-kotaro/game-plaza-proto/packages/cdk/src/lib/game-platform-stack.ts:116:27)",
+        "<anonymous> (/Users/kotaro-muto/workspace/github/m-kotaro/game-plaza-proto/packages/cdk/src/bin/app.ts:9:1)",
+        "...node internals, ts-node..."
+      ]
+    }
+  ],
+  "/GamePlatform-prod/OnMessageFunction/ServiceRole/Resource": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "OnMessageFunctionServiceRole2DA3F921"
+    },
+    {
+      "type": "aws:cdk:creationStack",
+      "data": [
+        "...new NodejsFunction in aws-cdk-lib...",
+        "new GamePlatformStack (/Users/kotaro-muto/workspace/github/m-kotaro/game-plaza-proto/packages/cdk/src/lib/game-platform-stack.ts:126:24)",
+        "<anonymous> (/Users/kotaro-muto/workspace/github/m-kotaro/game-plaza-proto/packages/cdk/src/bin/app.ts:9:1)",
+        "...node internals, ts-node..."
+      ]
+    }
+  ],
+  "/GamePlatform-prod/TickFunction/ServiceRole/Resource": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "TickFunctionServiceRoleBCAB835D"
+    },
+    {
+      "type": "aws:cdk:creationStack",
+      "data": [
+        "...new NodejsFunction in aws-cdk-lib...",
+        "new GamePlatformStack (/Users/kotaro-muto/workspace/github/m-kotaro/game-plaza-proto/packages/cdk/src/lib/game-platform-stack.ts:136:19)",
+        "<anonymous> (/Users/kotaro-muto/workspace/github/m-kotaro/game-plaza-proto/packages/cdk/src/bin/app.ts:9:1)",
+        "...node internals, ts-node..."
+      ]
+    }
+  ],
+  "/GamePlatform-prod/AssetsBucket/Policy/Resource": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "AssetsBucketPolicyFFACF6C4"
+    },
+    {
+      "type": "aws:cdk:creationStack",
+      "data": [
+        "...new Bucket2 in aws-cdk-lib...",
+        "new GamePlatformStack (/Users/kotaro-muto/workspace/github/m-kotaro/game-plaza-proto/packages/cdk/src/lib/game-platform-stack.ts:326:25)",
+        "<anonymous> (/Users/kotaro-muto/workspace/github/m-kotaro/game-plaza-proto/packages/cdk/src/bin/app.ts:9:1)",
+        "...node internals..."
+      ]
+    },
+    {
+      "type": "aws:cdk:analytics:mixin",
+      "data": {
+        "mixin": "aws-cdk-lib.aws_s3.mixins.BucketPolicyStatements"
+      }
+    }
+  ],
+  "/GamePlatform-prod/AssetsBucket/AutoDeleteObjectsCustomResource/Default": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "AssetsBucketAutoDeleteObjectsCustomResource51BA1286"
+    },
+    {
+      "type": "aws:cdk:creationStack",
+      "data": [
+        "...aws-cdk-lib...",
+        "(no user code in 10 frames, use --stack-trace-limit to capture more)"
+      ]
+    }
+  ],
+  "/GamePlatform-prod/DeployWebClient/AwsCliLayer/Resource": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "DeployWebClientAwsCliLayer6B685B7C"
+    },
+    {
+      "type": "aws:cdk:creationStack",
+      "data": [
+        "...new BucketDeployment2 in aws-cdk-lib...",
+        "new GamePlatformStack (/Users/kotaro-muto/workspace/github/m-kotaro/game-plaza-proto/packages/cdk/src/lib/game-platform-stack.ts:382:5)",
+        "<anonymous> (/Users/kotaro-muto/workspace/github/m-kotaro/game-plaza-proto/packages/cdk/src/bin/app.ts:9:1)",
+        "...node internals, ts-node..."
+      ]
+    }
+  ],
+  "/GamePlatform-prod/DeployWebClient/CustomResource/Default": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "DeployWebClientCustomResourceD7AF07A4"
+    },
+    {
+      "type": "aws:cdk:creationStack",
+      "data": [
+        "...new BucketDeployment2 in aws-cdk-lib...",
+        "new GamePlatformStack (/Users/kotaro-muto/workspace/github/m-kotaro/game-plaza-proto/packages/cdk/src/lib/game-platform-stack.ts:382:5)",
+        "<anonymous> (/Users/kotaro-muto/workspace/github/m-kotaro/game-plaza-proto/packages/cdk/src/bin/app.ts:9:1)",
+        "...node internals, ts-node..."
+      ]
+    }
+  ],
+  "/GamePlatform-prod/Custom::CDKBucketDeployment8693BB64968944B69AAFB0CC9EB8756C/ServiceRole/Resource": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "CustomCDKBucketDeployment8693BB64968944B69AAFB0CC9EB8756CServiceRole89A01265"
+    },
+    {
+      "type": "aws:cdk:creationStack",
+      "data": [
+        "...aws-cdk-lib...",
+        "(no user code in 10 frames, use --stack-trace-limit to capture more)"
+      ]
+    }
+  ],
+  "/GamePlatform-prod/Certificate/CertificateRequestorFunction/ServiceRole/Resource": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "CertificateCertificateRequestorFunctionServiceRoleC04C13DA"
+    },
+    {
+      "type": "aws:cdk:creationStack",
+      "data": [
+        "...new DnsValidatedCertificate2 in aws-cdk-lib...",
+        "new GamePlatformStack (/Users/kotaro-muto/workspace/github/m-kotaro/game-plaza-proto/packages/cdk/src/lib/game-platform-stack.ts:70:26)",
+        "<anonymous> (/Users/kotaro-muto/workspace/github/m-kotaro/game-plaza-proto/packages/cdk/src/bin/app.ts:9:1)"
+      ]
+    }
+  ],
+  "/GamePlatform-prod/OnConnectFunction/ServiceRole/DefaultPolicy/Resource": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "OnConnectFunctionServiceRoleDefaultPolicy82837976"
+    },
+    {
+      "type": "aws:cdk:creationStack",
+      "data": [
+        "...aws-cdk-lib...",
+        "(no user code in 10 frames, use --stack-trace-limit to capture more)"
+      ]
+    }
+  ],
+  "/GamePlatform-prod/OnDisconnectFunction/ServiceRole/DefaultPolicy/Resource": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "OnDisconnectFunctionServiceRoleDefaultPolicy91AC8900"
+    },
+    {
+      "type": "aws:cdk:creationStack",
+      "data": [
+        "...aws-cdk-lib...",
+        "(no user code in 10 frames, use --stack-trace-limit to capture more)"
+      ]
+    }
+  ],
+  "/GamePlatform-prod/OnMessageFunction/ServiceRole/DefaultPolicy/Resource": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "OnMessageFunctionServiceRoleDefaultPolicy672C93A1"
+    },
+    {
+      "type": "aws:cdk:creationStack",
+      "data": [
+        "...aws-cdk-lib...",
+        "(no user code in 10 frames, use --stack-trace-limit to capture more)"
+      ]
+    }
+  ],
+  "/GamePlatform-prod/TickFunction/ServiceRole/DefaultPolicy/Resource": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "TickFunctionServiceRoleDefaultPolicy169F0308"
+    },
+    {
+      "type": "aws:cdk:creationStack",
+      "data": [
+        "...aws-cdk-lib...",
+        "(no user code in 10 frames, use --stack-trace-limit to capture more)"
+      ]
+    }
+  ],
+  "/GamePlatform-prod/Distribution/Origin1/S3OriginAccessControl/Resource": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "DistributionOrigin1S3OriginAccessControlEB606076"
+    },
+    {
+      "type": "aws:cdk:creationStack",
+      "data": [
+        "...new Distribution2 in aws-cdk-lib...",
+        "new GamePlatformStack (/Users/kotaro-muto/workspace/github/m-kotaro/game-plaza-proto/packages/cdk/src/lib/game-platform-stack.ts:333:25)",
+        "<anonymous> (/Users/kotaro-muto/workspace/github/m-kotaro/game-plaza-proto/packages/cdk/src/bin/app.ts:9:1)",
+        "...node internals..."
+      ]
+    }
+  ],
+  "/GamePlatform-prod/Custom::CDKBucketDeployment8693BB64968944B69AAFB0CC9EB8756C/ServiceRole/DefaultPolicy/Resource": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "CustomCDKBucketDeployment8693BB64968944B69AAFB0CC9EB8756CServiceRoleDefaultPolicy88902FDF"
+    },
+    {
+      "type": "aws:cdk:creationStack",
+      "data": [
+        "...aws-cdk-lib...",
+        "(no user code in 10 frames, use --stack-trace-limit to capture more)"
+      ]
+    }
+  ],
+  "/GamePlatform-prod/Certificate/CertificateRequestorFunction/ServiceRole/DefaultPolicy/Resource": [
+    {
+      "type": "aws:cdk:logicalId",
+      "data": "CertificateCertificateRequestorFunctionServiceRoleDefaultPolicy3C8845BC"
+    },
+    {
+      "type": "aws:cdk:creationStack",
+      "data": [
+        "...new DnsValidatedCertificate2 in aws-cdk-lib...",
+        "new GamePlatformStack (/Users/kotaro-muto/workspace/github/m-kotaro/game-plaza-proto/packages/cdk/src/lib/game-platform-stack.ts:70:26)"
+      ]
+    }
+  ]
+}

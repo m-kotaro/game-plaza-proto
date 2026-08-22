@@ -50,15 +50,15 @@ export class GameScene extends Phaser.Scene {
     this.avatarManager = new AvatarManager(this);
     this.networkManager = new NetworkManager(WEBSOCKET_URL);
 
-    // Setup message handler (routes server messages to avatar manager)
-    this.messageHandler = new MessageHandler(this.networkManager, this.avatarManager);
-
-    // Setup input handler with adapter bridging the interface
-    const adapter = new AvatarManagerAdapter(this.avatarManager);
-    this.inputHandler = new InputHandler(this, this.networkManager, adapter);
-    this.inputHandler.setup();
-
-    // Listen for the first player_joined message (which is our own session)
+    // Register the local session detection handler FIRST.
+    // This MUST fire before MessageHandler's handler so that localSessionId is set
+    // on both GameScene and MessageHandler before MessageHandler processes the same
+    // message. Otherwise MessageHandler would see localSessionId === null and
+    // incorrectly add ourselves as a remote avatar — creating a ghost trail
+    // (a stationary duplicate stuck at the spawn position).
+    //
+    // Note: this.messageHandler is assigned below before connect() is called,
+    // so it is guaranteed to exist when this handler actually fires.
     this.networkManager.onMessage((message: ServerMessage) => {
       if (message.type === 'player_joined' && this.localSessionId === null) {
         this.localSessionId = message.sessionId;
@@ -66,6 +66,17 @@ export class GameScene extends Phaser.Scene {
         this.avatarManager.createLocalAvatar(message.sessionId, message.avatar, message.position);
       }
     });
+
+    // Setup message handler (routes server messages to avatar manager).
+    // Its onMessage handler is registered second, so by the time it processes the
+    // first player_joined, localSessionId is already set and it correctly skips
+    // adding ourselves as a remote avatar.
+    this.messageHandler = new MessageHandler(this.networkManager, this.avatarManager);
+
+    // Setup input handler with adapter bridging the interface
+    const adapter = new AvatarManagerAdapter(this.avatarManager);
+    this.inputHandler = new InputHandler(this, this.networkManager, adapter);
+    this.inputHandler.setup();
 
     // Connect to WebSocket server
     this.networkManager.connect();

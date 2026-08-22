@@ -27,11 +27,14 @@ const HEAD_SHAPE_MAP: Record<string, string> = {
 };
 
 /**
- * Internal representation of an avatar sprite and its associated data
+ * Internal representation of an avatar sprite and its associated data.
+ * Uses an Image backed by a generated texture instead of Graphics
+ * to avoid ghost trail rendering artifacts.
  */
 interface AvatarSprite {
   container: Phaser.GameObjects.Container;
-  body: Phaser.GameObjects.Graphics;
+  body: Phaser.GameObjects.Image;
+  textureKey: string;
   nameText?: Phaser.GameObjects.Text;
   targetPosition: Position;
   avatarData: AvatarData;
@@ -40,6 +43,11 @@ interface AvatarSprite {
 /**
  * AvatarManager manages all avatar sprites in the scene.
  * Handles creation, rendering, movement interpolation, and lifecycle management.
+ *
+ * Avatar rendering uses a RenderTexture approach: the avatar is drawn once onto
+ * a temporary Graphics object, a texture is generated from it, and an Image is
+ * created from that texture. This avoids Phaser's known issue where Graphics
+ * objects leave ghost trails when moved inside a Container.
  */
 export class AvatarManager {
   private scene: Phaser.Scene;
@@ -85,6 +93,7 @@ export class AvatarManager {
       return;
     }
 
+    this.scene.textures.remove(sprite.textureKey);
     sprite.container.destroy();
     this.avatars.delete(sessionId);
   }
@@ -102,7 +111,7 @@ export class AvatarManager {
   }
 
   /**
-   * Update avatar appearance (redraw the body graphics)
+   * Update avatar appearance (regenerate texture and update image)
    */
   updateAvatarAppearance(sessionId: string, avatarData: AvatarData): void {
     const sprite = this.avatars.get(sessionId);
@@ -111,8 +120,11 @@ export class AvatarManager {
     }
 
     sprite.avatarData = { ...avatarData };
-    sprite.body.clear();
-    this.drawAvatarBody(sprite.body, avatarData);
+
+    // Remove old texture and generate a new one
+    this.scene.textures.remove(sprite.textureKey);
+    this.generateAvatarTexture(sprite.textureKey, avatarData);
+    sprite.body.setTexture(sprite.textureKey);
   }
 
   /**
@@ -197,14 +209,19 @@ export class AvatarManager {
   }
 
   /**
-   * Create an avatar sprite with container, body graphics, and name text
+   * Create an avatar sprite with container, image body, and name text.
+   * Uses generateTexture to pre-render the avatar as a static image,
+   * avoiding ghost trail issues with Graphics objects in containers.
    */
   private createAvatarSprite(avatar: AvatarData, position: Position): AvatarSprite {
     const container = this.scene.add.container(position.x, position.y);
+    const textureKey = `avatar_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`;
 
-    // Create body graphics (drawn at local coordinates within the container)
-    const body = this.scene.add.graphics();
-    this.drawAvatarBody(body, avatar);
+    // Draw avatar to a temporary graphics and generate a texture from it
+    this.generateAvatarTexture(textureKey, avatar);
+
+    // Create image from generated texture
+    const body = this.scene.add.image(0, 0, textureKey);
     container.add(body);
 
     // Set the container depth so avatars appear above the background
@@ -213,89 +230,106 @@ export class AvatarManager {
     return {
       container,
       body,
+      textureKey,
       targetPosition: { ...position },
       avatarData: { ...avatar },
     };
   }
 
   /**
-   * Draw the avatar body onto the given graphics object.
-   * Renders a colored circle (~32px diameter) with a head shape indicator on top.
+   * Generate a texture for an avatar by drawing it onto a temporary Graphics object.
+   * The avatar is drawn centered in a 64x64 area (offset by 32,32) so that all
+   * coordinates are positive and captured correctly by generateTexture.
    */
-  private drawAvatarBody(graphics: Phaser.GameObjects.Graphics, avatarData: AvatarData): void {
+  private generateAvatarTexture(textureKey: string, avatarData: AvatarData): void {
+    const size = 64;
+    const cx = size / 2; // center x offset
+    const cy = size / 2; // center y offset
+
+    const graphics = new Phaser.GameObjects.Graphics(this.scene);
+
     const bodyColor = BODY_COLOR_MAP[avatarData.bodyColor] ?? 0x888888;
     const headShape = HEAD_SHAPE_MAP[avatarData.headShape] ?? 'circle';
 
-    // Body: filled circle, 16px radius (32px diameter)
+    // Body: filled circle at center
     graphics.fillStyle(bodyColor, 1);
-    graphics.fillCircle(0, 0, 16);
+    graphics.fillCircle(cx, cy, 16);
 
     // Body outline
     graphics.lineStyle(2, 0x000000, 0.3);
-    graphics.strokeCircle(0, 0, 16);
+    graphics.strokeCircle(cx, cy, 16);
 
-    // Head shape indicator on top of the body
+    // Head shape indicator on top of body
     const headColor = Phaser.Display.Color.IntegerToColor(bodyColor).brighten(30).color;
     graphics.fillStyle(headColor, 1);
 
     switch (headShape) {
       case 'circle':
-        graphics.fillCircle(0, -12, 8);
+        graphics.fillCircle(cx, cy - 12, 8);
         break;
       case 'square':
-        graphics.fillRect(-6, -20, 12, 12);
+        graphics.fillRect(cx - 6, cy - 20, 12, 12);
         break;
       case 'triangle':
-        graphics.fillTriangle(0, -22, -7, -10, 7, -10);
+        graphics.fillTriangle(cx, cy - 22, cx - 7, cy - 10, cx + 7, cy - 10);
         break;
       case 'oval':
-        graphics.fillEllipse(0, -14, 14, 10);
+        graphics.fillEllipse(cx, cy - 14, 14, 10);
         break;
       case 'diamond':
-        graphics.fillTriangle(0, -22, -6, -14, 0, -6);
-        graphics.fillTriangle(0, -6, 6, -14, 0, -22);
+        graphics.fillTriangle(cx, cy - 22, cx - 6, cy - 14, cx, cy - 6);
+        graphics.fillTriangle(cx, cy - 6, cx + 6, cy - 14, cx, cy - 22);
         break;
       default:
-        graphics.fillCircle(0, -12, 8);
+        graphics.fillCircle(cx, cy - 12, 8);
         break;
     }
 
-    // Accessory rendering
-    this.drawAccessory(graphics, avatarData.accessory);
+    // Accessories (offset by cx, cy)
+    this.drawAccessoryOffset(graphics, avatarData.accessory, cx, cy);
+
+    graphics.generateTexture(textureKey, size, size);
+    graphics.destroy();
   }
 
   /**
-   * Draw accessory on top of the avatar
+   * Draw accessory on top of the avatar with center offset.
+   * All coordinates are relative to (cx, cy) which is the center of the texture.
    */
-  private drawAccessory(graphics: Phaser.GameObjects.Graphics, accessory: string): void {
+  private drawAccessoryOffset(
+    graphics: Phaser.GameObjects.Graphics,
+    accessory: string,
+    cx: number,
+    cy: number,
+  ): void {
     switch (accessory) {
       case 'hat':
         graphics.fillStyle(0x333333, 1);
-        graphics.fillRect(-8, -26, 16, 6);
-        graphics.fillRect(-5, -32, 10, 6);
+        graphics.fillRect(cx - 8, cy - 26, 16, 6);
+        graphics.fillRect(cx - 5, cy - 32, 10, 6);
         break;
       case 'glasses':
         graphics.lineStyle(2, 0x333333, 1);
-        graphics.strokeCircle(-5, -12, 4);
-        graphics.strokeCircle(5, -12, 4);
-        graphics.lineBetween(-1, -12, 1, -12);
+        graphics.strokeCircle(cx - 5, cy - 12, 4);
+        graphics.strokeCircle(cx + 5, cy - 12, 4);
+        graphics.lineBetween(cx - 1, cy - 12, cx + 1, cy - 12);
         break;
       case 'ribbon':
         graphics.fillStyle(0xff69b4, 1);
-        graphics.fillTriangle(-8, -20, -2, -16, -2, -24);
-        graphics.fillTriangle(2, -16, 8, -20, 2, -24);
+        graphics.fillTriangle(cx - 8, cy - 20, cx - 2, cy - 16, cx - 2, cy - 24);
+        graphics.fillTriangle(cx + 2, cy - 16, cx + 8, cy - 20, cx + 2, cy - 24);
         break;
       case 'crown':
         graphics.fillStyle(0xffd700, 1);
-        graphics.fillRect(-7, -26, 14, 5);
-        graphics.fillTriangle(-7, -26, -4, -32, -1, -26);
-        graphics.fillTriangle(-1, -26, 2, -32, 5, -26);
-        graphics.fillTriangle(3, -26, 6, -32, 9, -26);
+        graphics.fillRect(cx - 7, cy - 26, 14, 5);
+        graphics.fillTriangle(cx - 7, cy - 26, cx - 4, cy - 32, cx - 1, cy - 26);
+        graphics.fillTriangle(cx - 1, cy - 26, cx + 2, cy - 32, cx + 5, cy - 26);
+        graphics.fillTriangle(cx + 3, cy - 26, cx + 6, cy - 32, cx + 9, cy - 26);
         break;
       case 'headband':
         graphics.lineStyle(3, 0xff4444, 1);
         graphics.beginPath();
-        graphics.arc(0, -14, 12, Phaser.Math.DegToRad(200), Phaser.Math.DegToRad(340), false);
+        graphics.arc(cx, cy - 14, 12, Phaser.Math.DegToRad(200), Phaser.Math.DegToRad(340), false);
         graphics.strokePath();
         break;
       case 'none':

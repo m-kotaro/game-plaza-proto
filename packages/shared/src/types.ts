@@ -39,6 +39,7 @@ export interface ConnectionRecord {
  * クライアント → サーバー メッセージ
  */
 export type ClientMessage =
+  | { action: "init" }
   | { action: "move"; position: Position }
   | { action: "customize_avatar"; avatarData: AvatarData }
   | { action: "heartbeat" };

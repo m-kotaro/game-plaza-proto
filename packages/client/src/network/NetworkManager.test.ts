@@ -151,8 +151,12 @@ describe("NetworkManager", () => {
 
       manager.send({ action: "heartbeat" });
 
-      expect(mockInstances[0].sent).toHaveLength(1);
+      // init message is sent automatically on open, then the explicit heartbeat
+      expect(mockInstances[0].sent).toHaveLength(2);
       expect(JSON.parse(mockInstances[0].sent[0])).toEqual({
+        action: "init",
+      });
+      expect(JSON.parse(mockInstances[0].sent[1])).toEqual({
         action: "heartbeat",
       });
     });
@@ -164,7 +168,8 @@ describe("NetworkManager", () => {
 
       manager.send({ action: "move", position: { x: 100, y: 200 } });
 
-      expect(JSON.parse(mockInstances[0].sent[0])).toEqual({
+      // init message is sent first on open, then the explicit move
+      expect(JSON.parse(mockInstances[0].sent[1])).toEqual({
         action: "move",
         position: { x: 100, y: 200 },
       });
@@ -269,14 +274,19 @@ describe("NetworkManager", () => {
 
       vi.advanceTimersByTime(HEARTBEAT_INTERVAL);
 
-      expect(mockInstances[0].sent).toHaveLength(1);
+      // init message on open + first heartbeat
+      expect(mockInstances[0].sent).toHaveLength(2);
       expect(JSON.parse(mockInstances[0].sent[0])).toEqual({
+        action: "init",
+      });
+      expect(JSON.parse(mockInstances[0].sent[1])).toEqual({
         action: "heartbeat",
       });
 
       vi.advanceTimersByTime(HEARTBEAT_INTERVAL);
 
-      expect(mockInstances[0].sent).toHaveLength(2);
+      // init + 2 heartbeats
+      expect(mockInstances[0].sent).toHaveLength(3);
     });
 
     it("should stop heartbeat on disconnect", () => {
@@ -288,8 +298,11 @@ describe("NetworkManager", () => {
 
       vi.advanceTimersByTime(HEARTBEAT_INTERVAL * 3);
 
-      // Only messages sent before disconnect
-      expect(mockInstances[0].sent).toHaveLength(0);
+      // Only init message sent before disconnect, no heartbeats
+      expect(mockInstances[0].sent).toHaveLength(1);
+      expect(JSON.parse(mockInstances[0].sent[0])).toEqual({
+        action: "init",
+      });
     });
   });
 

@@ -16,6 +16,7 @@ export const handler = async (
   await saveConnection({
     connectionId,
     sessionId,
+    playerName: `Player_${sessionId.slice(0, 6)}`,
     avatar,
     position: spawnPosition,
     lastSeen: Date.now(),

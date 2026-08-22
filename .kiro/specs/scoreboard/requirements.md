@@ -2,13 +2,13 @@
 
 ## Introduction
 
-ゲームプラザ内の各ゲームのハイスコアを保存・ランキング表示するスコアボード機能。ゲーム終了時にスコアをDynamoDBに保存し、ワールド内の各ゲームエリア横に看板（ランキング + ゲーム説明）を表示する。
+ゲームプラザ内の各ゲームのハイスコアを保存・ランキング表示するスコアボード機能。ゲーム終了時にスコアをDynamoDBに保存し、掲示板エリアでEキーを押すとランキングをオーバーレイ表示する。
 
 ## Glossary
 
 - **ScoreboardSystem**: スコアの保存・取得・ランキング管理を行うサーバーサイドシステム
 - **ScoreTable**: DynamoDBのスコア保存テーブル（PK: gameType, SK: score#timestamp）
-- **SignboardDisplay**: ワールド内の各ゲームエリア横に配置されるPhaser.jsテキストオブジェクト（ランキング表示 + ゲーム説明ポップアップ）
+- **BulletinBoard**: 掲示板エリア（📋ゾーン）でEキーを押すと表示されるDOMオーバーレイ（全ゲームのランキング一覧）
 - **RankingEntry**: ランキング1件分のデータ（playerName, score）
 - **ClientMessage**: クライアントからサーバーへ送信するWebSocketメッセージ
 - **ServerMessage**: サーバーからクライアントへ送信するWebSocketメッセージ
@@ -48,26 +48,26 @@
 2. THE ScoreTable SHALL store playerName, score, and timestamp as attributes for each score record
 3. WHILE scores are stored, THE ScoreTable SHALL retain only the top 10 records per gameType to limit storage
 
-### Requirement 4: 看板表示（ランキング）
+### Requirement 4: 掲示板表示（ランキング）
 
-**User Story:** ゲームプレイヤーとして、ワールド内の各ゲームエリア横にランキング看板を見たい。ハイスコアを一目で確認するため。
-
-#### Acceptance Criteria
-
-1. THE SignboardDisplay SHALL be positioned adjacent to each game zone in the world
-2. THE SignboardDisplay SHALL display the game name and top 3 ranking entries in the format "1位: PlayerName 100pts"
-3. WHEN a rankings_update ServerMessage is received, THE SignboardDisplay SHALL update its displayed content to reflect the latest ranking data
-4. WHEN the client initially connects and receives rankings data, THE SignboardDisplay SHALL render the current rankings immediately
-
-### Requirement 5: 看板表示（ゲーム説明ポップアップ）
-
-**User Story:** ゲームプレイヤーとして、看板に近づいたときにゲームの説明を見たい。ゲーム内容を事前に把握するため。
+**User Story:** ゲームプレイヤーとして、掲示板エリアでEキーを押してランキングを確認したい。各ゲームのハイスコアをオーバーレイで一覧表示するため。
 
 #### Acceptance Criteria
 
-1. WHEN a player moves within proximity of a SignboardDisplay, THE SignboardDisplay SHALL show a popup with the game description text
-2. WHEN a player moves away from the SignboardDisplay proximity, THE SignboardDisplay SHALL hide the popup
-3. THE SignboardDisplay SHALL display the game description as a text overlay that does not obstruct core gameplay
+1. EACH game zone SHALL have a bulletin board zone (📋) positioned to the left of the game zone
+2. WHEN a player is within the bulletin board zone and presses the E key, THE BulletinBoard overlay SHALL open displaying all game rankings
+3. WHEN a rankings_update ServerMessage is received, THE client SHALL store the updated rankings data in a Map for display on demand
+4. WHEN the BulletinBoard overlay is opened, THE BulletinBoard SHALL display the current rankings data including game title and top scores in "N位: PlayerName Xpts" format
+5. WHEN the client initially connects and receives rankings data, THE client SHALL store it so it is available when the BulletinBoard is opened
+
+### Requirement 5: 掲示板表示（ゲーム説明）
+
+**User Story:** ゲームプレイヤーとして、掲示板でゲームの説明を見たい。ゲーム内容を事前に把握するため。
+
+#### Acceptance Criteria
+
+1. THE BulletinBoard overlay SHALL display the game description (from meta.json) as a header or subtitle for each game's ranking card
+2. THE game description SHALL be fetched from the meta.json configured in game-config.json for each game type
 
 ### Requirement 6: インフラストラクチャ（CDK）
 

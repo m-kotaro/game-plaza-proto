@@ -130,3 +130,20 @@ export async function updateLastSeen(connectionId: string): Promise<void> {
     })
   );
 }
+
+/**
+ * プレイヤー名を更新する
+ */
+export async function updatePlayerName(
+  connectionId: string,
+  playerName: string
+): Promise<void> {
+  await docClient.send(
+    new UpdateCommand({
+      TableName: TABLE_NAME,
+      Key: { connectionId },
+      UpdateExpression: "SET playerName = :name",
+      ExpressionAttributeValues: { ":name": playerName },
+    })
+  );
+}

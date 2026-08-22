@@ -3,7 +3,7 @@ import { WORLD_WIDTH, WORLD_HEIGHT, ServerMessage, GameStartMessage, RankingEntr
 import { NetworkManager } from '../network';
 import { AvatarManager } from '../managers';
 import { InputHandler, AvatarManagerLike } from '../input';
-import { MessageHandler, RankingsHandler } from '../handlers';
+import { MessageHandler } from '../handlers';
 import { WEBSOCKET_URL } from '../config';
 import {
   InteractionZone,
@@ -14,7 +14,6 @@ import {
   getGameEntry,
   fetchAllGameMeta,
 } from '../iframe';
-import { Signboard } from './Signboard';
 import { BulletinBoard, BulletinBoardData } from './BulletinBoard';
 
 /**
@@ -42,9 +41,8 @@ export class GameScene extends Phaser.Scene {
   private inputHandler!: InputHandler;
   private messageHandler!: MessageHandler;
   private localSessionId: string | null = null;
-  private signboards: Map<string, Signboard> = new Map();
-  private rankingsHandler!: RankingsHandler;
   private lastGameType: string | null = null;
+  private gameTitles: Map<string, string> = new Map();
 
   // iframe integration
   private interactionZones: InteractionZone[] = [];
@@ -114,7 +112,9 @@ export class GameScene extends Phaser.Scene {
 
         // Request rankings for all game types on initial connection
         const gameTypes = this.gameZoneData.map(z => z.gameType);
-        this.rankingsHandler.requestAllRankings(gameTypes);
+        for (const gameType of gameTypes) {
+          this.networkManager.send({ action: 'get_rankings', gameType });
+        }
       }
     });
 
@@ -191,21 +191,6 @@ export class GameScene extends Phaser.Scene {
     // Result notification
     this.resultNotification = new ResultNotification('game-container');
 
-    // === Signboard setup ===
-    for (const zoneData of this.gameZoneData) {
-      const signboard = new Signboard(this, {
-        x: zoneData.x + 100,
-        y: zoneData.y - 30,
-        gameType: zoneData.gameType,
-        gameName: zoneData.label,
-        description: 'ゲームの説明',
-      });
-      this.signboards.set(zoneData.gameType, signboard);
-    }
-
-    // RankingsHandler
-    this.rankingsHandler = new RankingsHandler(this.networkManager, this.signboards);
-
     // === Bulletin Board setup (one per game, positioned to the left of each game zone) ===
     this.bulletinZones = this.gameZoneData.map(zone =>
       new InteractionZone(this, {
@@ -233,10 +218,7 @@ export class GameScene extends Phaser.Scene {
         const meta = metaMap[gameType];
         if (!meta) continue;
 
-        const signboard = this.signboards.get(gameType);
-        if (signboard) {
-          signboard.updateMeta(meta.title, meta.description);
-        }
+        this.gameTitles.set(gameType, meta.title);
 
         const zone = this.interactionZones[i];
         if (zone) {
@@ -319,19 +301,6 @@ export class GameScene extends Phaser.Scene {
           }
         }
 
-        // Signboard proximity detection (show/hide popup)
-        const SIGNBOARD_PROXIMITY = 80;
-        for (const signboard of this.signboards.values()) {
-          const sPos = signboard.getPosition();
-          const dx = pos.x - sPos.x;
-          const dy = pos.y - sPos.y;
-          const dist = Math.sqrt(dx * dx + dy * dy);
-          if (dist < SIGNBOARD_PROXIMITY) {
-            signboard.showPopup();
-          } else {
-            signboard.hidePopup();
-          }
-        }
       }
     }
   }
@@ -369,18 +338,13 @@ export class GameScene extends Phaser.Scene {
    * 掲示板を開く: 指定ゲームのランキングをDOMオーバーレイで表示する
    */
   private openBulletinBoard(gameType: string): void {
-    const signboard = this.signboards.get(gameType);
+    const title = this.gameTitles.get(gameType) || gameType;
+
     const data: BulletinBoardData[] = [{
       gameType,
-      title: signboard ? signboard.getGameType() : gameType,
+      title,
       rankings: this.allRankings.get(gameType) || [],
     }];
-
-    // Use the zone's label for the title (which comes from meta.json)
-    const zoneData = this.gameZoneData.find(z => z.gameType === gameType);
-    if (zoneData) {
-      data[0].title = zoneData.label;
-    }
 
     this.bulletinBoard.setData(data);
     this.bulletinBoard.open(() => {

@@ -41,6 +41,7 @@ export class GameScene extends Phaser.Scene {
   private inputHandler!: InputHandler;
   private messageHandler!: MessageHandler;
   private localSessionId: string | null = null;
+  private playerName: string = 'ゲスト';
   private lastGameType: string | null = null;
   private gameTitles: Map<string, string> = new Map();
 
@@ -94,6 +95,10 @@ export class GameScene extends Phaser.Scene {
     // Initialize managers
     this.avatarManager = new AvatarManager(this);
     this.networkManager = new NetworkManager(WEBSOCKET_URL);
+
+    // Read player name from BootScene and set on NetworkManager
+    this.playerName = (window as unknown as Record<string, string>).__playerName || 'ゲスト';
+    this.networkManager.setPlayerName(this.playerName);
 
     // Register the local session detection handler FIRST.
     // This MUST fire before MessageHandler's handler so that localSessionId is set
@@ -325,7 +330,7 @@ export class GameScene extends Phaser.Scene {
         type: 'game_start',
         gameType,
         players: [{
-          userName: 'Player',
+          userName: this.playerName,
           uuid: this.localSessionId!,
           isLocal: true,
         }],

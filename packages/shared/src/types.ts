@@ -30,6 +30,7 @@ export interface PlayerInfo {
 export interface ConnectionRecord {
   connectionId: string; // PK
   sessionId: string;
+  playerName: string;
   avatar: AvatarData;
   position: Position;
   lastSeen: number; // Unix timestamp (ms)
@@ -47,7 +48,7 @@ export interface RankingEntry {
  * クライアント → サーバー メッセージ
  */
 export type ClientMessage =
-  | { action: "init" }
+  | { action: "init"; playerName: string }
   | { action: "move"; position: Position }
   | { action: "customize_avatar"; avatarData: AvatarData }
   | { action: "heartbeat" }

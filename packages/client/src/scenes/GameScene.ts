@@ -224,7 +224,6 @@ export class GameScene extends Phaser.Scene {
     // PostMessage callbacks
     this.postMessageBridge.onGameResult((result) => {
       this.iframeOverlay.close();
-      this.resultNotification.show(result);
 
       // Submit score if available
       if (result.scores && this.localSessionId) {

@@ -34,7 +34,8 @@ function isValidAvatarData(avatarData: unknown): avatarData is AvatarData {
   if (
     typeof data.bodyColor !== "string" ||
     typeof data.headShape !== "string" ||
-    typeof data.accessory !== "string"
+    typeof data.accessory !== "string" ||
+    typeof data.characterIndex !== "number"
   ) {
     return false;
   }

@@ -54,8 +54,8 @@ describe('MessageHandler', () => {
   describe('world_state', () => {
     it('should call initWorldState with players', () => {
       const players = [
-        { sessionId: 'p1', avatar: { bodyColor: 'red', headShape: 'round', accessory: 'hat' }, position: { x: 10, y: 20 } },
-        { sessionId: 'p2', avatar: { bodyColor: 'blue', headShape: 'square', accessory: 'none' }, position: { x: 30, y: 40 } },
+        { sessionId: 'p1', avatar: { bodyColor: 'red', headShape: 'round', accessory: 'hat', characterIndex: 0 }, position: { x: 10, y: 20 } },
+        { sessionId: 'p2', avatar: { bodyColor: 'blue', headShape: 'square', accessory: 'none', characterIndex: 5 }, position: { x: 30, y: 40 } },
       ];
 
       networkManager._dispatch({ type: 'world_state', players });
@@ -66,7 +66,7 @@ describe('MessageHandler', () => {
 
   describe('player_joined', () => {
     it('should add remote avatar for other players', () => {
-      const avatar = { bodyColor: 'green', headShape: 'round', accessory: 'glasses' };
+      const avatar = { bodyColor: 'green', headShape: 'round', accessory: 'glasses', characterIndex: 3 };
       const position = { x: 100, y: 200 };
 
       networkManager._dispatch({ type: 'player_joined', sessionId: 'other-player', avatar, position });
@@ -77,7 +77,7 @@ describe('MessageHandler', () => {
     it('should not add avatar for local player', () => {
       messageHandler.setLocalSessionId('local-player');
 
-      const avatar = { bodyColor: 'green', headShape: 'round', accessory: 'glasses' };
+      const avatar = { bodyColor: 'green', headShape: 'round', accessory: 'glasses', characterIndex: 3 };
       const position = { x: 100, y: 200 };
 
       networkManager._dispatch({ type: 'player_joined', sessionId: 'local-player', avatar, position });
@@ -116,7 +116,7 @@ describe('MessageHandler', () => {
 
   describe('avatar_updated', () => {
     it('should update avatar appearance for the specified player', () => {
-      const avatarData = { bodyColor: 'purple', headShape: 'triangle', accessory: 'crown' };
+      const avatarData = { bodyColor: 'purple', headShape: 'triangle', accessory: 'crown', characterIndex: 10 };
 
       networkManager._dispatch({ type: 'avatar_updated', sessionId: 'some-player', avatarData });
 
@@ -132,7 +132,7 @@ describe('MessageHandler', () => {
       networkManager._dispatch({
         type: 'player_joined',
         sessionId: 'me',
-        avatar: { bodyColor: 'red', headShape: 'round', accessory: 'none' },
+        avatar: { bodyColor: 'red', headShape: 'round', accessory: 'none', characterIndex: 0 },
         position: { x: 0, y: 0 },
       });
       expect(avatarManager.addRemoteAvatar).not.toHaveBeenCalled();
@@ -145,12 +145,12 @@ describe('MessageHandler', () => {
       networkManager._dispatch({
         type: 'player_joined',
         sessionId: 'other',
-        avatar: { bodyColor: 'blue', headShape: 'square', accessory: 'hat' },
+        avatar: { bodyColor: 'blue', headShape: 'square', accessory: 'hat', characterIndex: 5 },
         position: { x: 50, y: 50 },
       });
       expect(avatarManager.addRemoteAvatar).toHaveBeenCalledWith(
         'other',
-        { bodyColor: 'blue', headShape: 'square', accessory: 'hat' },
+        { bodyColor: 'blue', headShape: 'square', accessory: 'hat', characterIndex: 5 },
         { x: 50, y: 50 },
       );
     });

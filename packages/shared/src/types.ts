@@ -13,6 +13,7 @@ export interface AvatarData {
   bodyColor: string; // 体の色 (事前定義の選択肢から)
   headShape: string; // 頭の形
   accessory: string; // アクセサリー (帽子、メガネなど)
+  characterIndex: number; // 0-19, maps to character sprite frame
 }
 
 /**

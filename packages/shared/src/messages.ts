@@ -64,7 +64,8 @@ function isValidAvatarData(obj: unknown): boolean {
   return (
     typeof avatar.bodyColor === "string" &&
     typeof avatar.headShape === "string" &&
-    typeof avatar.accessory === "string"
+    typeof avatar.accessory === "string" &&
+    typeof avatar.characterIndex === "number"
   );
 }
 

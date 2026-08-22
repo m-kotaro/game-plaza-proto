@@ -23,8 +23,9 @@ export function generateRandomAvatar(): AvatarData {
   const bodyColor = BODY_COLORS[Math.floor(Math.random() * BODY_COLORS.length)];
   const headShape = HEAD_SHAPES[Math.floor(Math.random() * HEAD_SHAPES.length)];
   const accessory = ACCESSORIES[Math.floor(Math.random() * ACCESSORIES.length)];
+  const characterIndex = Math.floor(Math.random() * 20);
 
-  return { bodyColor, headShape, accessory };
+  return { bodyColor, headShape, accessory, characterIndex };
 }
 
 /**

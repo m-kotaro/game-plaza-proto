@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>しりとり</title>
+  <title>サンプルゲーム</title>
   <style>
     * { margin: 0; padding: 0; box-sizing: border-box; }
     body {
@@ -37,12 +37,12 @@
   </style>
 </head>
 <body>
-  <h1>💬 しりとり</h1>
-  <div class="subtitle">(Stub - 実装予定)</div>
+  <h1>🎮 サンプルゲーム</h1>
+  <div class="subtitle">このファイルを参考に外部ゲームを作成できます</div>
   <div id="player-info">プラットフォームからの開始待ち...</div>
   <div class="btn-group">
-    <button class="btn-win" id="btn-win">勝利を送信</button>
-    <button class="btn-draw" id="btn-draw">引き分けを送信</button>
+    <button class="btn-win" id="btn-win">勝利（スコア100）</button>
+    <button class="btn-draw" id="btn-draw">引き分け</button>
     <button class="btn-close" id="btn-close">ゲームを閉じる</button>
   </div>
   <div id="status"></div>
@@ -50,6 +50,7 @@
   <script>
     // ============================================================
     // Game Plaza Platform SDK
+    // 外部ゲームがプラットフォームと通信するための共通インターフェース
     // ============================================================
 
     const GamePlazaSDK = {
@@ -57,6 +58,10 @@
       localPlayer: null,
       gameType: null,
 
+      /**
+       * 初期化: プラットフォームからの game_start メッセージを待ち受ける
+       * @param {function} onGameStart - ゲーム開始時のコールバック
+       */
       init(onGameStart) {
         window.addEventListener('message', (event) => {
           const data = event.data;
@@ -76,6 +81,11 @@
         });
       },
 
+      /**
+       * ゲーム結果を送信する
+       * @param {string|null} winnerId - 勝者のUUID（引き分けはnull）
+       * @param {Object} [scores] - スコア情報（プレイヤーUUID → スコア）
+       */
       sendResult(winnerId, scores = {}) {
         window.parent.postMessage({
           type: 'game_result',
@@ -84,25 +94,30 @@
         }, '*');
       },
 
+      /**
+       * ゲームを閉じる（結果なし）
+       */
       sendClose() {
         window.parent.postMessage({ type: 'game_close' }, '*');
       },
     };
 
     // ============================================================
-    // ゲームロジック
+    // ゲームロジック（ここを書き換えてゲームを実装する）
     // ============================================================
 
-    GamePlazaSDK.init(({ gameType, players }) => {
+    GamePlazaSDK.init(({ gameType, players, localPlayer }) => {
       const names = players.map(p => p.userName || p.uuid.slice(0, 8)).join(', ');
-      document.getElementById('player-info').textContent = `プレイヤー: ${names}`;
+      document.getElementById('player-info').textContent =
+        `ゲーム: ${gameType} | プレイヤー: ${names}`;
       document.getElementById('status').textContent = 'ゲーム開始！';
     });
 
     document.getElementById('btn-win').addEventListener('click', () => {
-      const winnerId = GamePlazaSDK.localPlayer?.uuid || null;
-      GamePlazaSDK.sendResult(winnerId);
-      document.getElementById('status').textContent = '✅ 結果送信: 勝利';
+      const uuid = GamePlazaSDK.localPlayer?.uuid || 'unknown';
+      // スコアを送信（scoresのキーはプレイヤーUUID、値はスコア数値）
+      GamePlazaSDK.sendResult(uuid, { [uuid]: 100 });
+      document.getElementById('status').textContent = '✅ 結果送信: 勝利（100点）';
     });
 
     document.getElementById('btn-draw').addEventListener('click', () => {

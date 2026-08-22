@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Game Template</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      font-family: sans-serif;
+      background: #1a1a2e;
+      color: #eee;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      min-height: 100vh;
+      padding: 20px;
+    }
+    h1 { margin-bottom: 8px; color: #ffd700; }
+    .subtitle { margin-bottom: 24px; font-size: 13px; opacity: 0.5; }
+    #player-info { margin-bottom: 30px; font-size: 14px; opacity: 0.8; }
+    .btn-group { display: flex; gap: 12px; flex-wrap: wrap; justify-content: center; }
+    button {
+      padding: 12px 24px;
+      font-size: 16px;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: opacity 0.2s;
+    }
+    button:hover { opacity: 0.8; }
+    .btn-win { background: #2ecc71; color: white; }
+    .btn-draw { background: #f39c12; color: white; }
+    .btn-close { background: #e74c3c; color: white; }
+    #status { margin-top: 20px; font-size: 12px; opacity: 0.6; }
+  </style>
+</head>
+<body>
+  <h1>🎮 Game Template</h1>
+  <div class="subtitle">このファイルを元に外部ゲームを作成できます</div>
+  <div id="player-info">プラットフォームからの開始待ち...</div>
+  <div class="btn-group">
+    <button class="btn-win" id="btn-win">勝利を送信</button>
+    <button class="btn-draw" id="btn-draw">引き分けを送信</button>
+    <button class="btn-close" id="btn-close">ゲームを閉じる</button>
+  </div>
+  <div id="status"></div>
+
+  <script>
+    // ============================================================
+    // Game Plaza Platform SDK
+    // 外部ゲームがプラットフォームと通信するための共通インターフェース
+    // ============================================================
+
+    /**
+     * プラットフォーム通信SDK
+     * - プラットフォームからのゲーム開始メッセージを受信
+     * - プラットフォームにゲーム結果を送信
+     * - プラットフォームにゲーム終了を通知
+     */
+    const GamePlazaSDK = {
+      /** 受信したプレイヤー情報 */
+      players: [],
+      /** ローカルプレイヤー（操作者） */
+      localPlayer: null,
+      /** ゲームタイプ */
+      gameType: null,
+
+      /**
+       * 初期化: プラットフォームからの game_start メッセージを待ち受ける
+       * @param {function} onGameStart - ゲーム開始時のコールバック
+       */
+      init(onGameStart) {
+        window.addEventListener('message', (event) => {
+          const data = event.data;
+          if (!data || data.type !== 'game_start') return;
+
+          this.players = data.players || [];
+          this.localPlayer = this.players.find(p => p.isLocal) || null;
+          this.gameType = data.gameType;
+
+          if (onGameStart) {
+            onGameStart({
+              gameType: data.gameType,
+              players: this.players,
+              localPlayer: this.localPlayer,
+            });
+          }
+        });
+      },
+
+      /**
+       * ゲーム結果を送信してプラットフォームに通知する
+       * @param {string|null} winnerId - 勝者のUUID（引き分けの場合はnull）
+       * @param {Object} [scores] - スコア情報（任意）
+       */
+      sendResult(winnerId, scores = {}) {
+        window.parent.postMessage({
+          type: 'game_result',
+          winnerId: winnerId,
+          scores: scores,
+        }, '*');
+      },
+
+      /**
+       * ゲームを閉じることをプラットフォームに通知する
+       * （結果を送らずに閉じたい場合に使用）
+       */
+      sendClose() {
+        window.parent.postMessage({ type: 'game_close' }, '*');
+      },
+    };
+
+    // ============================================================
+    // ゲームロジック（ここを書き換えてゲームを実装する）
+    // ============================================================
+
+    // SDK初期化: ゲーム開始時のコールバックを登録
+    GamePlazaSDK.init(({ gameType, players, localPlayer }) => {
+      // プレイヤー情報を画面に表示
+      const names = players.map(p => p.userName || p.uuid.slice(0, 8)).join(', ');
+      document.getElementById('player-info').textContent =
+        `ゲーム: ${gameType} | プレイヤー: ${names}`;
+      document.getElementById('status').textContent = 'ゲーム開始！';
+    });
+
+    // ボタンイベント: 結果送信
+    document.getElementById('btn-win').addEventListener('click', () => {
+      const winnerId = GamePlazaSDK.localPlayer?.uuid || null;
+      GamePlazaSDK.sendResult(winnerId);
+      document.getElementById('status').textContent = '✅ 結果送信: 勝利';
+    });
+
+    document.getElementById('btn-draw').addEventListener('click', () => {
+      GamePlazaSDK.sendResult(null);
+      document.getElementById('status').textContent = '✅ 結果送信: 引き分け';
+    });
+
+    document.getElementById('btn-close').addEventListener('click', () => {
+      GamePlazaSDK.sendClose();
+      document.getElementById('status').textContent = '✅ ゲーム終了';
+    });
+  </script>
+</body>
+</html>

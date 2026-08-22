@@ -18,7 +18,7 @@ describe("serializeClientMessage / deserializeClientMessage", () => {
   it("should round-trip a customize_avatar message", () => {
     const msg: ClientMessage = {
       action: "customize_avatar",
-      avatarData: { bodyColor: "red", headShape: "round", accessory: "hat" },
+      avatarData: { bodyColor: "red", headShape: "round", accessory: "hat", characterIndex: 2 },
     };
     const serialized = serializeClientMessage(msg);
     const deserialized = deserializeClientMessage(serialized);
@@ -82,7 +82,7 @@ describe("serializeServerMessage / deserializeServerMessage", () => {
       players: [
         {
           sessionId: "abc",
-          avatar: { bodyColor: "blue", headShape: "square", accessory: "none" },
+          avatar: { bodyColor: "blue", headShape: "square", accessory: "none", characterIndex: 7 },
           position: { x: 50, y: 75 },
         },
       ],
@@ -96,7 +96,7 @@ describe("serializeServerMessage / deserializeServerMessage", () => {
     const msg: ServerMessage = {
       type: "player_joined",
       sessionId: "xyz",
-      avatar: { bodyColor: "green", headShape: "triangle", accessory: "glasses" },
+      avatar: { bodyColor: "green", headShape: "triangle", accessory: "glasses", characterIndex: 12 },
       position: { x: 800, y: 600 },
     };
     const serialized = serializeServerMessage(msg);
@@ -126,7 +126,7 @@ describe("serializeServerMessage / deserializeServerMessage", () => {
     const msg: ServerMessage = {
       type: "avatar_updated",
       sessionId: "abc",
-      avatarData: { bodyColor: "pink", headShape: "oval", accessory: "crown" },
+      avatarData: { bodyColor: "pink", headShape: "oval", accessory: "crown", characterIndex: 15 },
     };
     const serialized = serializeServerMessage(msg);
     const deserialized = deserializeServerMessage(serialized);

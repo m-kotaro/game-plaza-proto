@@ -82,6 +82,24 @@ export class GameScene extends Phaser.Scene {
     super({ key: 'GameScene' });
   }
 
+  preload(): void {
+    // Load Tiny Town tileset for background
+    this.load.spritesheet('tiny-town', '/assets/kenney_tiny-town/Tilemap/tilemap_packed.png', {
+      frameWidth: 16,
+      frameHeight: 16,
+      margin: 0,
+      spacing: 0,
+    });
+
+    // Load Tiny Dungeon tileset for characters
+    this.load.spritesheet('tiny-dungeon', '/assets/kenney_tiny-dungeon/Tilemap/tilemap_packed.png', {
+      frameWidth: 16,
+      frameHeight: 16,
+      margin: 0,
+      spacing: 0,
+    });
+  }
+
   create(): void {
     // Set world bounds for physics
     this.physics.world.setBounds(0, 0, WORLD_WIDTH, WORLD_HEIGHT);
@@ -360,37 +378,32 @@ export class GameScene extends Phaser.Scene {
 
   /**
    * ワールド背景の描画
-   * 草色の背景 + グリッド線 + ワールド境界線
+   * Kenney Tiny Town タイルセットを使ったタイルベースの背景
    */
   private createWorldBackground(): void {
-    // Grass-colored background
-    const bg = this.add.rectangle(
-      WORLD_WIDTH / 2,
-      WORLD_HEIGHT / 2,
-      WORLD_WIDTH,
-      WORLD_HEIGHT,
-      0x4a7c59,
-    );
-    bg.setDepth(-10);
+    const tileSize = 16;
+    const scale = 2;
+    const scaledSize = tileSize * scale;
+    const cols = Math.ceil(WORLD_WIDTH / scaledSize);
+    const rows = Math.ceil(WORLD_HEIGHT / scaledSize);
 
-    // Grid lines for visual reference
-    const graphics = this.add.graphics();
-    graphics.lineStyle(1, 0x5a8c69, 0.3);
-    const gridSize = 100;
-    for (let x = 0; x <= WORLD_WIDTH; x += gridSize) {
-      graphics.moveTo(x, 0);
-      graphics.lineTo(x, WORLD_HEIGHT);
+    // Base grass layer using tile index 0
+    for (let y = 0; y < rows; y++) {
+      for (let x = 0; x < cols; x++) {
+        const tile = this.add.image(
+          x * scaledSize + scaledSize / 2,
+          y * scaledSize + scaledSize / 2,
+          'tiny-town',
+          0,
+        );
+        tile.setScale(scale);
+        tile.setDepth(-10);
+      }
     }
-    for (let y = 0; y <= WORLD_HEIGHT; y += gridSize) {
-      graphics.moveTo(0, y);
-      graphics.lineTo(WORLD_WIDTH, y);
-    }
-    graphics.strokePath();
-    graphics.setDepth(-9);
 
-    // World boundary visual
+    // World boundary
     const border = this.add.graphics();
-    border.lineStyle(3, 0xffffff, 0.5);
+    border.lineStyle(2, 0xffffff, 0.3);
     border.strokeRect(0, 0, WORLD_WIDTH, WORLD_HEIGHT);
     border.setDepth(-8);
   }

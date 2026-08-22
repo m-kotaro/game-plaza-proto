@@ -87,10 +87,11 @@ wss.on('connection', (ws) => {
 
         case 'customize_avatar':
           if (!msg.avatarData) break;
-          const { bodyColor, headShape, accessory } = msg.avatarData;
+          const { bodyColor, headShape, accessory, characterIndex } = msg.avatarData;
           if (!(BODY_COLORS as readonly string[]).includes(bodyColor)) break;
           if (!(HEAD_SHAPES as readonly string[]).includes(headShape)) break;
           if (!(ACCESSORIES as readonly string[]).includes(accessory)) break;
+          if (typeof characterIndex !== 'number') break;
           record.avatar = msg.avatarData as AvatarData;
           broadcast({ type: 'avatar_updated', sessionId: record.sessionId, avatarData: record.avatar }, ws);
           break;

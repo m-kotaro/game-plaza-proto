@@ -1,0 +1,34 @@
+{
+  "games": {
+    "mock": {
+      "url": "/mock-game.html",
+      "label": "🧪 モック"
+    },
+    "janken": {
+      "url": "/games/janken.html",
+      "label": "✊ じゃんけん"
+    },
+    "quiz": {
+      "url": "/games/quiz.html",
+      "label": "❓ クイズ"
+    },
+    "memory": {
+      "url": "/games/memory.html",
+      "label": "🃏 神経衰弱"
+    },
+    "slot": {
+      "url": "/games/slot.html",
+      "label": "🎰 スロット"
+    },
+    "dice": {
+      "url": "/games/dice.html",
+      "label": "🎲 サイコロ"
+    },
+    "shiritori": {
+      "url": "/games/shiritori.html",
+      "label": "💬 しりとり"
+    }
+  },
+  "allowedOrigins": [],
+  "loadTimeoutMs": 10000
+}

@@ -1,10 +1,18 @@
 import Phaser from 'phaser';
-import { WORLD_WIDTH, WORLD_HEIGHT, ServerMessage } from '@game-plaza/shared';
+import { WORLD_WIDTH, WORLD_HEIGHT, ServerMessage, GameStartMessage } from '@game-plaza/shared';
 import { NetworkManager } from '../network';
 import { AvatarManager } from '../managers';
 import { InputHandler, AvatarManagerLike } from '../input';
 import { MessageHandler } from '../handlers';
 import { WEBSOCKET_URL } from '../config';
+import {
+  InteractionZone,
+  IframeOverlayManager,
+  PostMessageBridge,
+  ResultNotification,
+  DEFAULT_GAME_CONFIG,
+  getGameEntry,
+} from '../iframe';
 
 /**
  * AvatarManager と InputHandler の AvatarManagerLike インターフェースを橋渡しするアダプター
@@ -32,6 +40,36 @@ export class GameScene extends Phaser.Scene {
   private messageHandler!: MessageHandler;
   private localSessionId: string | null = null;
 
+  // iframe integration
+  private interactionZones: InteractionZone[] = [];
+  private gameZoneData = (() => {
+    const positions = [
+      { x: 300, y: 200 },
+      { x: 700, y: 200 },
+      { x: 1100, y: 200 },
+      { x: 300, y: 600 },
+      { x: 700, y: 600 },
+      { x: 1100, y: 600 },
+    ];
+
+    // mock はデバッグ用なのでゾーン一覧から除外する
+    const gameTypes = Object.keys(DEFAULT_GAME_CONFIG.games).filter(k => k !== 'mock');
+
+    return gameTypes.slice(0, positions.length).map((gameType, i) => ({
+      x: positions[i].x,
+      y: positions[i].y,
+      width: 120,
+      height: 120,
+      gameType,
+      label: DEFAULT_GAME_CONFIG.games[gameType]?.label ?? gameType,
+    }));
+  })();
+  private iframeOverlay!: IframeOverlayManager;
+  private postMessageBridge!: PostMessageBridge;
+  private resultNotification!: ResultNotification;
+  private inputEnabled = true;
+  private eKey!: Phaser.Input.Keyboard.Key;
+
   constructor() {
     super({ key: 'GameScene' });
   }
@@ -50,15 +88,15 @@ export class GameScene extends Phaser.Scene {
     this.avatarManager = new AvatarManager(this);
     this.networkManager = new NetworkManager(WEBSOCKET_URL);
 
-    // Setup message handler (routes server messages to avatar manager)
-    this.messageHandler = new MessageHandler(this.networkManager, this.avatarManager);
-
-    // Setup input handler with adapter bridging the interface
-    const adapter = new AvatarManagerAdapter(this.avatarManager);
-    this.inputHandler = new InputHandler(this, this.networkManager, adapter);
-    this.inputHandler.setup();
-
-    // Listen for the first player_joined message (which is our own session)
+    // Register the local session detection handler FIRST.
+    // This MUST fire before MessageHandler's handler so that localSessionId is set
+    // on both GameScene and MessageHandler before MessageHandler processes the same
+    // message. Otherwise MessageHandler would see localSessionId === null and
+    // incorrectly add ourselves as a remote avatar — creating a ghost trail
+    // (a stationary duplicate stuck at the spawn position).
+    //
+    // Note: this.messageHandler is assigned below before connect() is called,
+    // so it is guaranteed to exist when this handler actually fires.
     this.networkManager.onMessage((message: ServerMessage) => {
       if (message.type === 'player_joined' && this.localSessionId === null) {
         this.localSessionId = message.sessionId;
@@ -66,6 +104,17 @@ export class GameScene extends Phaser.Scene {
         this.avatarManager.createLocalAvatar(message.sessionId, message.avatar, message.position);
       }
     });
+
+    // Setup message handler (routes server messages to avatar manager).
+    // Its onMessage handler is registered second, so by the time it processes the
+    // first player_joined, localSessionId is already set and it correctly skips
+    // adding ourselves as a remote avatar.
+    this.messageHandler = new MessageHandler(this.networkManager, this.avatarManager);
+
+    // Setup input handler with adapter bridging the interface
+    const adapter = new AvatarManagerAdapter(this.avatarManager);
+    this.inputHandler = new InputHandler(this, this.networkManager, adapter);
+    this.inputHandler.setup();
 
     // Connect to WebSocket server
     this.networkManager.connect();
@@ -95,14 +144,113 @@ export class GameScene extends Phaser.Scene {
         }
       },
     });
+
+    // === iframe integration setup ===
+
+    // Interaction zones
+    this.interactionZones = this.gameZoneData.map(zone =>
+      new InteractionZone(this, {
+        x: zone.x,
+        y: zone.y,
+        width: zone.width,
+        height: zone.height,
+        gameType: zone.gameType,
+        label: zone.label,
+      })
+    );
+
+    // PostMessage bridge
+    this.postMessageBridge = new PostMessageBridge({
+      allowedOrigins: DEFAULT_GAME_CONFIG.allowedOrigins,
+    });
+
+    // Iframe overlay
+    this.iframeOverlay = new IframeOverlayManager(
+      'game-container',
+      this.postMessageBridge,
+      {
+        onInputPause: () => { this.inputEnabled = false; },
+        onInputResume: () => { this.inputEnabled = true; },
+      },
+      DEFAULT_GAME_CONFIG.loadTimeoutMs,
+    );
+
+    // Result notification
+    this.resultNotification = new ResultNotification('game-container');
+
+    // PostMessage callbacks
+    this.postMessageBridge.onGameResult((result) => {
+      this.iframeOverlay.close();
+      this.resultNotification.show(result);
+    });
+
+    this.postMessageBridge.onGameClose(() => {
+      this.iframeOverlay.close();
+    });
+
+    // E key for interaction
+    this.eKey = this.input.keyboard!.addKey(Phaser.Input.Keyboard.KeyCodes.E);
   }
 
   update(time: number, delta: number): void {
-    // Update input (movement + position sync)
-    this.inputHandler.update(time, delta);
+    // Update input (movement + position sync) only when input is enabled
+    if (this.inputEnabled) {
+      this.inputHandler.update(time, delta);
+    }
 
     // Update avatar interpolation for remote players
     this.avatarManager.update();
+
+    // Interaction zone overlap detection (manual bounds check for Container-based avatar)
+    if (this.localSessionId && this.inputEnabled) {
+      const pos = this.avatarManager.getLocalPosition();
+      if (pos) {
+        for (let i = 0; i < this.interactionZones.length; i++) {
+          const zone = this.interactionZones[i];
+          const cfg = this.gameZoneData[i];
+          const inZone =
+            pos.x >= cfg.x - cfg.width / 2 &&
+            pos.x <= cfg.x + cfg.width / 2 &&
+            pos.y >= cfg.y - cfg.height / 2 &&
+            pos.y <= cfg.y + cfg.height / 2;
+
+          zone.setPlayerInZone(inZone);
+
+          if (inZone && Phaser.Input.Keyboard.JustDown(this.eKey)) {
+            this.startGame(zone.getGameType());
+            break;
+          }
+        }
+      }
+    }
+  }
+
+  /**
+   * ゲーム開始フロー: iframe を開き GameStartMessage を送信する
+   */
+  private startGame(gameType: string): void {
+    const entry = getGameEntry(DEFAULT_GAME_CONFIG, gameType);
+    if (!entry) {
+      console.warn(`[GameScene] Unknown game type: ${gameType}`);
+      return;
+    }
+
+    // Open iframe overlay
+    this.iframeOverlay.open(entry.url, entry.origin);
+
+    // Send GameStartMessage after a short delay to allow iframe to load
+    setTimeout(() => {
+      const message: GameStartMessage = {
+        type: 'game_start',
+        gameType,
+        players: [{
+          userName: 'Player',
+          uuid: this.localSessionId!,
+          isLocal: true,
+        }],
+      };
+      this.postMessageBridge.sendGameStart(message);
+    }, 500);
   }
 
   /**

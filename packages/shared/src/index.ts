@@ -29,3 +29,18 @@ export {
   serializeServerMessage,
   deserializeServerMessage,
 } from "./messages";
+
+export type {
+  GamePlayer,
+  GameStartMessage,
+  GameResultMessage,
+  GameCloseMessage,
+  IframeMessage,
+} from "./iframe-messages";
+
+export {
+  isGameStartMessage,
+  isGameResultMessage,
+  isGameCloseMessage,
+  isIframeMessage,
+} from "./iframe-messages";

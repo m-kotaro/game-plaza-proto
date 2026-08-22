@@ -1,11 +1,37 @@
 import Phaser from 'phaser';
-import { WORLD_WIDTH, WORLD_HEIGHT } from '@game-plaza/shared';
+import { WORLD_WIDTH, WORLD_HEIGHT, ServerMessage } from '@game-plaza/shared';
+import { NetworkManager } from '../network';
+import { AvatarManager } from '../managers';
+import { InputHandler, AvatarManagerLike } from '../input';
+import { MessageHandler } from '../handlers';
+import { WEBSOCKET_URL } from '../config';
+
+/**
+ * AvatarManager と InputHandler の AvatarManagerLike インターフェースを橋渡しするアダプター
+ */
+class AvatarManagerAdapter implements AvatarManagerLike {
+  constructor(private avatarManager: AvatarManager) {}
+
+  getLocalPlayerPosition() {
+    return this.avatarManager.getLocalPosition();
+  }
+
+  setLocalPlayerPosition(position: { x: number; y: number }) {
+    this.avatarManager.moveLocalAvatar(position);
+  }
+}
 
 /**
  * メインゲームシーン
- * 2Dマップの描画、カメラ追従、30fps以上のレンダリングを担当
+ * 2Dマップの描画、WebSocket接続、アバター管理、入力処理を統合する
  */
 export class GameScene extends Phaser.Scene {
+  private networkManager!: NetworkManager;
+  private avatarManager!: AvatarManager;
+  private inputHandler!: InputHandler;
+  private messageHandler!: MessageHandler;
+  private localSessionId: string | null = null;
+
   constructor() {
     super({ key: 'GameScene' });
   }
@@ -19,7 +45,64 @@ export class GameScene extends Phaser.Scene {
 
     // Setup camera bounds to match the world
     this.cameras.main.setBounds(0, 0, WORLD_WIDTH, WORLD_HEIGHT);
-    // Camera follow will be set when the player avatar is created (via AvatarManager)
+
+    // Initialize managers
+    this.avatarManager = new AvatarManager(this);
+    this.networkManager = new NetworkManager(WEBSOCKET_URL);
+
+    // Setup message handler (routes server messages to avatar manager)
+    this.messageHandler = new MessageHandler(this.networkManager, this.avatarManager);
+
+    // Setup input handler with adapter bridging the interface
+    const adapter = new AvatarManagerAdapter(this.avatarManager);
+    this.inputHandler = new InputHandler(this, this.networkManager, adapter);
+    this.inputHandler.setup();
+
+    // Listen for the first player_joined message (which is our own session)
+    this.networkManager.onMessage((message: ServerMessage) => {
+      if (message.type === 'player_joined' && this.localSessionId === null) {
+        this.localSessionId = message.sessionId;
+        this.messageHandler.setLocalSessionId(message.sessionId);
+        this.avatarManager.createLocalAvatar(message.sessionId, message.avatar, message.position);
+      }
+    });
+
+    // Connect to WebSocket server
+    this.networkManager.connect();
+
+    // Show connection status (fixed on screen)
+    const statusText = this.add.text(10, 10, 'Connecting...', {
+      fontSize: '14px',
+      color: '#ffffff',
+      backgroundColor: '#00000080',
+      padding: { x: 8, y: 4 },
+    });
+    statusText.setScrollFactor(0);
+    statusText.setDepth(100);
+
+    // Update status text based on connection state
+    this.time.addEvent({
+      delay: 500,
+      loop: true,
+      callback: () => {
+        const state = this.networkManager.getState();
+        if (state === 'connected') {
+          statusText.setText('Connected');
+        } else if (state === 'connecting') {
+          statusText.setText('Connecting...');
+        } else {
+          statusText.setText('Disconnected');
+        }
+      },
+    });
+  }
+
+  update(time: number, delta: number): void {
+    // Update input (movement + position sync)
+    this.inputHandler.update(time, delta);
+
+    // Update avatar interpolation for remote players
+    this.avatarManager.update();
   }
 
   /**
@@ -33,7 +116,7 @@ export class GameScene extends Phaser.Scene {
       WORLD_HEIGHT / 2,
       WORLD_WIDTH,
       WORLD_HEIGHT,
-      0x4a7c59
+      0x4a7c59,
     );
     bg.setDepth(-10);
 

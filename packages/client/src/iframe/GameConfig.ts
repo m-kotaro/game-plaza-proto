@@ -1,4 +1,4 @@
-import gameConfigJson from '../../game-config.json';
+import { gameConfig } from '../game-config';
 
 /**
  * 外部ゲームの URL やゲームタイプを定義する設定
@@ -17,15 +17,14 @@ export interface GameIframeConfig {
 }
 
 /**
- * game-config.json から設定を読み込み、ランタイム値（origin）を補完する
+ * game-config.ts から設定を読み込み、ランタイム値（origin）を補完する
  */
 function buildConfig(): GameIframeConfig {
   const currentOrigin = typeof window !== 'undefined' ? window.location.origin : '';
 
   const games: Record<string, GameEntry> = {};
-  for (const [key, value] of Object.entries(gameConfigJson.games)) {
-    const entry = value as { url: string; origin?: string; metaUrl?: string };
-    games[key] = {
+  for (const entry of gameConfig.games) {
+    games[entry.name] = {
       url: entry.url,
       origin: entry.origin || currentOrigin,
       metaUrl: entry.metaUrl || `${entry.url.replace(/\/[^/]*$/, '/meta.json')}`,
@@ -33,18 +32,18 @@ function buildConfig(): GameIframeConfig {
   }
 
   const allowedOrigins =
-    gameConfigJson.allowedOrigins.length > 0
-      ? gameConfigJson.allowedOrigins
+    gameConfig.allowedOrigins.length > 0
+      ? gameConfig.allowedOrigins
       : [currentOrigin];
 
   return {
     games,
     allowedOrigins,
-    loadTimeoutMs: gameConfigJson.loadTimeoutMs || 10000,
+    loadTimeoutMs: gameConfig.loadTimeoutMs || 10000,
   };
 }
 
-/** ゲーム設定（game-config.json ベース） */
+/** ゲーム設定（game-config.ts ベース） */
 export const DEFAULT_GAME_CONFIG: GameIframeConfig = buildConfig();
 
 /**

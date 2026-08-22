@@ -11,7 +11,8 @@ import {
   getPlayerByConnectionId,
   getAllConnections,
 } from "../db";
-import { broadcastToOthers, sendToConnection } from "../broadcast";
+import { broadcastToAll, broadcastToOthers, sendToConnection } from "../broadcast";
+import { saveScore, getTopScores, pruneScores } from "../scoreDb";
 import { isValidPosition } from "../utils";
 
 /**
@@ -127,6 +128,59 @@ async function handleCustomizeAvatar(
   });
 }
 
+/**
+ * スコア送信アクションの処理
+ * バリデーション → DynamoDB保存 → prune → ランキング取得 → 全員にブロードキャスト
+ */
+async function handleSubmitScore(
+  connectionId: string,
+  gameType: unknown,
+  score: unknown
+): Promise<void> {
+  // Validate
+  if (typeof gameType !== "string" || gameType.length === 0) return;
+  if (typeof score !== "number" || score < 0) return;
+
+  // Get player name
+  const player = await getPlayerByConnectionId(connectionId);
+  if (!player) return;
+
+  const playerName = `Player_${player.sessionId.slice(0, 6)}`;
+
+  // Save score
+  await saveScore(gameType, playerName, score);
+
+  // Prune old scores
+  await pruneScores(gameType);
+
+  // Get updated rankings and broadcast to all
+  const rankings = await getTopScores(gameType);
+  const allConnections = await getAllConnections();
+  await broadcastToAll(allConnections, {
+    type: "rankings_update",
+    gameType,
+    rankings,
+  });
+}
+
+/**
+ * ランキング取得アクションの処理
+ * バリデーション → ランキング取得 → リクエストしたプレイヤーに返す
+ */
+async function handleGetRankings(
+  connectionId: string,
+  gameType: unknown
+): Promise<void> {
+  if (typeof gameType !== "string" || gameType.length === 0) return;
+
+  const rankings = await getTopScores(gameType);
+  await sendToConnection(connectionId, {
+    type: "rankings_update",
+    gameType,
+    rankings,
+  });
+}
+
 export const handler = async (
   event: APIGatewayProxyWebsocketEventV2
 ): Promise<APIGatewayProxyResultV2> => {
@@ -151,6 +205,12 @@ export const handler = async (
       break;
     case "heartbeat":
       await updateLastSeen(connectionId);
+      break;
+    case "submit_score":
+      await handleSubmitScore(connectionId, body.gameType, body.score);
+      break;
+    case "get_rankings":
+      await handleGetRankings(connectionId, body.gameType);
       break;
     default:
       // Unknown action - ignore silently

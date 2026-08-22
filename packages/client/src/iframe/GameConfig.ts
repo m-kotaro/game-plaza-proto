@@ -7,7 +7,7 @@ import gameConfigJson from '../../game-config.json';
 export interface GameEntry {
   url: string;
   origin: string; // postMessage の targetOrigin
-  label: string;
+  metaUrl: string;
 }
 
 export interface GameIframeConfig {
@@ -24,11 +24,11 @@ function buildConfig(): GameIframeConfig {
 
   const games: Record<string, GameEntry> = {};
   for (const [key, value] of Object.entries(gameConfigJson.games)) {
-    const entry = value as { url: string; label?: string; origin?: string };
+    const entry = value as { url: string; origin?: string; metaUrl?: string };
     games[key] = {
       url: entry.url,
       origin: entry.origin || currentOrigin,
-      label: entry.label || key,
+      metaUrl: entry.metaUrl || `${entry.url.replace(/\/[^/]*$/, '/meta.json')}`,
     };
   }
 

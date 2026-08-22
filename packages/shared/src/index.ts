@@ -7,6 +7,7 @@ export type {
   ConnectionRecord,
   ClientMessage,
   ServerMessage,
+  RankingEntry,
 } from "./types";
 
 export {

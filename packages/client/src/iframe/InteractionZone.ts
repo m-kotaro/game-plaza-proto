@@ -88,6 +88,12 @@ export class InteractionZone {
     }
   }
 
+  /** ラベルを外部から更新する */
+  updateLabel(label: string): void {
+    this.labelText.setText(label);
+    this.config.label = label;
+  }
+
   destroy(): void {
     this.hidePrompt();
     this.visual.destroy();

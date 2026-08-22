@@ -36,13 +36,23 @@ export interface ConnectionRecord {
 }
 
 /**
+ * ランキング1件分のデータ
+ */
+export interface RankingEntry {
+  playerName: string;
+  score: number;
+}
+
+/**
  * クライアント → サーバー メッセージ
  */
 export type ClientMessage =
   | { action: "init" }
   | { action: "move"; position: Position }
   | { action: "customize_avatar"; avatarData: AvatarData }
-  | { action: "heartbeat" };
+  | { action: "heartbeat" }
+  | { action: "submit_score"; gameType: string; score: number }
+  | { action: "get_rankings"; gameType: string };
 
 /**
  * サーバー → クライアント メッセージ
@@ -52,4 +62,5 @@ export type ServerMessage =
   | { type: "player_joined"; sessionId: string; avatar: AvatarData; position: Position }
   | { type: "player_left"; sessionId: string }
   | { type: "player_moved"; sessionId: string; position: Position }
-  | { type: "avatar_updated"; sessionId: string; avatarData: AvatarData };
+  | { type: "avatar_updated"; sessionId: string; avatarData: AvatarData }
+  | { type: "rankings_update"; gameType: string; rankings: RankingEntry[] };

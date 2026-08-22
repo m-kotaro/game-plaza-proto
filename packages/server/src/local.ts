@@ -65,6 +65,15 @@ wss.on('connection', (ws) => {
       const msg = JSON.parse(data.toString());
 
       switch (msg.action) {
+        case 'init':
+          // Re-send world_state and player_joined (for compatibility with AWS deployment)
+          const initPlayers = Array.from(connections.values())
+            .filter(r => r.sessionId !== record.sessionId)
+            .map(r => ({ sessionId: r.sessionId, avatar: r.avatar, position: r.position }));
+          sendTo(ws, { type: 'world_state', players: initPlayers });
+          sendTo(ws, { type: 'player_joined', sessionId: record.sessionId, avatar: record.avatar, position: record.position });
+          break;
+
         case 'move':
           if (!isValidPosition(msg.position)) break;
           record.position = msg.position as Position;

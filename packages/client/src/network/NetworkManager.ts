@@ -96,6 +96,8 @@ export class NetworkManager {
     this.state = "connected";
     this.reconnectAttempts = 0;
     this.startHeartbeat();
+    // Send init message to request world state (connection is now ready)
+    this.send({ action: "init" });
   }
 
   private handleClose(): void {

@@ -76,6 +76,8 @@ function isValidClientMessage(obj: unknown): boolean {
   const msg = obj as Record<string, unknown>;
 
   switch (msg.action) {
+    case "init":
+      return true;
     case "move":
       return isValidPosition(msg.position);
     case "customize_avatar":

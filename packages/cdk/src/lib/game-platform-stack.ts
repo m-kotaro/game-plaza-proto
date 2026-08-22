@@ -219,7 +219,7 @@ export class GamePlatformStack extends cdk.Stack {
     // Stage
     this.webSocketStage = new apigwv2.CfnStage(this, "WebSocketStage", {
       apiId: this.webSocketApi.ref,
-      stageName: "prod",
+      stageName: props.envName,
       deploymentId: deployment.ref,
     });
 
@@ -240,11 +240,11 @@ export class GamePlatformStack extends cdk.Stack {
     });
 
     // WebSocket endpoint URL
-    const webSocketUrl = `wss://${this.webSocketApi.ref}.execute-api.${this.region}.amazonaws.com/prod`;
+    const webSocketUrl = `wss://${this.webSocketApi.ref}.execute-api.${this.region}.amazonaws.com/${props.envName}`;
 
     // Update Lambda environment variables with the actual WebSocket endpoint
     // This uses the HTTPS endpoint format for API Gateway Management API
-    const webSocketEndpoint = `https://${this.webSocketApi.ref}.execute-api.${this.region}.amazonaws.com/prod`;
+    const webSocketEndpoint = `https://${this.webSocketApi.ref}.execute-api.${this.region}.amazonaws.com/${props.envName}`;
     this.onConnectFn.addEnvironment("WEBSOCKET_ENDPOINT", webSocketEndpoint);
     this.onDisconnectFn.addEnvironment("WEBSOCKET_ENDPOINT", webSocketEndpoint);
     this.onMessageFn.addEnvironment("WEBSOCKET_ENDPOINT", webSocketEndpoint);
@@ -255,8 +255,8 @@ export class GamePlatformStack extends cdk.Stack {
     const apiGatewayManagePolicy = new iam.PolicyStatement({
       actions: ["execute-api:ManageConnections"],
       resources: [
-        `arn:aws:execute-api:${this.region}:${this.account}:${this.webSocketApi.ref}/prod/POST/@connections/*`,
-        `arn:aws:execute-api:${this.region}:${this.account}:${this.webSocketApi.ref}/prod/DELETE/@connections/*`,
+        `arn:aws:execute-api:${this.region}:${this.account}:${this.webSocketApi.ref}/${props.envName}/POST/@connections/*`,
+        `arn:aws:execute-api:${this.region}:${this.account}:${this.webSocketApi.ref}/${props.envName}/DELETE/@connections/*`,
       ],
     });
 

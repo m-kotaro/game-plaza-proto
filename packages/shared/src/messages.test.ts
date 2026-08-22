@@ -43,6 +43,36 @@ describe("serializeClientMessage / deserializeClientMessage", () => {
   it("should return null for move with missing position", () => {
     expect(deserializeClientMessage('{"action":"move"}')).toBeNull();
   });
+
+  it("should round-trip a submit_score message", () => {
+    const msg: ClientMessage = { action: "submit_score", gameType: "breakout", score: 150 };
+    const serialized = serializeClientMessage(msg);
+    const deserialized = deserializeClientMessage(serialized);
+    expect(deserialized).toEqual(msg);
+  });
+
+  it("should return null for submit_score with empty gameType", () => {
+    expect(deserializeClientMessage('{"action":"submit_score","gameType":"","score":100}')).toBeNull();
+  });
+
+  it("should return null for submit_score with negative score", () => {
+    expect(deserializeClientMessage('{"action":"submit_score","gameType":"breakout","score":-1}')).toBeNull();
+  });
+
+  it("should return null for submit_score with non-numeric score", () => {
+    expect(deserializeClientMessage('{"action":"submit_score","gameType":"breakout","score":"high"}')).toBeNull();
+  });
+
+  it("should round-trip a get_rankings message", () => {
+    const msg: ClientMessage = { action: "get_rankings", gameType: "breakout" };
+    const serialized = serializeClientMessage(msg);
+    const deserialized = deserializeClientMessage(serialized);
+    expect(deserialized).toEqual(msg);
+  });
+
+  it("should return null for get_rankings with empty gameType", () => {
+    expect(deserializeClientMessage('{"action":"get_rankings","gameType":""}')).toBeNull();
+  });
 });
 
 describe("serializeServerMessage / deserializeServerMessage", () => {
@@ -114,6 +144,47 @@ describe("serializeServerMessage / deserializeServerMessage", () => {
   it("should return null for world_state with invalid players", () => {
     expect(
       deserializeServerMessage('{"type":"world_state","players":"not_array"}')
+    ).toBeNull();
+  });
+
+  it("should round-trip a rankings_update message", () => {
+    const msg: ServerMessage = {
+      type: "rankings_update",
+      gameType: "breakout",
+      rankings: [
+        { playerName: "Player_A", score: 200 },
+        { playerName: "Player_B", score: 150 },
+      ],
+    };
+    const serialized = serializeServerMessage(msg);
+    const deserialized = deserializeServerMessage(serialized);
+    expect(deserialized).toEqual(msg);
+  });
+
+  it("should round-trip a rankings_update with empty rankings", () => {
+    const msg: ServerMessage = {
+      type: "rankings_update",
+      gameType: "breakout",
+      rankings: [],
+    };
+    const serialized = serializeServerMessage(msg);
+    const deserialized = deserializeServerMessage(serialized);
+    expect(deserialized).toEqual(msg);
+  });
+
+  it("should return null for rankings_update with invalid ranking entry", () => {
+    expect(
+      deserializeServerMessage(
+        '{"type":"rankings_update","gameType":"breakout","rankings":[{"playerName":123,"score":100}]}'
+      )
+    ).toBeNull();
+  });
+
+  it("should return null for rankings_update with non-array rankings", () => {
+    expect(
+      deserializeServerMessage(
+        '{"type":"rankings_update","gameType":"breakout","rankings":"not_array"}'
+      )
     ).toBeNull();
   });
 });

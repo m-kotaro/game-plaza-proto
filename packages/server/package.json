@@ -1,0 +1,29 @@
+{
+  "name": "@game-plaza/server",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Lambda functions for the game server",
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "scripts": {
+    "dev": "npx tsx src/local.ts",
+    "build": "tsc",
+    "test": "vitest run",
+    "test:watch": "vitest"
+  },
+  "dependencies": {
+    "@aws-sdk/client-apigatewaymanagementapi": "^3.600.0",
+    "@aws-sdk/client-dynamodb": "^3.600.0",
+    "@aws-sdk/lib-dynamodb": "^3.600.0",
+    "@game-plaza/shared": "*"
+  },
+  "devDependencies": {
+    "@types/aws-lambda": "^8.10.0",
+    "@types/ws": "^8.18.1",
+    "fast-check": "^3.19.0",
+    "tsx": "^4.23.12",
+    "typescript": "^5.4.0",
+    "vitest": "^2.0.0",
+    "ws": "^8.21.3"
+  }
+}

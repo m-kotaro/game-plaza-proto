@@ -1,1 +1,34 @@
+<<<<<<< HEAD
 node_modules
+=======
+# Dependencies
+node_modules/
+
+# Build outputs
+dist/
+*.js
+*.d.ts
+*.d.ts.map
+*.js.map
+*.tsbuildinfo
+
+# Keep source files
+!vite.config.ts
+!packages/*/src/**/*.ts
+
+# CDK
+cdk.out/
+
+# IDE
+.idea/
+*.swp
+*.swo
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Environment
+.env
+.env.local
+>>>>>>> 7cf0bfa00774ebabe95fb6ea1ec7fc418bb2fc72

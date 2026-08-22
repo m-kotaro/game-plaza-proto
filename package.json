@@ -1,0 +1,24 @@
+{
+  "name": "game-plaza-proto",
+  "version": "0.1.0",
+  "private": true,
+  "description": "AWS-based 2D multiplayer social space",
+  "workspaces": [
+    "packages/shared",
+    "packages/server",
+    "packages/cdk",
+    "packages/client"
+  ],
+  "scripts": {
+    "dev": "npx concurrently \"npm run dev -w packages/server\" \"npm run dev -w packages/client\"",
+    "build": "npm run build -w packages/shared && npm run build -w packages/server && npm run build -w packages/cdk && npm run build -w packages/client",
+    "test": "npm run test --workspaces --if-present",
+    "lint": "npm run lint --workspaces --if-present"
+  },
+  "engines": {
+    "node": ">=18.0.0"
+  },
+  "devDependencies": {
+    "concurrently": "^10.0.5"
+  }
+}

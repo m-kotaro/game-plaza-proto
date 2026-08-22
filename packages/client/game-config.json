@@ -1,0 +1,35 @@
+{
+  "games": {
+    "mock": {
+      "url": "/mock-game.html",
+      "metaUrl": "/mock-game-meta.json"
+    },
+    "janken": {
+      "url": "https://m-kotaro.github.io/otameshi-game/",
+      "origin": "https://m-kotaro.github.io",
+      "metaUrl": "https://m-kotaro.github.io/otameshi-game/meta.json"
+    },
+    "quiz": {
+      "url": "/games/quiz.html",
+      "metaUrl": "/games/quiz-meta.json"
+    },
+    "memory": {
+      "url": "/games/memory.html",
+      "metaUrl": "/games/memory-meta.json"
+    },
+    "slot": {
+      "url": "/games/slot.html",
+      "metaUrl": "/games/slot-meta.json"
+    },
+    "dice": {
+      "url": "/games/dice.html",
+      "metaUrl": "/games/dice-meta.json"
+    },
+    "shiritori": {
+      "url": "/games/shiritori.html",
+      "metaUrl": "/games/shiritori-meta.json"
+    }
+  },
+  "allowedOrigins": ["https://m-kotaro.github.io"],
+  "loadTimeoutMs": 10000
+}

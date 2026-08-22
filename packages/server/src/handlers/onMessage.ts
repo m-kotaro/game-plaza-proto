@@ -8,6 +8,7 @@ import {
   updateLastSeen,
   updatePlayerPosition,
   updatePlayerAvatar,
+  updatePlayerName,
   getPlayerByConnectionId,
   getAllConnections,
 } from "../db";
@@ -48,13 +49,19 @@ function isValidAvatarData(avatarData: unknown): avatarData is AvatarData {
 /**
  * init アクションの処理
  * 接続確立後にクライアントから送信される初期化リクエスト
+ * - プレイヤー名を更新
  * - ワールド状態（他プレイヤー一覧）を送信
  * - 自身のセッション情報を送信
  * - 他プレイヤーに新規参加を通知
  */
-async function handleInit(connectionId: string): Promise<void> {
+async function handleInit(connectionId: string, playerName: unknown): Promise<void> {
   const player = await getPlayerByConnectionId(connectionId);
   if (!player) return;
+
+  // Update playerName if provided
+  if (typeof playerName === "string" && playerName.length > 0) {
+    await updatePlayerName(connectionId, playerName);
+  }
 
   const allConnections = await getAllConnections();
 
@@ -145,7 +152,7 @@ async function handleSubmitScore(
   const player = await getPlayerByConnectionId(connectionId);
   if (!player) return;
 
-  const playerName = `Player_${player.sessionId.slice(0, 6)}`;
+  const playerName = player.playerName || `Player_${player.sessionId.slice(0, 6)}`;
 
   // Save score
   await saveScore(gameType, playerName, score);
@@ -195,7 +202,7 @@ export const handler = async (
 
   switch (body.action) {
     case "init":
-      await handleInit(connectionId);
+      await handleInit(connectionId, body.playerName);
       break;
     case "move":
       await handleMove(connectionId, body.position);

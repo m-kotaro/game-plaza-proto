@@ -61,7 +61,12 @@ aws iam list-open-id-connect-providers --query "OpenIDConnectProviderList[?conta
           "token.actions.githubusercontent.com:aud": "sts.amazonaws.com"
         },
         "StringLike": {
-          "token.actions.githubusercontent.com:sub": "repo:m-kotaro/game-plaza-proto:ref:refs/heads/main"
+          "token.actions.githubusercontent.com:sub": [
+            "repo:m-kotaro@*/game-plaza-proto@*:environment:dev",
+            "repo:m-kotaro@*/game-plaza-proto@*:environment:prod",
+            "repo:m-kotaro@*/game-plaza-proto@*:ref:refs/heads/main",
+            "repo:m-kotaro@*/game-plaza-proto@*:ref:refs/heads/develop"
+          ]
         }
       }
     }
@@ -74,9 +79,16 @@ aws iam list-open-id-connect-providers --query "OpenIDConnectProviderList[?conta
 | 条件 | 説明 |
 |------|------|
 | `aud: sts.amazonaws.com` | AWS STS宛のトークンのみ許可 |
-| `sub: repo:m-kotaro/game-plaza-proto:ref:refs/heads/main` | このリポジトリのmainブランチからのリクエストのみ許可 |
+| `sub: repo:m-kotaro@*/game-plaza-proto@*:...` | このリポジトリのdev/prod環境およびmain/developブランチからのリクエストのみ許可 |
 
-> **セキュリティ**: `sub` 条件によりフォークやブランチからの不正なAssumeRoleを防止する。  
+> **注意: GitHub OIDC の数値IDフォーマットについて**
+>
+> GitHubのOIDCトークンでは `sub` クレームに数値IDが付与される新フォーマットが使用されています。
+> 例: `repo:m-kotaro@46392838/game-plaza-proto@1338348724:ref:refs/heads/main`
+>
+> `@*` ワイルドカード（`StringLike`）を使用することで、IDの値に依存せずマッチさせています。
+
+> **セキュリティ**: `sub` 条件によりフォークやその他のブランチからの不正なAssumeRoleを防止する。
 > PRイベント（`pull_request`トリガー）ではsubが異なるため、CIワークフローからは認証不可。
 
 ### 2.2 IAMロールの作成

@@ -36,6 +36,7 @@ wss.on('connection', (ws) => {
   const record: ConnectionRecord = {
     connectionId,
     sessionId,
+    playerName: `Player_${sessionId.slice(0, 6)}`,
     avatar,
     position,
     lastSeen: Date.now(),
@@ -66,6 +67,10 @@ wss.on('connection', (ws) => {
 
       switch (msg.action) {
         case 'init':
+          // Update player name if provided
+          if (typeof msg.playerName === 'string' && msg.playerName.length > 0) {
+            record.playerName = msg.playerName;
+          }
           // Re-send world_state and player_joined (for compatibility with AWS deployment)
           const initPlayers = Array.from(connections.values())
             .filter(r => r.sessionId !== record.sessionId)

@@ -2,19 +2,20 @@
 
 ## Overview
 
-スコアボード機能は、ゲーム終了時のスコアをDynamoDBに保存し、ワールド内の各ゲームエリア横に看板（ランキング上位3名 + ゲーム説明ポップアップ）を表示する。既存のWebSocket通信基盤（onMessage Lambda）に新しいアクション（submit_score, get_rankings）を追加し、クライアント側はPhaser.jsでテキストオブジェクトとして看板を描画する。
+スコアボード機能は、ゲーム終了時のスコアをDynamoDBに保存し、掲示板エリア（📋ゾーン）でEキーを押すとDOMオーバーレイとしてランキングを表示する。既存のWebSocket通信基盤（onMessage Lambda）に新しいアクション（submit_score, get_rankings）を追加し、クライアント側はBulletinBoardクラスでDOMベースのオーバーレイUIを描画する。
 
 ### 設計方針
 
 - 既存アーキテクチャを最大限活用（WebSocket通信、CDKスタック、sharedパッケージの型定義パターン）
 - スコア保存は非同期で行い、ゲームプレイへの影響を最小限に抑える
-- ランキングデータは全プレイヤーにブロードキャストし、看板をリアルタイム更新する
+- ランキングデータは全プレイヤーにブロードキャストし、クライアント側でMap に保存。掲示板を開いた時に最新データを表示する
+- 表示方式はDOMオーバーレイ（BulletinBoard）を採用。📋ゾーンでEキーを押すとオーバーレイが開く
 
 ## Architecture
 
 ```mermaid
 sequenceDiagram
-    participant Client as Client (Phaser.js)
+    participant Client as Client (Phaser.js + DOM)
     participant WS as WebSocket API Gateway
     participant Lambda as onMessage Lambda
     participant DB as DynamoDB (ScoreTable)
@@ -27,20 +28,23 @@ sequenceDiagram
     Lambda->>DB: Delete (11件目以降削除)
     Lambda->>WS: broadcast rankings_update
     WS->>Client: { type: "rankings_update", gameType, rankings }
-    Note over Client: 看板表示更新
+    Note over Client: Map にランキング保存
 
     Client->>WS: { action: "get_rankings", gameType }
     WS->>Lambda: invoke
     Lambda->>DB: Query (上位10件取得)
     Lambda->>WS: send rankings_update
     WS->>Client: { type: "rankings_update", gameType, rankings }
+
+    Note over Client: プレイヤーが📋ゾーンでEキーを押す
+    Note over Client: BulletinBoard.open() → Map内のデータを表示
 ```
 
 ### レイヤー構成
 
 1. **Shared層** (`packages/shared`): メッセージ型定義、バリデーション関数
 2. **Server層** (`packages/server`): スコア保存・取得ロジック、ランキングブロードキャスト
-3. **Client層** (`packages/client`): 看板表示、ポップアップUI、ランキング受信ハンドラ
+3. **Client層** (`packages/client`): BulletinBoard DOMオーバーレイ、ランキング受信・保存、スコア送信
 4. **Infrastructure層** (`packages/cdk`): ScoreTable定義、Lambda環境変数設定
 
 ## Components and Interfaces
@@ -107,45 +111,54 @@ async function handleSubmitScore(connectionId: string, gameType: unknown, score:
 async function handleGetRankings(connectionId: string, gameType: unknown): Promise<void>;
 ```
 
-### 4. Client - Signboard クラス
+### 4. Client - BulletinBoard クラス
 
 ```typescript
-// packages/client/src/scenes/Signboard.ts
+// packages/client/src/scenes/BulletinBoard.ts
 
-export class Signboard {
-  constructor(scene: Phaser.Scene, config: SignboardConfig);
-
-  /** ランキングデータを更新する */
-  updateRankings(rankings: RankingEntry[]): void;
-
-  /** ポップアップ表示/非表示 */
-  showPopup(): void;
-  hidePopup(): void;
+export interface BulletinBoardData {
+  gameType: string;
+  title: string;
+  rankings: RankingEntry[];
 }
 
-export interface SignboardConfig {
-  x: number;
-  y: number;
-  gameType: string;
-  gameName: string;
-  description: string;
+/**
+ * 全ゲームのランキングを表示するDOMオーバーレイ掲示板
+ * 📋ゾーンでEキーを押すとオーバーレイが開き、閉じるボタンまたはEscで閉じる
+ */
+export class BulletinBoard {
+  constructor(containerId: string);
+
+  /** ランキングデータを設定する */
+  setData(data: BulletinBoardData[]): void;
+
+  /** 掲示板を開く */
+  open(onClose?: () => void): void;
+
+  /** 掲示板を閉じる */
+  close(): void;
+
+  /** 掲示板が開いているか */
+  isOpen(): boolean;
 }
 ```
 
-### 5. Client - Rankings ハンドラ
+### 5. Client - ランキング受信
+
+ランキング受信はGameScene内のonMessageリスナーで直接処理する。rankings_updateメッセージを受信すると`Map<string, RankingEntry[]>`に保存し、BulletinBoardを開く際にMapからデータを取得して表示する。
 
 ```typescript
-// packages/client/src/handlers/RankingsHandler.ts
+// GameScene内でのランキング受信処理（概念）
+private rankingsMap = new Map<string, RankingEntry[]>();
 
-export class RankingsHandler {
-  constructor(networkManager: NetworkManager, signboards: Map<string, Signboard>);
+// onMessageリスナー内
+case "rankings_update":
+  this.rankingsMap.set(message.gameType, message.rankings);
+  break;
 
-  /** rankings_update メッセージを処理する */
-  handleRankingsUpdate(message: RankingsUpdateMessage): void;
-
-  /** 全ゲームタイプのランキングを要求する */
-  requestAllRankings(): void;
-}
+// 📋ゾーンでEキーが押された時
+this.bulletinBoard.setData(this.buildBulletinBoardData());
+this.bulletinBoard.open();
 ```
 
 ## Data Models
@@ -216,18 +229,6 @@ export class RankingsHandler {
 
 **Validates: Requirements 2.1, 2.2, 3.3**
 
-### Property 4: 看板フォーマット文字列
-
-*For any* array of RankingEntry objects (1〜3件), the formatted signboard text SHALL contain each entry in "N位: PlayerName Xpts" format, with entries ordered by rank (1位, 2位, 3位).
-
-**Validates: Requirements 4.2**
-
-### Property 5: 近接検出の正確性
-
-*For any* player position and signboard position, the proximity detection function SHALL return true if and only if the Euclidean distance is within the defined threshold.
-
-**Validates: Requirements 5.1, 5.2**
-
 ## Error Handling
 
 | シナリオ | 対応 |
@@ -238,7 +239,7 @@ export class RankingsHandler {
 | DynamoDB書き込み失敗 | エラーログ出力、statusCode 500 を返す |
 | DynamoDB読み取り失敗 | エラーログ出力、空のランキングを返す |
 | ブロードキャスト時にGoneException | 既存のbroadcast.tsの仕組みで自動クリーンアップ |
-| クライアントがrankings_updateを受信時にSignboardが未初期化 | データをバッファリングし、Signboard初期化後に適用 |
+| rankings_update受信時にMapへ保存失敗 | エラーログ出力、次回受信時に再試行 |
 
 ## Testing Strategy
 
@@ -252,14 +253,12 @@ property-based testingライブラリ: **fast-check**（既存プロジェクト
 - メッセージのシリアライゼーション/デシリアライゼーション（Property 1）
 - メッセージバリデーション（Property 2）
 - ランキングソート・上限ロジック（Property 3）
-- 看板フォーマット関数（Property 4）
-- 近接検出関数（Property 5）
 
 ### Unit Testing
 
 - onMessage Lambda のハンドラ分岐テスト
 - ScoreDb モジュールの個別関数テスト（DynamoDB モック使用）
-- Signboard クラスの表示ロジックテスト
+- BulletinBoard クラスの表示ロジックテスト
 
 ### Integration Testing
 

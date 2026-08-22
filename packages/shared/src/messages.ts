@@ -77,7 +77,7 @@ function isValidClientMessage(obj: unknown): boolean {
 
   switch (msg.action) {
     case "init":
-      return true;
+      return typeof msg.playerName === "string" && msg.playerName.length > 0;
     case "move":
       return isValidPosition(msg.position);
     case "customize_avatar":

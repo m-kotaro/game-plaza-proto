@@ -21,12 +21,12 @@ flowchart TD
     end
 
     subgraph "CD: Deploy"
-        Push[Push to main] --> CD_Install[npm ci + cache]
-        CD_Install --> CD_Build_Dev[Build client<br/>VITE_WEBSOCKET_URL=dev]
+        Push_Dev[Push to develop] --> CD_Install_Dev[npm ci + cache]
+        CD_Install_Dev --> CD_Build_Dev[Build client<br/>VITE_WEBSOCKET_URL=dev]
         CD_Build_Dev --> CD_Deploy_Dev[cdk deploy<br/>-c env=dev]
-        CD_Deploy_Dev --> CD_Result_Dev{Success?}
-        CD_Result_Dev -->|No| CD_Fail[Pipeline Halt]
-        CD_Result_Dev -->|Yes| CD_Approval[Manual Approval<br/>timeout: 72h]
+
+        Push_Prod[Push to main] --> CD_Install_Prod[npm ci + cache]
+        CD_Install_Prod --> CD_Approval[Manual Approval<br/>environment: prod]
         CD_Approval -->|Approved| CD_Build_Prod[Build client<br/>VITE_WEBSOCKET_URL=prod]
         CD_Build_Prod --> CD_Deploy_Prod[cdk deploy<br/>-c env=prod]
         CD_Approval -->|Timeout/Rejected| CD_Cancel[Cancel]
@@ -88,14 +88,14 @@ jobs:
 
 ### 2. CD Workflow（`.github/workflows/cd.yml`）
 
-mainブランチへのpushをトリガーとし、dev→prodの順でデプロイする。
+developブランチへのpushでdev環境へ、mainブランチへのpushでprod環境へデプロイする。各ジョブは`if`条件でブランチを判別し、独立して実行される。
 
 ```yaml
 name: CD
 
 on:
   push:
-    branches: [main]
+    branches: [develop, main]
 
 permissions:
   id-token: write   # OIDC token取得に必要
@@ -103,6 +103,7 @@ permissions:
 
 jobs:
   deploy-dev:
+    if: github.ref == 'refs/heads/develop'
     runs-on: ubuntu-latest
     environment: dev
     steps:
@@ -124,11 +125,11 @@ jobs:
           role-to-assume: ${{ secrets.AWS_ROLE_ARN }}
           aws-region: ap-northeast-1
 
-      - run: npx cdk deploy --require-approval never -c env=dev
+      - run: npx cdk deploy --require-approval never -c env=dev --outputs-file cdk-outputs.json
         working-directory: packages/cdk
 
   deploy-prod:
-    needs: deploy-dev
+    if: github.ref == 'refs/heads/main'
     runs-on: ubuntu-latest
     environment: prod  # GitHub Environmentの手動承認を利用
     steps:
@@ -150,16 +151,16 @@ jobs:
           role-to-assume: ${{ secrets.AWS_ROLE_ARN }}
           aws-region: ap-northeast-1
 
-      - run: npx cdk deploy --require-approval never -c env=prod
+      - run: npx cdk deploy --require-approval never -c env=prod --outputs-file cdk-outputs.json
         working-directory: packages/cdk
 ```
 
 **設計ポイント**:
+- `branches: [develop, main]` で両ブランチのpushをトリガー
+- `if: github.ref == 'refs/heads/develop'` / `if: github.ref == 'refs/heads/main'` でジョブの実行ブランチを分離
+- dev と prod は独立したジョブ（`needs`依存なし）。developへのpushはdevのみ、mainへのpushはprodのみ実行
 - `environment: prod` でGitHub Environmentsの保護ルール（Required reviewers）を利用し手動承認を実現
-- 承認タイムアウトはGitHub Environment設定で72時間に設定
-- `needs: deploy-dev` でdev成功後のみprodジョブが実行される
 - 各環境ごとにクライアントをリビルド（`VITE_WEBSOCKET_URL`が環境固有のため）
-- シーケンシャル実行により並列デプロイを回避
 
 ### 3. CDKスタック環境分離
 
@@ -221,7 +222,12 @@ flowchart LR
           "token.actions.githubusercontent.com:aud": "sts.amazonaws.com"
         },
         "StringLike": {
-          "token.actions.githubusercontent.com:sub": "repo:m-kotaro/game-plaza-proto:ref:refs/heads/main"
+          "token.actions.githubusercontent.com:sub": [
+            "repo:m-kotaro@*/game-plaza-proto@*:environment:dev",
+            "repo:m-kotaro@*/game-plaza-proto@*:environment:prod",
+            "repo:m-kotaro@*/game-plaza-proto@*:ref:refs/heads/main",
+            "repo:m-kotaro@*/game-plaza-proto@*:ref:refs/heads/develop"
+          ]
         }
       }
     }
@@ -230,7 +236,8 @@ flowchart LR
 ```
 
 **信頼ポリシーのポイント**:
-- `sub` 条件でリポジトリとmainブランチのみに制限
+- `sub` 条件でリポジトリのdev/prod環境およびmain/developブランチのみに制限
+- GitHub OIDCの新しいフォーマットでは数値ID形式（例: `m-kotaro@46392838/game-plaza-proto@1338348724`）が使用されるため、`@*` ワイルドカードで対応
 - PR（`pull_request`イベント）からはOIDCでのAssumeRoleが不可能（CIではAWS認証不要）
 
 **IAMロールのPermissions Policy**:
@@ -321,7 +328,7 @@ interface WorkflowVariables {
 | エラー種別 | 対処 | 結果 |
 |-----------|------|------|
 | OIDC認証失敗 | ジョブ失敗、エラーメッセージ出力 | デプロイ中止 |
-| dev deploy失敗 | ジョブ失敗、CDKエラー出力 | prodへ進行しない（`needs`依存） |
+| dev deploy失敗 | ジョブ失敗、CDKエラー出力 | dev環境のみ影響（prodとは独立） |
 | prod承認タイムアウト | GitHub Environmentsが自動キャンセル | デプロイされない |
 | prod deploy失敗 | ジョブ失敗、CDKエラー出力 | CloudFormationロールバック |
 | CloudFormationロールバック | CDKが失敗をレポート | 前回の安定状態を維持 |

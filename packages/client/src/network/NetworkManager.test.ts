@@ -155,6 +155,7 @@ describe("NetworkManager", () => {
       expect(mockInstances[0].sent).toHaveLength(2);
       expect(JSON.parse(mockInstances[0].sent[0])).toEqual({
         action: "init",
+        playerName: "Player",
       });
       expect(JSON.parse(mockInstances[0].sent[1])).toEqual({
         action: "heartbeat",
@@ -278,6 +279,7 @@ describe("NetworkManager", () => {
       expect(mockInstances[0].sent).toHaveLength(2);
       expect(JSON.parse(mockInstances[0].sent[0])).toEqual({
         action: "init",
+        playerName: "Player",
       });
       expect(JSON.parse(mockInstances[0].sent[1])).toEqual({
         action: "heartbeat",
@@ -302,6 +304,7 @@ describe("NetworkManager", () => {
       expect(mockInstances[0].sent).toHaveLength(1);
       expect(JSON.parse(mockInstances[0].sent[0])).toEqual({
         action: "init",
+        playerName: "Player",
       });
     });
   });

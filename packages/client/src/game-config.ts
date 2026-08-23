@@ -14,22 +14,29 @@ export interface GameConfigEntry {
 export const gameConfig = {
   games: [
     {
-      name: 'snake',
+      name: 'sample',
+      url: 'https://m-kotaro.github.io/otameshi-game-sample/',
+      origin: 'https://m-kotaro.github.io/otameshi-game-sample/',
+      metaUrl: 'https://m-kotaro.github.io/otameshi-game-sample/meta.json',
+    },
+    {
+      name: 'moguratataki',
       url: 'https://m-kotaro.github.io/otameshi-game/',
       origin: 'https://m-kotaro.github.io',
       metaUrl: 'https://m-kotaro.github.io/otameshi-game/meta.json',
     },
-    // {
-    //   name: 'janken',
-    //   url: 'https://m-kotaro.github.io/otameshi-game/',
-    //   origin: 'https://m-kotaro.github.io',
-    //   metaUrl: 'https://m-kotaro.github.io/otameshi-game/meta.json',
-    // },
-    // {
-    //   name: 'quiz',
-    //   url: '/games/quiz.html',
-    //   metaUrl: '/games/quiz-meta.json',
-    // },
+    {
+      name: 'snake-game',
+      url: 'https://m-kotaro.github.io/otameshi-game-2/',
+      origin: 'https://m-kotaro.github.io',
+      metaUrl: 'https://m-kotaro.github.io/otameshi-game-2/meta.json',
+    },
+    {
+      name: 'snake-game',
+      url: 'https://m-kotaro.github.io/otameshi-game-3/',
+      origin: 'https://m-kotaro.github.io',
+      metaUrl: 'https://m-kotaro.github.io/otameshi-game-3/meta.json',
+    },
     // {
     //   name: 'memory',
     //   url: '/games/memory.html',

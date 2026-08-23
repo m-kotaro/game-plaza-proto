@@ -391,24 +391,87 @@ export class GameScene extends Phaser.Scene {
     const cols = Math.ceil(WORLD_WIDTH / scaledSize);
     const rows = Math.ceil(WORLD_HEIGHT / scaledSize);
 
-    // Base grass layer using tile index 0
+    // Seeded random for deterministic subtle variation
+    const seededRandom = (x: number, y: number): number => {
+      const seed = x * 374761393 + y * 668265263;
+      const h = (seed ^ (seed >>> 13)) * 1274126177;
+      return ((h ^ (h >>> 16)) >>> 0) / 4294967296;
+    };
+
+    // Grass tile distribution: frame 0 (base) most common,
+    // frame 1 (sprout) less, frame 2 (flower) rare
+    const grassFrames = [
+      0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,  // ~71%
+      1, 1, 1, 1, 1,                                    // ~24%
+      2,                                                 // ~5%
+    ];
+
     for (let y = 0; y < rows; y++) {
       for (let x = 0; x < cols; x++) {
+        const r = seededRandom(x, y);
+        const frame = grassFrames[Math.floor(r * grassFrames.length)];
         const tile = this.add.image(
           x * scaledSize + scaledSize / 2,
           y * scaledSize + scaledSize / 2,
           'tiny-town',
-          0,
+          frame,
         );
         tile.setScale(scale);
         tile.setDepth(-10);
       }
     }
 
-    // World boundary
-    const border = this.add.graphics();
-    border.lineStyle(2, 0xffffff, 0.3);
-    border.strokeRect(0, 0, WORLD_WIDTH, WORLD_HEIGHT);
-    border.setDepth(-8);
+    // World boundary walls
+    const lastCol = cols - 1;
+    const lastRow = rows - 1;
+
+    // Top edge
+    for (let x = 1; x < lastCol; x++) {
+      const tile = this.add.image(x * scaledSize + scaledSize / 2, scaledSize / 2, 'tiny-town', 45);
+      tile.setScale(scale);
+      tile.setDepth(-5);
+    }
+
+    // Bottom edge
+    for (let x = 1; x < lastCol; x++) {
+      const tile = this.add.image(x * scaledSize + scaledSize / 2, lastRow * scaledSize + scaledSize / 2, 'tiny-town', 45);
+      tile.setScale(scale);
+      tile.setDepth(-5);
+    }
+
+    // Left edge
+    for (let y = 1; y < lastRow; y++) {
+      const tile = this.add.image(scaledSize / 2, y * scaledSize + scaledSize / 2, 'tiny-town', 59);
+      tile.setScale(scale);
+      tile.setDepth(-5);
+    }
+
+    // Right edge
+    for (let y = 1; y < lastRow; y++) {
+      const tile = this.add.image(lastCol * scaledSize + scaledSize / 2, y * scaledSize + scaledSize / 2, 'tiny-town', 59);
+      tile.setScale(scale);
+      tile.setDepth(-5);
+    }
+
+    // Corners
+    // Top-left
+    const tl = this.add.image(scaledSize / 2, scaledSize / 2, 'tiny-town', 44);
+    tl.setScale(scale);
+    tl.setDepth(-5);
+
+    // Top-right
+    const tr = this.add.image(lastCol * scaledSize + scaledSize / 2, scaledSize / 2, 'tiny-town', 46);
+    tr.setScale(scale);
+    tr.setDepth(-5);
+
+    // Bottom-left
+    const bl = this.add.image(scaledSize / 2, lastRow * scaledSize + scaledSize / 2, 'tiny-town', 68);
+    bl.setScale(scale);
+    bl.setDepth(-5);
+
+    // Bottom-right
+    const br = this.add.image(lastCol * scaledSize + scaledSize / 2, lastRow * scaledSize + scaledSize / 2, 'tiny-town', 70);
+    br.setScale(scale);
+    br.setDepth(-5);
   }
 }

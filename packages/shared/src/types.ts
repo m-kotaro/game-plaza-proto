@@ -21,6 +21,7 @@ export interface AvatarData {
  */
 export interface PlayerInfo {
   sessionId: string;
+  playerName: string;
   avatar: AvatarData;
   position: Position;
 }
@@ -49,7 +50,7 @@ export interface RankingEntry {
  * クライアント → サーバー メッセージ
  */
 export type ClientMessage =
-  | { action: "init"; playerName: string }
+  | { action: "init"; playerName: string; characterIndex?: number }
   | { action: "move"; position: Position }
   | { action: "customize_avatar"; avatarData: AvatarData }
   | { action: "heartbeat" }
@@ -61,7 +62,7 @@ export type ClientMessage =
  */
 export type ServerMessage =
   | { type: "world_state"; players: PlayerInfo[] }
-  | { type: "player_joined"; sessionId: string; avatar: AvatarData; position: Position }
+  | { type: "player_joined"; sessionId: string; playerName: string; avatar: AvatarData; position: Position }
   | { type: "player_left"; sessionId: string }
   | { type: "player_moved"; sessionId: string; position: Position }
   | { type: "avatar_updated"; sessionId: string; avatarData: AvatarData }

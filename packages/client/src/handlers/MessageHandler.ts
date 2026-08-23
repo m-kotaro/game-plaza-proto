@@ -50,7 +50,7 @@ export class MessageHandler {
   private handlePlayerJoined(message: Extract<ServerMessage, { type: 'player_joined' }>): void {
     // Don't add ourselves (we're already added as local avatar)
     if (message.sessionId === this.localSessionId) return;
-    this.avatarManager.addRemoteAvatar(message.sessionId, message.avatar, message.position);
+    this.avatarManager.addRemoteAvatar(message.sessionId, message.avatar, message.position, message.playerName);
   }
 
   private handlePlayerLeft(message: Extract<ServerMessage, { type: 'player_left' }>): void {

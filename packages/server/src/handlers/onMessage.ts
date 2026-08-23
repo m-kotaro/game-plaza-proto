@@ -51,17 +51,26 @@ function isValidAvatarData(avatarData: unknown): avatarData is AvatarData {
  * init アクションの処理
  * 接続確立後にクライアントから送信される初期化リクエスト
  * - プレイヤー名を更新
+ * - キャラクターインデックスを更新
  * - ワールド状態（他プレイヤー一覧）を送信
  * - 自身のセッション情報を送信
  * - 他プレイヤーに新規参加を通知
  */
-async function handleInit(connectionId: string, playerName: unknown): Promise<void> {
+async function handleInit(connectionId: string, playerName: unknown, characterIndex: unknown): Promise<void> {
   const player = await getPlayerByConnectionId(connectionId);
   if (!player) return;
 
   // Update playerName if provided
   if (typeof playerName === "string" && playerName.length > 0) {
     await updatePlayerName(connectionId, playerName);
+    player.playerName = playerName;
+  }
+
+  // Update characterIndex if provided
+  if (typeof characterIndex === "number" && characterIndex >= 0 && characterIndex <= 19) {
+    const updatedAvatar: AvatarData = { ...player.avatar, characterIndex };
+    await updatePlayerAvatar(connectionId, updatedAvatar);
+    player.avatar = updatedAvatar;
   }
 
   const allConnections = await getAllConnections();
@@ -69,7 +78,7 @@ async function handleInit(connectionId: string, playerName: unknown): Promise<vo
   // Send world_state (all other players) to the newly connected player
   const otherPlayers = allConnections
     .filter((c) => c.connectionId !== connectionId)
-    .map((c) => ({ sessionId: c.sessionId, avatar: c.avatar, position: c.position }));
+    .map((c) => ({ sessionId: c.sessionId, playerName: c.playerName, avatar: c.avatar, position: c.position }));
 
   await sendToConnection(connectionId, { type: "world_state", players: otherPlayers });
 
@@ -77,6 +86,7 @@ async function handleInit(connectionId: string, playerName: unknown): Promise<vo
   await sendToConnection(connectionId, {
     type: "player_joined",
     sessionId: player.sessionId,
+    playerName: player.playerName,
     avatar: player.avatar,
     position: player.position,
   });
@@ -85,6 +95,7 @@ async function handleInit(connectionId: string, playerName: unknown): Promise<vo
   await broadcastToOthers(allConnections, connectionId, {
     type: "player_joined",
     sessionId: player.sessionId,
+    playerName: player.playerName,
     avatar: player.avatar,
     position: player.position,
   });
@@ -203,7 +214,7 @@ export const handler = async (
 
   switch (body.action) {
     case "init":
-      await handleInit(connectionId, body.playerName);
+      await handleInit(connectionId, body.playerName, body.characterIndex);
       break;
     case "move":
       await handleMove(connectionId, body.position);

@@ -118,6 +118,10 @@ export class GameScene extends Phaser.Scene {
     this.playerName = (window as unknown as Record<string, string>).__playerName || 'ゲスト';
     this.networkManager.setPlayerName(this.playerName);
 
+    // Read selected character index from BootScene and set on NetworkManager
+    const characterIndex = (window as unknown as Record<string, number>).__characterIndex ?? 0;
+    this.networkManager.setCharacterIndex(characterIndex);
+
     // Register the local session detection handler FIRST.
     // This MUST fire before MessageHandler's handler so that localSessionId is set
     // on both GameScene and MessageHandler before MessageHandler processes the same
@@ -131,7 +135,7 @@ export class GameScene extends Phaser.Scene {
       if (message.type === 'player_joined' && this.localSessionId === null) {
         this.localSessionId = message.sessionId;
         this.messageHandler.setLocalSessionId(message.sessionId);
-        this.avatarManager.createLocalAvatar(message.sessionId, message.avatar, message.position);
+        this.avatarManager.createLocalAvatar(message.sessionId, message.avatar, message.position, this.playerName);
 
         // Request rankings for all game types on initial connection
         const gameTypes = this.gameZoneData.map(z => z.gameType);

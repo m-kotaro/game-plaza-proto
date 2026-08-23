@@ -34,10 +34,20 @@ export class ResultNotification {
       animation: fadeIn 0.3s ease;
     `;
 
-    const text = result.winnerId
+    let text = result.winnerId
       ? `🎉 Winner: ${result.winnerId}`
       : '🤝 Draw!';
+
+    // Append scores if available
+    if (result.scores) {
+      const scoreLines = Object.entries(result.scores)
+        .map(([name, score]) => `${name}: ${score}`)
+        .join(' / ');
+      text += `\n${scoreLines}`;
+    }
+
     toast.textContent = text;
+    toast.style.whiteSpace = 'pre-line';
 
     this.containerEl.appendChild(toast);
     this.currentToast = toast;

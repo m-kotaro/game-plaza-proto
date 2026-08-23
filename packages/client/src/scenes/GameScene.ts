@@ -258,6 +258,9 @@ export class GameScene extends Phaser.Scene {
     this.postMessageBridge.onGameResult((result) => {
       this.iframeOverlay.close();
 
+      // Show result notification toast so the player can see the score
+      this.resultNotification.show(result);
+
       // Submit score if available
       if (result.scores && this.localSessionId) {
         const scoreValues = Object.values(result.scores);

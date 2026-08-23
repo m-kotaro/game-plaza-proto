@@ -16,6 +16,10 @@ permissions:
   id-token: write
   contents: read
 
+concurrency:
+  group: cdk-deploy
+  cancel-in-progress: false
+
 jobs:
   deploy-dev:
     if: github.ref == 'refs/heads/develop'

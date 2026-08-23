@@ -161,12 +161,13 @@ export class InputHandler {
   }
 
   /**
-   * 座標をワールド境界内にクランプする
+   * 座標をワールド境界内にクランプする（壁タイル1マス分内側）
    */
   private clampPosition(x: number, y: number): Position {
+    const wallSize = 32; // 16px tile * 2 scale
     return {
-      x: Math.max(0, Math.min(WORLD_WIDTH, x)),
-      y: Math.max(0, Math.min(WORLD_HEIGHT, y)),
+      x: Math.max(wallSize, Math.min(WORLD_WIDTH - wallSize, x)),
+      y: Math.max(wallSize, Math.min(WORLD_HEIGHT - wallSize, y)),
     };
   }
 }

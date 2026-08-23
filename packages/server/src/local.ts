@@ -45,18 +45,6 @@ wss.on('connection', (ws) => {
   connections.set(ws, record);
   console.log(`[connect] ${sessionId} (${connections.size} players)`);
 
-  // Send world_state to new player
-  const players = Array.from(connections.values())
-    .filter(r => r.sessionId !== sessionId)
-    .map(r => ({ sessionId: r.sessionId, avatar: r.avatar, position: r.position }));
-  sendTo(ws, { type: 'world_state', players });
-
-  // Also send the new player their own session info
-  sendTo(ws, { type: 'player_joined', sessionId, avatar, position });
-
-  // Notify others
-  broadcast({ type: 'player_joined', sessionId, avatar, position }, ws);
-
   ws.on('message', (data) => {
     const record = connections.get(ws);
     if (!record) return;
@@ -71,12 +59,18 @@ wss.on('connection', (ws) => {
           if (typeof msg.playerName === 'string' && msg.playerName.length > 0) {
             record.playerName = msg.playerName;
           }
+          // Update character index if provided
+          if (typeof msg.characterIndex === 'number' && msg.characterIndex >= 0 && msg.characterIndex <= 19) {
+            record.avatar = { ...record.avatar, characterIndex: msg.characterIndex };
+          }
           // Re-send world_state and player_joined (for compatibility with AWS deployment)
           const initPlayers = Array.from(connections.values())
             .filter(r => r.sessionId !== record.sessionId)
-            .map(r => ({ sessionId: r.sessionId, avatar: r.avatar, position: r.position }));
+            .map(r => ({ sessionId: r.sessionId, playerName: r.playerName, avatar: r.avatar, position: r.position }));
           sendTo(ws, { type: 'world_state', players: initPlayers });
-          sendTo(ws, { type: 'player_joined', sessionId: record.sessionId, avatar: record.avatar, position: record.position });
+          sendTo(ws, { type: 'player_joined', sessionId: record.sessionId, playerName: record.playerName, avatar: record.avatar, position: record.position });
+          // Notify others about the new player (only on init, not on reconnect duplicate)
+          broadcast({ type: 'player_joined', sessionId: record.sessionId, playerName: record.playerName, avatar: record.avatar, position: record.position }, ws);
           break;
 
         case 'move':

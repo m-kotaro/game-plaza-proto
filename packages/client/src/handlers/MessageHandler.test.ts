@@ -54,8 +54,8 @@ describe('MessageHandler', () => {
   describe('world_state', () => {
     it('should call initWorldState with players', () => {
       const players = [
-        { sessionId: 'p1', avatar: { bodyColor: 'red', headShape: 'round', accessory: 'hat', characterIndex: 0 }, position: { x: 10, y: 20 } },
-        { sessionId: 'p2', avatar: { bodyColor: 'blue', headShape: 'square', accessory: 'none', characterIndex: 5 }, position: { x: 30, y: 40 } },
+        { sessionId: 'p1', playerName: 'Alice', avatar: { bodyColor: 'red', headShape: 'round', accessory: 'hat', characterIndex: 0 }, position: { x: 10, y: 20 } },
+        { sessionId: 'p2', playerName: 'Bob', avatar: { bodyColor: 'blue', headShape: 'square', accessory: 'none', characterIndex: 5 }, position: { x: 30, y: 40 } },
       ];
 
       networkManager._dispatch({ type: 'world_state', players });
@@ -69,9 +69,9 @@ describe('MessageHandler', () => {
       const avatar = { bodyColor: 'green', headShape: 'round', accessory: 'glasses', characterIndex: 3 };
       const position = { x: 100, y: 200 };
 
-      networkManager._dispatch({ type: 'player_joined', sessionId: 'other-player', avatar, position });
+      networkManager._dispatch({ type: 'player_joined', sessionId: 'other-player', playerName: 'Other', avatar, position });
 
-      expect(avatarManager.addRemoteAvatar).toHaveBeenCalledWith('other-player', avatar, position);
+      expect(avatarManager.addRemoteAvatar).toHaveBeenCalledWith('other-player', avatar, position, 'Other');
     });
 
     it('should not add avatar for local player', () => {
@@ -80,7 +80,7 @@ describe('MessageHandler', () => {
       const avatar = { bodyColor: 'green', headShape: 'round', accessory: 'glasses', characterIndex: 3 };
       const position = { x: 100, y: 200 };
 
-      networkManager._dispatch({ type: 'player_joined', sessionId: 'local-player', avatar, position });
+      networkManager._dispatch({ type: 'player_joined', sessionId: 'local-player', playerName: 'Me', avatar, position });
 
       expect(avatarManager.addRemoteAvatar).not.toHaveBeenCalled();
     });
@@ -132,6 +132,7 @@ describe('MessageHandler', () => {
       networkManager._dispatch({
         type: 'player_joined',
         sessionId: 'me',
+        playerName: 'Me',
         avatar: { bodyColor: 'red', headShape: 'round', accessory: 'none', characterIndex: 0 },
         position: { x: 0, y: 0 },
       });
@@ -145,6 +146,7 @@ describe('MessageHandler', () => {
       networkManager._dispatch({
         type: 'player_joined',
         sessionId: 'other',
+        playerName: 'Other',
         avatar: { bodyColor: 'blue', headShape: 'square', accessory: 'hat', characterIndex: 5 },
         position: { x: 50, y: 50 },
       });
@@ -152,6 +154,7 @@ describe('MessageHandler', () => {
         'other',
         { bodyColor: 'blue', headShape: 'square', accessory: 'hat', characterIndex: 5 },
         { x: 50, y: 50 },
+        'Other',
       );
     });
   });

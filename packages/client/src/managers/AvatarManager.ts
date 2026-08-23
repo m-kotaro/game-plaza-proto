@@ -44,9 +44,9 @@ export class AvatarManager {
   /**
    * Create a local player avatar (camera follows this one)
    */
-  createLocalAvatar(sessionId: string, avatar: AvatarData, position: Position): void {
+  createLocalAvatar(sessionId: string, avatar: AvatarData, position: Position, playerName?: string): void {
     this.localSessionId = sessionId;
-    const sprite = this.createAvatarSprite(avatar, position);
+    const sprite = this.createAvatarSprite(avatar, position, playerName);
     this.avatars.set(sessionId, sprite);
 
     // Camera follows local avatar
@@ -56,13 +56,13 @@ export class AvatarManager {
   /**
    * Create/add a remote player avatar
    */
-  addRemoteAvatar(sessionId: string, avatar: AvatarData, position: Position): void {
+  addRemoteAvatar(sessionId: string, avatar: AvatarData, position: Position, playerName?: string): void {
     // Don't duplicate if already exists
     if (this.avatars.has(sessionId)) {
       return;
     }
 
-    const sprite = this.createAvatarSprite(avatar, position);
+    const sprite = this.createAvatarSprite(avatar, position, playerName);
     this.avatars.set(sessionId, sprite);
   }
 
@@ -146,7 +146,7 @@ export class AvatarManager {
         continue;
       }
 
-      this.addRemoteAvatar(player.sessionId, player.avatar, player.position);
+      this.addRemoteAvatar(player.sessionId, player.avatar, player.position, player.playerName);
     }
   }
 
@@ -194,7 +194,7 @@ export class AvatarManager {
   /**
    * Create an avatar sprite using a frame from the Tiny Dungeon spritesheet.
    */
-  private createAvatarSprite(avatar: AvatarData, position: Position): AvatarSprite {
+  private createAvatarSprite(avatar: AvatarData, position: Position, playerName?: string): AvatarSprite {
     const container = this.scene.add.container(position.x, position.y);
 
     const frame = this.getCharacterFrame(avatar);
@@ -202,11 +202,24 @@ export class AvatarManager {
     body.setScale(2);
     container.add(body);
 
+    // Name label above the character
+    const displayName = playerName || '';
+    const nameText = this.scene.add.text(0, -24, displayName, {
+      fontSize: '11px',
+      color: '#ffffff',
+      stroke: '#000000',
+      strokeThickness: 2,
+      align: 'center',
+    });
+    nameText.setOrigin(0.5, 1);
+    container.add(nameText);
+
     container.setDepth(1);
 
     return {
       container,
       body,
+      nameText,
       targetPosition: { ...position },
       avatarData: { ...avatar },
     };

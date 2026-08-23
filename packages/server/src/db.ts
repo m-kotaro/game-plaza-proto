@@ -77,6 +77,7 @@ export async function getAllPlayers(): Promise<PlayerInfo[]> {
   const connections = await getAllConnections();
   return connections.map((conn) => ({
     sessionId: conn.sessionId,
+    playerName: conn.playerName,
     avatar: conn.avatar,
     position: conn.position,
   }));

@@ -25,6 +25,7 @@ export class NetworkManager {
   private reconnectTimeout: ReturnType<typeof setTimeout> | null = null;
   private messageHandlers: ServerMessageHandler[] = [];
   private playerName: string = "Player";
+  private characterIndex: number = 0;
 
   constructor(url: string) {
     this.url = url;
@@ -35,6 +36,13 @@ export class NetworkManager {
    */
   setPlayerName(name: string): void {
     this.playerName = name;
+  }
+
+  /**
+   * キャラクターインデックスを設定する（接続前に呼び出す）
+   */
+  setCharacterIndex(index: number): void {
+    this.characterIndex = index;
   }
 
   /**
@@ -104,8 +112,8 @@ export class NetworkManager {
     this.state = "connected";
     this.reconnectAttempts = 0;
     this.startHeartbeat();
-    // Send init message with player name to request world state
-    this.send({ action: "init", playerName: this.playerName });
+    // Send init message with player name and character to request world state
+    this.send({ action: "init", playerName: this.playerName, characterIndex: this.characterIndex });
   }
 
   private handleClose(): void {

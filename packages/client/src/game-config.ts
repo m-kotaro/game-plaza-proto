@@ -32,7 +32,7 @@ export const gameConfig = {
       metaUrl: 'https://m-kotaro.github.io/otameshi-game-2/meta.json',
     },
     {
-      name: 'snake-game',
+      name: 'kuruma-game',
       url: 'https://m-kotaro.github.io/otameshi-game-3/',
       origin: 'https://m-kotaro.github.io',
       metaUrl: 'https://m-kotaro.github.io/otameshi-game-3/meta.json',

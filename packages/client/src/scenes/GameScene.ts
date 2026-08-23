@@ -256,10 +256,8 @@ export class GameScene extends Phaser.Scene {
 
     // PostMessage callbacks
     this.postMessageBridge.onGameResult((result) => {
-      this.iframeOverlay.close();
-
-      // Show result notification toast so the player can see the score
-      this.resultNotification.show(result);
+      // Don't close the iframe here — let the game show its own result screen.
+      // The iframe will be closed when the game sends a game_close message.
 
       // Submit score if available
       if (result.scores && this.localSessionId) {

@@ -57,10 +57,33 @@ npm workspaces でモノレポ管理。ビルド順序: shared → server / clie
 
 ## 新しいゲームの追加
 
-1. ゲーム側に `meta.json` を用意する（タイトル、説明、スコア設定）
+1. ゲーム側に `meta.json` を用意する（下記「meta.json の形式」参照）
 2. `packages/client/game-config.json` の `games` にエントリ追加
 3. 外部オリジンの場合は `allowedOrigins` にも追加
 4. ワールドマップ上のゲームゾーン配置を更新
+
+### meta.json の形式
+
+各ゲームは `metaUrl` で指定した `meta.json` を公開します。クライアントが読み取るのは以下の2フィールドです（実装: `packages/client/src/iframe/GameMetaFetcher.ts`）:
+
+```json
+{
+  "title": "ゲームのタイトル",
+  "description": "ゲームの説明文"
+}
+```
+
+- `title` が無い/文字列でない場合は `game-config` の `name` がフォールバックとして使われます
+- `description` が無い/文字列でない場合は空文字になります
+- 取得に失敗した場合も上記フォールバックで動作します
+
+### サンプルゲームのリポジトリ
+
+meta.json と postMessage 連携の実装例は、サンプルゲームのリポジトリを参照してください:
+
+- <https://github.com/m-kotaro/otameshi-game-sample>
+- デモ: <https://m-kotaro.github.io/otameshi-game-sample/>
+- meta.json 例: <https://m-kotaro.github.io/otameshi-game-sample/meta.json>
 
 ## デプロイ
 

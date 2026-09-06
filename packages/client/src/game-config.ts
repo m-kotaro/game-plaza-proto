@@ -14,12 +14,6 @@ export interface GameConfigEntry {
 export const gameConfig = {
   games: [
     {
-      name: 'sample',
-      url: 'https://m-kotaro.github.io/otameshi-game-sample/',
-      origin: 'https://m-kotaro.github.io/otameshi-game-sample/',
-      metaUrl: 'https://m-kotaro.github.io/otameshi-game-sample/meta.json',
-    },
-    {
       name: 'moguratataki',
       url: 'https://m-kotaro.github.io/otameshi-game/',
       origin: 'https://m-kotaro.github.io',
@@ -37,16 +31,16 @@ export const gameConfig = {
       origin: 'https://m-kotaro.github.io',
       metaUrl: 'https://m-kotaro.github.io/otameshi-game-3/meta.json',
     },
-    // {
-    //   name: 'memory',
-    //   url: '/games/memory.html',
-    //   metaUrl: '/games/memory-meta.json',
-    // },
-    // {
-    //   name: 'slot',
-    //   url: '/games/slot.html',
-    //   metaUrl: '/games/slot-meta.json',
-    // },
+    {
+      name: 'tegaki-votes',
+      url: 'https://d39a3y4h958fl.cloudfront.net/',
+      metaUrl: 'https://d39a3y4h958fl.cloudfront.net/meta.json',
+    },
+    {
+      name: 'tegaki-votes-result',
+      url: 'https://d39a3y4h958fl.cloudfront.net/results',
+      metaUrl: 'https://d39a3y4h958fl.cloudfront.net/results-meta.json',
+    },
     // {
     //   name: 'dice',
     //   url: '/games/dice.html',

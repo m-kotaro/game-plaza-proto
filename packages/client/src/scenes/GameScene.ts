@@ -48,26 +48,31 @@ export class GameScene extends Phaser.Scene {
   // iframe integration
   private interactionZones: InteractionZone[] = [];
   private gameZoneData = (() => {
-    const positions = [
-      { x: 300, y: 200 },
-      { x: 700, y: 200 },
-      { x: 1100, y: 200 },
-      { x: 300, y: 600 },
-      { x: 700, y: 600 },
-      { x: 1100, y: 600 },
-    ];
-
     // mock はデバッグ用なのでゾーン一覧から除外する
     const gameTypes = Object.keys(DEFAULT_GAME_CONFIG.games).filter(k => k !== 'mock');
 
-    return gameTypes.slice(0, positions.length).map((gameType, i) => ({
-      x: positions[i].x,
-      y: positions[i].y,
-      width: 120,
-      height: 120,
-      gameType,
-      label: gameType,
-    }));
+    // ゲーム本数に応じてワールド内に自動グリッド配置する。
+    // 列数は本数の平方根を基準に決め、行に折り返す。各セルの中央にゾーンを置くので
+    // 本数が増えても見切れず、ワールド内に均等配置される。
+    const count = gameTypes.length;
+    const cols = Math.max(1, Math.ceil(Math.sqrt(count)));
+    const rows = Math.max(1, Math.ceil(count / cols));
+
+    const cellWidth = WORLD_WIDTH / cols;
+    const cellHeight = WORLD_HEIGHT / rows;
+
+    return gameTypes.map((gameType, i) => {
+      const col = i % cols;
+      const row = Math.floor(i / cols);
+      return {
+        x: Math.round(cellWidth * (col + 0.5)),
+        y: Math.round(cellHeight * (row + 0.5)),
+        width: 120,
+        height: 120,
+        gameType,
+        label: gameType,
+      };
+    });
   })();
   private iframeOverlay!: IframeOverlayManager;
   private postMessageBridge!: PostMessageBridge;

@@ -41,11 +41,11 @@ export const gameConfig = {
       url: 'https://d39a3y4h958fl.cloudfront.net/results',
       metaUrl: 'https://d39a3y4h958fl.cloudfront.net/results-meta.json',
     },
-    // {
-    //   name: 'dice',
-    //   url: '/games/dice.html',
-    //   metaUrl: '/games/dice-meta.json',
-    // },
+    {
+      name: 'toma-game',
+      url: 'https://hibinomikata.github.io/testgame/',
+      metaUrl: 'https://hibinomikata.github.io/testgame/meta.json',
+    },
     // {
     //   name: 'shiritori',
     //   url: '/games/shiritori.html',

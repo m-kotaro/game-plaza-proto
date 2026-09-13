@@ -46,11 +46,11 @@ export const gameConfig = {
       url: 'https://hibinomikata.github.io/testgame/',
       metaUrl: 'https://hibinomikata.github.io/testgame/meta.json',
     },
-    // {
-    //   name: 'shiritori',
-    //   url: '/games/shiritori.html',
-    //   metaUrl: '/games/shiritori-meta.json',
-    // },
+    {
+      name: 'yang-game',
+      url: 'https://neihai3.github.io/kondate_game/',
+      metaUrl: 'https://neihai3.github.io/kondate_game/meta.json',
+    },
   ] as GameConfigEntry[],
   allowedOrigins: ['https://m-kotaro.github.io'] as string[],
   loadTimeoutMs: 10000,
